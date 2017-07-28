@@ -44,7 +44,7 @@ var Timur = React.createClass({
     var manifest_props = {
       'currentUser': this.props.user,
       'isAdmin': this.props.is_admin,
-      'project_name': this.props.project_name
+      'projectName': this.props.project_name
     }
 
     switch(this.props.mode){
