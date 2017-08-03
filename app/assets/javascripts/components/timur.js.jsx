@@ -31,7 +31,7 @@ var Timur = React.createClass({
     var search_props = {
       'can_edit': this.props.can_edit,
       'project_name': this.props.project_name
-    }
+    };
 
     var timur_nav_props = {
       'user': this.props.user,
