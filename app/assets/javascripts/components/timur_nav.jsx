@@ -162,7 +162,7 @@ const mapDispatchToProps = (dispatch, ownProps)=>{
     },
 
     toggleConfig: function(){
-      dispatc(toggleConfig());
+      dispatch(toggleConfig());
     }
   };
 };
