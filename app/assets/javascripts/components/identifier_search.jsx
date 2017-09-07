@@ -8,12 +8,7 @@ class IdentifierSearch extends React.Component{
       'open': false,
       'inputValue': ''
     };
-  },
-
-  componentWillMount: function(){
-
-    this.props.requestIdentifiers();
-  },
+  }
 
   componentWillMount(){
     this.props.requestIdentifiers(this['props']['project_name']);

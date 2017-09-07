@@ -89,7 +89,6 @@ class TimurNav extends React.Component{
       'onClick': this['toggleUserPanel'].bind(this)
     };
 
-<<<<<<< HEAD
     return(
       <div {...userDropdownGroupProps}>
 
@@ -144,69 +143,6 @@ class TimurNav extends React.Component{
         </div>
       </div>
     );
-=======
-    //TODO fix hacky addition of Manifesto tab
-    return <div id="header">
-             <div id="logo">
-               <a href="/">
-                 <div id={ logo_id }
-                   className={ Object.keys(this.props.exchanges).length > 0 ? "throb" : null }
-                 >
-                   <div className="image"/>
-                   <div className="halo">
-                     <svg>
-                       <circle r="25px" cx="35" cy="35"/>
-                       {
-                         Array(36).fill().map((_,i) => {
-                           let x = (d,r) => Math.cos(Math.PI * d / 180) * r + 35
-                           let y = (d,r) => Math.sin(Math.PI * d / 180) * r + 35
-                           return <path className={ i%2==0 ? "long" : "short"} key={i} d={ `M ${x(i*10, (i%2==0 ? 42 : 32))}, ${y(i*10, (i%2==0 ? 42 : 32)) }
-                                  L ${x(i*10,25)}, ${y(i*10, 25)}` }/>
-                         
-                         })
-                       }
-                     </svg>
-                   </div>
-                 </div>
-               </a>
-             </div>
-             <div id="help_float">
-                 <Help info="timur"/>
-              </div>
-             <div id="heading">
-               { heading }
-             </div>
-             <div id="nav">
-               {
-                 Object.keys(tabs).map((name) =>
-                   <div key={ name } 
-                     className={ "nav_tab" + ((this.props.mode == name && !this.props.appMode) ? ' selected' : '') }>
-                       <a href={ tabs[name] }> { name } </a>
-                     </div>
-                 )
-               }
-
-               {
-                 this.props.can_edit ?
-                 <div className="nav_tab">
-                   <a href={ Routes.activity_path(PROJECT_NAME) }>Activity</a>
-                 </div>
-                 : null
-               }
-               <div className="nav_tab">
-                 <a onClick={ (e) => this.props.toggleConfig('help_shown') }>
-                 {
-                   this.props.helpShown ? 'Hide Help' : 'Help'
-                 }
-                 </a>
-               </div>
-               <IdentifierSearch/>
-               <div id="login">
-                 { login }
-               </div>
-             </div>
-           </div>
->>>>>>> etna-integration
   }
 }
 

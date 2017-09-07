@@ -1,7 +1,6 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { requestManifests } from '../../actions/manifest_actions'
-import Manifest from './manifest'
 import ManifestSelector from './manifest_selector'
 import debounce from 'lodash.debounce'
 
