@@ -1,16 +1,14 @@
-import React, {Component} from 'react';
-import {connect} from 'react-redux';
+import React, { Component } from 'react'
+import { connect } from 'react-redux'
+import { requestManifests } from '../../actions/manifest_actions'
+import Manifest from './manifest'
+import ManifestSelector from './manifest_selector'
+import debounce from 'lodash.debounce'
 
-import {requestManifests} from '../../actions/manifest_actions';
-import ManifestSelector from './manifest_selector';
-import ManifestForm from './manifest_form';
-import ManifestView from './manifest_view';
-import debounce from 'lodash.debounce';
-
-// Main component for viewing/editing manifests.
-class Manifests extends Component{
-  componentWillMount(){
-    this['props'].requestManifests(this['props']['projectName']);
+// Main component for viewing/editing manifests
+class Manifests extends Component {
+  componentDidMount() {
+    this.props.requestManifests();
   }
 
   renderManifest(){

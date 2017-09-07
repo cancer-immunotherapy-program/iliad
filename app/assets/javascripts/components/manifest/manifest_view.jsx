@@ -17,135 +17,68 @@ class ManifestView extends React.Component{
     this['state'] = {'viewMode': 'script'};
   }
 
-  renderManifestControls(){
+  render() {
+    const { manifest, consignment, deleteManifest, toggleEdit, copyManifest, requestConsignments } = this.props
+    const { is_editable, name } = manifest
 
-    var props = this['props'];
-    var deleteBtnProps = {
-      'className': 'manifest-view-control-btn',
-      'style': (props['manifest']['is_editable']) ? {} : {'display': 'none'},
-      'onClick': ()=>{
-        if(!confirm('Are you sure you want to delete this manifest?')) return;
-        props.deleteManifest(props['manifest']['id']);
+    const elements =  manifest.data.elements || []
+
+    const manifestElements = elements.map((element, i) => {
+      let elementResult
+      if (consignment) {
+        if (consignment[element.name]) {
+          elementResult = consignment[element.name]
+        } else if (consignment && !consignment[element.name]) {
+          elementResult = ''
+        } 
+      } else {
+        elementResult = ''
       }
-    };
+      const props = { ...element, result: elementResult, view_mode: this.state.view_mode }
+      return (
+        <li key={i}>
+          <ManifestElement {...props}/>
+        </li>
+      )
+    })
 
-    var editBtnProps = {
-      'className': 'manifest-view-control-btn',
-      'style': (props['manifest']['is_editable']) ? {} : {'display': 'none'},
-      'onClick': ()=>{
-        props.toggleEdit();
-      }
-    };
-
-    var queryBtnProps = {
-      'className': 'manifest-form-control-btn'
-    };
-
-    var copyBtnProps = {
-      'className': 'manifest-view-control-btn',
-      'onClick': ()=>{
-        if(props['isEditing']) props.toggleEdit();
-        props.copyManifest(props['projectName'], props['manifest']);
-      }
-    };
-
-    if(props['is_editable']){
-      deleteBtnProps['style'] = editBtnProps['style'] = {'display': 'none'};
-    }
-
-    return(
-      <div className='manifest-view-controls'>
-        <button {...deleteBtnProps}>
-
-          <i className='fa fa-trash-o' aria-hidden='true'></i>
-          {' DELETE'}
-        </button>
-        <button {...editBtnProps}>
-
-          <i className='fa fa-pencil-square-o' aria-hidden='true'></i>
-          {' EDIT'}
-        </button>
-        <button {...copyBtnProps}>
-
-          <i className='fa fa-files-o' aria-hidden='true'></i>
-          {' COPY'}
-        </button>
-        <button {...queryBtnProps}>
-
-          <i className='fa fa-play' aria-hidden='true'></i>
-          {' RUN QUERY'}
-        </button>
-      </div>
-    );
-  }
-
-  renderManifestElements(){
-    var elements = this['props']['manifest']['data']['elements'] || [];
-    return elements.map((element, index)=>{
-
-      return(
-        <div className='manifest-view-element' key={'element-'+index}>
-
-          <div className='manifest-view-element-title'>
-
-            {'@'+element['name']}
+    return (
+      <div className='manifest'>
+        <div className='manifest-elements'>
+          <div className='actions'>
+            { is_editable &&
+              <button onClick={toggleEdit}>
+                <i className='fa fa-pencil-square-o' aria-hidden="true"></i>
+                edit
+              </button>
+            }
+            <button onClick={() => copyManifest(manifest)}>
+              <i className='fa fa-files-o' aria-hidden="true"></i>
+              copy
+            </button>
+            { is_editable &&
+                <button onClick={ () => deleteManifest(manifest.id)}>
+              <i className='fa fa-trash-o' aria-hidden="true"></i>
+              delete
+            </button>
+            }
           </div>
-          <span>
-
-            {' = '}
-          </span>
-          <div className='manifest-view-element-body'>
-
-            <pre className='manifest-view-code'>
-
-              {element['script']}
-            </pre>
-          </div>
-        </div>
-      );
-    });
-  }
-
-  render(){
-
-    var manifest = this['props']['manifest'];
-    var updateDate = Dates.format_date(Date.now());
-    var updateTime = Dates.format_time(Date.now());
-    if(manifest){
-      updateDate = Dates.format_date(manifest['updated_at']);
-      updateTime = Dates.format_time(manifest['updated_at']);
-    }
-
-    return(
-      <div id='manifest-view-group'>
-
-        <div id='manifest-view-header'>
-
-          <div id='manifest-view-title'>
-
-            {manifest['name']}
-          </div>
-          {this.renderManifestControls()}
-        </div>
-        <br />
-        <div id='manifest-view-details'>
-
-          {'Author: '+manifest['user']['name']}
-          <br />
-          {'Last Updated: '+updateDate+', '+updateTime}
-          <br />
-          {'Access: '+manifest['access']}
-          <br />
-          {'Description: '}
-          <div id='manifest-view-description'>
-
-            {(manifest['description']) ? manifest['description'] : 'N/A'}
-          </div>
-        </div>
-        {this.render}
-        <div id='manifest-view-body'>
-
-          {this.renderManifestElements()}
+          <ManifestPreview {...manifest} />
+          <ToggleSwitch 
+            id="view_mode_switch"
+            caption="Show"
+            onChange={ (view_mode) => {
+              this.setState({ view_mode })
+              if (view_mode == 'output' && !consignment) {
+                if (!consignment) requestConsignments([manifestToReqPayload(manifest)])
+              }
+            } }
+            selected={this.state.view_mode}
+            values={[ 'script', 'output' ]}
+          />
+          <ol>
+            {manifestElements}
+          </ol>
         </div>
       </div>
     );

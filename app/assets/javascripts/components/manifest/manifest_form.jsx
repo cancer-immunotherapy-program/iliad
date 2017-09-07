@@ -1,18 +1,44 @@
-import * as React from 'react';
-import Dates from '../../dates';
-import {requestConsignments} from '../../actions/consignment_actions';
-import {selectConsignment} from '../../selectors/consignment';
-import {manifestToReqPayload, saveNewManifest, saveManifest, toggleEdit} from '../../actions/manifest_actions';
-import {generateRandKey} from '../../utils/utils';
+import React, { Component } from 'react'
+import InputField from './input_field'
+import TextField from './text_field'
+import ManifestAccess from './manifest_access'
+import ManifestElementForm from './manifest_element_form'
+import Dates from '../../dates'
+import { v4 } from 'node-uuid'
+import { requestConsignments } from '../../actions/consignment_actions'
+import { selectConsignment } from '../../selectors/consignment'
+import { manifestToReqPayload, saveNewManifest, saveManifest, toggleEdit } from '../../actions/manifest_actions'
 
-/*
- * Edit and save changes to a manifest. Requests a consignment based on edited
- * data when 'test' is clicked.
- */
-class ManifestForm extends React.Component{
-  componentWillMount(){
-
-    if(this['props']['manifest']){
+// Edit and save changes to a manifest.  Requests a consignment
+// based on edited data when 'test' is clicked
+class ManifestForm extends Component {
+  componentWillMount() {
+    if (this.props.manifest) {
+      const elements = this.props.manifest.data.elements || []
+      const elementsByKey = elements.reduce((acc, curr) => {
+        const key = v4()
+        return ({
+          elementKeys: [...acc.elementKeys, key],
+          elementsByKey: {...acc.elementsByKey, [key]: curr}
+        })
+      }, { elementKeys: [], elementsByKey: {} }) 
+      this.setState(
+        { 
+          ...this.props.manifest,
+          ...elementsByKey,
+          hasConsignment: false
+        }
+      )
+    } else {
+      this.setState({
+        name: '',
+        access: 'private',
+        elementKeys: [],
+        elementsByKey: {},
+        hasConsignment: false
+      })
+    }
+  }
 
       var elements = this['props']['manifest']['data']['elements'] || [];
       var elementsByKey = elements.reduce((acc, curr)=>{
@@ -54,16 +80,12 @@ class ManifestForm extends React.Component{
     };
   }
 
-  updateElementAttribute(key, attribute, value){
-    var updatedElements = {
-      ...this.state.elementsByKey,
-      [key]: {
-        ...this.state.elementsByKey[key],
-        [attribute]: value
-      }
-    };
+  create() {
+    this.props.saveNewManifest(this.stateToManifest())
+  }
 
-    this.setState({'elementsByKey': updatedElements});
+  update() {
+    this.props.saveManifest(this.stateToManifest())
   }
 
   removeElement(key){
