@@ -37,7 +37,8 @@ Rails.application.configure do
   # Print deprecation notices to the stderr.
   config.active_support.deprecation = :stderr
 
-  config.pythia_url = "https://dev.ucsf-immunoprofiler.org/pythia/"
   # Raises error for missing translations
   # config.action_view.raise_on_missing_translations = true
+
+  config.pythia_url = 'https://pythia.ucsf-immunoprofiler.org/'
 end

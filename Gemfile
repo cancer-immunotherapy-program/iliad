@@ -1,6 +1,5 @@
 source 'https://rubygems.org'
 
-
 gem 'extlib'
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '4.2.0'
@@ -19,10 +18,10 @@ gem 'therubyracer', platforms: :ruby
 gem 'jquery-rails'
 
 # Load jquery ui
-gem 'jquery-ui-rails'
+gem 'jquery-ui-rails', '~> 5.0'
 
 # Turbolinks makes following links in your web application faster. Read more: https://github.com/rails/turbolinks
-gem 'turbolinks'
+gem 'turbolinks', '~>2.5.3'
 # Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
 gem 'jbuilder', '~> 2.0'
 # bundle exec rake doc:rails generates the API under doc/api.
@@ -44,6 +43,8 @@ gem 'font-awesome-sass'
 gem 'rltk'
 
 gem 'magma'
+
+gem 'pry'
 
 # Use Unicorn as the app server
 # gem 'unicorn'
