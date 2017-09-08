@@ -7,7 +7,7 @@ export const fetchManifests = (exchange)=>{
     headers: headers('json', 'csrf')
   };
 
-  var exchangePromise = exchange.fetch(Routes.manifests_fetch_path(PROJECT_NAME), routeOpts)
+  var exchangePromise = exchange.fetch('/'+PROJECT_NAME+'/manifests/fetch', routeOpts)
     .then(checkStatus)
     .then(parseJSON);
 
@@ -22,7 +22,7 @@ export const createManifest = (manifest, exchange)=>{
     body: JSON.stringify(manifest)
   };
 
-  var exchangePromise = exchange.fetch(Routes.manifests_create_path(PROJECT_NAME), routeOpts)
+  var exchangePromise = exchange.fetch('/'+PROJECT_NAME+'/manifests/create', routeOpts)
     .then(checkStatus)
     .then(parseJSON);
 
@@ -37,7 +37,7 @@ export const updateManifest = (manifestUpdates, manifestId, exchange)=>{
     body: JSON.stringify(manifestUpdates)
   };
 
-  var exchangePromise = exchange.fetch(Routes.manifests_update_path(PROJECT_NAME, manifestId), routeOpts)
+  var exchangePromise = exchange.fetch('/'+PROJECT_NAME+'/manifests/update/'+manifestId, routeOpts)
     .then(checkStatus)
     .then(parseJSON);
 
@@ -51,7 +51,7 @@ export const destroyManifest = (manifestId, exchange)=>{
     headers: headers('json', 'csrf')
   };
 
-  var exchangePromise = exchange.fetch(Routes.manifests_destroy_path(PROJECT_NAME, manifestId), routeOpts)
+  var exchangePromise = exchange.fetch('/'+PROJECT_NAME+'/manifests/destroy/'+manifestId, routeOpts)
     .then(checkStatus)
     .then(parseJSON);
 
