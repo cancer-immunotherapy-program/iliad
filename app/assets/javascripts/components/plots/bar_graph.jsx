@@ -1,13 +1,17 @@
+// Framework imports;
+import * as React from 'react';
+import * as d3 from 'd3';
+
 import PlotCanvas from './plot_canvas'
 import YAxis from './yaxis'
 import XAxis from './xaxis'
-import * as d3 from "d3"
+
 import { createScale } from '../../utils/d3_scale'
 
 const Bar = ({ plotHeight, property, datum, xScale, yScale, datumKey }) => (
   <rect
     style={{fill: datum.color}}
-    width={xScale.rangeBand()}
+    width={xScale.range()}
     height={plotHeight - yScale(datum[property])}
     x={xScale(datum[datumKey])}
     y={yScale(datum[property])}

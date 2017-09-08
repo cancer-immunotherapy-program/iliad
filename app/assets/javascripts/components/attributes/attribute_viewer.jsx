@@ -1,8 +1,28 @@
-import React from 'react';
+// Framework Libraries.
+import * as React from 'react';
+
+// Class imports.
+import BarPlotAttribute from './bar_plot_attribute';
 import StackedBarPlotAttribute from './stacked_bar_plot_attribute';
 import BarGraphAttribute from './bar_graph_attribute';
 import HistogramAttribute from './histogram_attribute';
 import SwarmAttribute from './swarm_attribute';
+import BoxPlotAttribute from './box_plot_attribute';
+import TextAttribute from './text_attribute';
+import LinePlotAttribute from './line_plot_attribute';
+import MarkdownAttribute from './markdown_attribute';
+import MetricsAttribute from './metrics_attribute';
+import CollectionAttribute from './collection_attribute';
+import LinkAttribute from './link_attribute';
+import TableAttribute from './table_attribute';
+import DocumentAttribute from './document_attribute';
+import ImageAttribute from './image_attribute';
+import SelectAttribute from './select_attribute';
+import CheckboxAttribute from './checkbox_attribute';
+import IntegerAttribute from './integer_attribute';
+import FloatAttribute from './float_attribute';
+import DateTimeAttribute from './date_time_attribute';
+import Attribute from './attribute';
 
 var AttributeViewer = React.createClass({
   render: function(){

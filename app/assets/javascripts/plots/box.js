@@ -37,7 +37,7 @@ d3.box = function() {
           : d3.range(n);
 
       // Compute the new x-scale.
-      var x1 = d3.scale.linear()
+      var x1 = d3.scaleLinear()
           .domain(domain && domain.call(this, d, i) || [min, max])
           .range([height, 0]);
 

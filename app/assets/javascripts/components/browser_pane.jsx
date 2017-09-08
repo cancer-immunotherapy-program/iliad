@@ -1,3 +1,9 @@
+// Framework Libraries.
+import * as React from 'react';
+
+// Class imports.
+import AttributeViewer from './attributes/attribute_viewer';
+
 var BrowserPane = React.createClass({
 
   renderTitle: function(){
@@ -61,7 +67,9 @@ var BrowserPane = React.createClass({
      * The 'display' array should already be compacted. We are being a bit
      * redundant here for safety.
      */
-    return display.compact();
+
+    // Compact.
+    return display.filter((item)=>((item) ? true : false));
   },
 
   render: function(){

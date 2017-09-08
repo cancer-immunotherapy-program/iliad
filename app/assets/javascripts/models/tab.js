@@ -38,7 +38,8 @@ export default class Tab{
       });
     });
 
-    return panes.flatten();
+    // Flatten.
+    return [].concat.apply([], panes); 
   }
 
   requiredManifests(){
@@ -46,7 +47,11 @@ export default class Tab{
       return pane.manifests(this.record_name);
     });
 
-    return panes.compact().flatten();
+    // Compact.
+    panes = panes.filter((item)=>((item) ? true : false));
+
+    // Flatten.
+    return [].concat.apply([], panes); 
   }
 }
 
@@ -82,7 +87,11 @@ class Pane{
       return display_item.manifest(record_name);
     });
 
-    return manifest.compact().flatten();
+    // Compact.
+    manifest = manifest.filter((item)=>((item) ? true : false));
+
+    // Flatten.
+    return [].concat.apply([], manifest); 
   }
 }
 

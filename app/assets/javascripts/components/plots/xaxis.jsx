@@ -24,7 +24,7 @@ const XAxis = ({
       x2={typeof xmax !== 'undefined' ? scale(xmax) : plotAreaWidth}
     />
     {ticks.map((tick, i) => {
-      const x = typeof tick === 'string' ? scale(tick) + scale.rangeBand()/2 : scale(tick)
+      const x = typeof tick === 'string' ? scale(tick) + scale.range()/2 : scale(tick)
       return (
         <g key={i}>
           <text textAnchor="end" transform={'translate(' + x + ',' + (y + tick_width + 10) + ') rotate(-45)'}>

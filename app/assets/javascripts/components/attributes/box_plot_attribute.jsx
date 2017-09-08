@@ -1,7 +1,13 @@
-import React from 'react';
-import { autoColors } from '../../utils/colors'
-import { selectConsignment } from '../../selectors/consignment'
+// Framework Libraries.
+import * as React from 'react';
 import * as ReactRedux from 'react-redux';
+
+// Class imports.
+import BoxPlot from '../plots/box_plot';
+
+// Module Imports.
+import {autoColors} from '../../utils/colors';
+import {selectConsignment} from '../../selectors/consignment';
 
 var BoxPlotAttribute = React.createClass({
   render: function() {

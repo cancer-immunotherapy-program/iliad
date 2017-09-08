@@ -15,7 +15,7 @@ const StackedBar = ({ plotHeight, legend, datum, xScale, yScale, datumKey }) => 
     return (
       <rect key={i}
         style={{fill: color}}
-        width={xScale.rangeBand()}
+        width={xScale.range()}
         height={height}
         x={xScale(datum[datumKey])}
         y={yScale(top)}

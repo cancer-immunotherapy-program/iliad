@@ -3,6 +3,7 @@ import React from 'react';
 import * as ReactRedux from 'react-redux';
 import { autoColors } from '../../utils/colors'
 import { selectConsignment } from '../../selectors/consignment'
+import LinePlot from '../plots/line_plot';
 
 var LinePlotAttribute = React.createClass({
   render: function() {

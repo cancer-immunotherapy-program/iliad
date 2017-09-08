@@ -1,6 +1,6 @@
 import React from 'react'
 import * as ReactRedux from 'react-redux';
-import Magma from 'magma'
+import Magma from '../magma'
 import { requestTSV } from '../actions/timur_actions'
 
 class TableViewer extends React.Component {

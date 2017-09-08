@@ -32,8 +32,8 @@ module.exports = function (self) {
     for (var i = 0; i < data.length; ++i) simulation.tick();
 
     //update y value if outside the y boundaries
-    const yBot = y + (yScale.rangeBand() / 2) - radius
-    const yTop = y - (yScale.rangeBand() / 2) + radius
+    const yBot = y + (yScale.range() / 2) - radius
+    const yTop = y - (yScale.range() / 2) + radius
     const swarm = data.map(node => {
       if (node.y > yBot) {
         node.y = yBot

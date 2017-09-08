@@ -1,6 +1,11 @@
-
+// Framework imports.
 import React from 'react';
-import { createScale } from '../../utils/d3_scale'
+
+// Class imports.
+import PlotCanvas from './plot_canvas';
+
+// Module imports.
+import {createScale} from '../../utils/d3_scale';
 
 var BoxPlot = React.createClass({
   render: function() {
@@ -17,7 +22,9 @@ var BoxPlot = React.createClass({
       function(group) {
         return group.values 
       }
-    ).flatten()
+    )
+    // Flatten.
+    values = [].concat.apply([], values);
 
     var yScale = createScale(
       [ this.props.ymin, this.props.ymax ],

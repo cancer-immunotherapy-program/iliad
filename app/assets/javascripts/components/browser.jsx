@@ -16,7 +16,11 @@ import * as ReactRedux from 'react-redux';
 // Class imports.
 import Magma from '../magma';
 import BrowserTab from './browser_tab';
+import BrowserPane from './browser_pane';
 import Tab from '../models/tab';
+import TabBar from './tab_bar';
+import Header from './header';
+import Help from './help';
 
 // Module imports.
 import {discardRevision, sendRevisions} from '../actions/magma_actions';

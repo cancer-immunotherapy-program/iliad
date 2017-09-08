@@ -1,5 +1,8 @@
-// Class imports.
+// Framework Libraries.
 import * as React from 'react';
+
+// Class imports.
+import BrowserPane from './browser_pane';
 
 export default class BrowserTab extends React.Component{
   renderPanes(){
