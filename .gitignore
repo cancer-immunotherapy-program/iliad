@@ -32,3 +32,4 @@ tmp
 /app/assets/css/**/*.css
 /public/css/*.css
 /public/css/*.map
+/.sass-cache/
