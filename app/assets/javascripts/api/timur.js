@@ -12,7 +12,7 @@ export const getTSV = (model_name, record_names, exchange)=>{
     })
   };
 
-  var exchangePromise = exchange.fetch(Routes.table_tsv_path(PROJECT_NAME), routeOpts)
+  var exchangePromise = exchange.fetch('/'+PROJECT_NAME+'/search/tsv', routeOpts)
     .then(checkStatus)
     .then(makeBlob)
     .then(generateDownload(`${model_name}.tsv`));
@@ -29,7 +29,7 @@ export const getView = (model_name, tab_name, exchange)=>{
     body: JSON.stringify({ model_name, tab_name })
   };
 
-  var exchangePromise = exchange.fetch(Routes.view_json_path(PROJECT_NAME), routeOpts)
+  var exchangePromise = exchange.fetch('/'+PROJECT_NAME+'/view', routeOpts)
     .then(checkStatus)
     .then(parseJSON);
 
@@ -50,7 +50,7 @@ export const getDocuments = (model_name, record_names, attribute_names, collapse
     })
   };
 
-  var exchangePromise = exchange.fetch(Routes.records_json_path(PROJECT_NAME), routeOpts)
+  var exchangePromise = exchange.fetch('/'+PROJECT_NAME+'/json/records', routeOpts)
     .then(checkStatus)
     .then(parseJSON);
 
@@ -65,7 +65,7 @@ export const postRevisions = (revision_data, exchange)=>{
     body: revision_data
   };
 
-  var exchangePromise = exchange.fetch(Routes.update_model_path(PROJECT_NAME), routeOpts)
+  var exchangePromise = exchange.fetch('/'+PROJECT_NAME+'/update', routeOpts)
     .then(checkStatus)
     .then(parseJSON)
 
@@ -83,7 +83,7 @@ export const getConsignments = (manifests, exchange)=>{
     })
   };
 
-  var exchangePromise = exchange.fetch(Routes.query_json_path(PROJECT_NAME), routeOpts)
+  var exchangePromise = exchange.fetch('/'+PROJECT_NAME+'/json/query', routeOpts)
     .then(checkStatus)
     .then(parseJSON)
 
