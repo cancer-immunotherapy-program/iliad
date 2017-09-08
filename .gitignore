@@ -26,6 +26,9 @@ tmp
 .DS_Store
 ._*
 
-# Ignore the compiled JS
-/app/assets/js/*.js
+# Ignore the compiled UI resources
+/app/assets/js/**/*.js
 /public/js/*.js
+/app/assets/css/**/*.css
+/public/css/*.css
+/public/css/*.map
