@@ -52,6 +52,9 @@
   $ npm install --save child_process;
   $ npm install --save fs;
   $ npm install --save marked;
+  $ npm install --save json2csv;
+  $ npm install --save node-uuid;
+  $ npm install --save prismjs;
   ``
 
   OR you can just run...
@@ -109,5 +112,8 @@
 
   ```
   $ gem install sass
+  $ sass --watch ./app/assets/scss/timur.scss:./public/css/timur.css
   ```
+
+  Make sure you delete `./public/css/timru.css.map` it's been causeing issues with the css.
 

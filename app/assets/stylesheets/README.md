@@ -1,0 +1,1 @@
+`$ sass --watch ./app/assets/scss/timur.scss:./public/css/timur.css`
