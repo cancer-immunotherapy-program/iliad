@@ -55,6 +55,7 @@
   $ npm install --save json2csv;
   $ npm install --save node-uuid;
   $ npm install --save prismjs;
+  $ npm install --save d3-force;
   ``
 
   OR you can just run...
