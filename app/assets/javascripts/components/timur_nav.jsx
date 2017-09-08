@@ -11,9 +11,9 @@ class TimurNav extends Component {
 
     var tabs = {
       browse: '/'+PROJECT_NAME,
-      search: PROJECT_NAME+'/search',
-      map: PROJECT_NAME+'/map',
-      manifest: PROJECT_NAME+'manifests',
+      search: '/'+PROJECT_NAME+'/search',
+      map: '/'+PROJECT_NAME+'/map',
+      manifest: '/'+PROJECT_NAME+'manifests',
     }
 
     var login
