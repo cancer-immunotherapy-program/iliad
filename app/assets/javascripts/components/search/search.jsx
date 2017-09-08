@@ -8,9 +8,9 @@
  */
 
 import React, {Component} from 'react'
-import {connect} from 'react-redux';
+import * as ReactRedux from 'react-redux';
 
-import Magma from 'magma';
+import Magma from '../../magma';
 import {requestModels, sendRevisions, discardRevision, requestDocuments} from '../../actions/magma_actions';
 import {requestTSV} from '../../actions/timur_actions';
 import {selectConsignment} from '../../selectors/consignment';
@@ -333,7 +333,7 @@ const mapDispatchToProps = (dispatch, ownProps)=>{
   };
 };
 
-export default connect(
+export default ReactRedux.connect(
   mapStateToProps,
   mapDispatchToProps
 )(Search);

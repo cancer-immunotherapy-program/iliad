@@ -1,3 +1,4 @@
+import React from 'react';
 var SlowTextInput = React.createClass({
   // this is a simple wrapper that debounces text input of some sort
   getInitialState: function() {

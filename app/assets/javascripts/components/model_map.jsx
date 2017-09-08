@@ -1,4 +1,5 @@
 import { Component } from 'react'
+import * as ReactRedux from 'react-redux';
 import { requestModels } from '../actions/magma_actions'
 import Magma from '../magma'
 import { Animate } from 'react-move'
@@ -72,7 +73,7 @@ class ModelReport extends Component {
   }
 }
 
-ModelReport = connect(
+ModelReport = ReactRedux.connect(
   (state,props) => {
     let magma = new Magma(state)
     return {
@@ -277,7 +278,7 @@ class ModelMap extends Component {
   }
 }
 
-export default connect(
+export default ReactRedux.connect(
   (state) => {
     var magma = new Magma(state)
     var model_names = magma.model_names()

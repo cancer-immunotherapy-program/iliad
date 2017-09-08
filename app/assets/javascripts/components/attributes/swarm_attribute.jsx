@@ -1,4 +1,5 @@
 import React from 'react'
+import * as ReactRedux from 'react-redux'
 import Swarm from '../plots/swarm'
 import { selectConsignment } from '../../selectors/consignment'
 
@@ -42,7 +43,7 @@ let SwarmAttribute = ({
   </div>
 )
 
-SwarmAttribute = connect(
+SwarmAttribute = ReactRedux.connect(
   (state, props) => {
     const { name, calculated_columns } = props.attribute.plot
     const consignment = selectConsignment(state, name)

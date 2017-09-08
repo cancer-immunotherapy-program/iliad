@@ -1,4 +1,5 @@
 import React from 'react'
+import * as ReactRedux from 'react-redux'
 import StackedBarPlot from '../plots/stacked_bar_plot'
 import { selectConsignment } from '../../selectors/consignment'
 
@@ -35,7 +36,7 @@ let StackedBarPlotAttribute = ({
   </div>
 )
 
-StackedBarPlotAttribute = connect(
+StackedBarPlotAttribute = ReactRedux.connect(
   (state, props) => {
     const { name, order_by } = props.attribute.plot
     const consignment = selectConsignment(state, name)

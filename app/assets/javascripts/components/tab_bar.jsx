@@ -1,3 +1,5 @@
+import React from 'react';
+import * as ReactRedux from 'react-redux';
 var TabBar = React.createClass({
   format_name: function(name){
     return name.replace(/_/, ' ').replace(/\w\S*/g, function(txt) {
@@ -58,7 +60,7 @@ var TabBar = React.createClass({
   }
 });
 
-TabBar = connect(
+TabBar = ReactRedux.connect(
 
   // Map state to props.
   function(state, props){

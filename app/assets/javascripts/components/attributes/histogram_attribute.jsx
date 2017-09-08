@@ -1,4 +1,5 @@
 import React from 'react'
+import * as ReactRedux from 'react-redux';
 import Histogram from '../plots/histogram'
 import { selectConsignment } from '../../selectors/consignment'
 
@@ -38,7 +39,7 @@ let HistogramAttribute = ({
   </div>
 )
 
-HistogramAttribute = connect(
+HistogramAttribute = ReactRedux.connect(
   (state, props) => {
     const { name } = props.attribute.plot
     const consignment = selectConsignment(state, name)

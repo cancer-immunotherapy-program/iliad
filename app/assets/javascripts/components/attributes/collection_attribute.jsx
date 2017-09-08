@@ -1,3 +1,5 @@
+import React from 'react';
+import * as ReactRedux from 'react-redux';
 import { reviseDocument } from '../../actions/magma_actions'
 
 var CollectionList = React.createClass({
@@ -96,7 +98,7 @@ var CollectionList = React.createClass({
   }
 })
 
-var CollectionAttribute = connect(
+var CollectionAttribute = ReactRedux.connect(
   function(state, ownProps) {
     return ownProps
   },

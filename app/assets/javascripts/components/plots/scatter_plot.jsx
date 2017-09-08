@@ -1,3 +1,4 @@
+import React from 'react';
 import XAxis from './xaxis'
 import YAxis from './yaxis'
 import * as d3 from "d3"

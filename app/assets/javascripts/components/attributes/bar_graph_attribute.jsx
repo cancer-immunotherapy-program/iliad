@@ -1,4 +1,5 @@
 import React from 'react'
+import * as ReactRedux from 'react-redux';
 import BarGraph from '../plots/bar_graph'
 import { selectConsignment } from '../../selectors/consignment'
 
@@ -32,7 +33,7 @@ let BarGraphAttribute = ({
   </div>
 )
 
-BarGraphAttribute = connect(
+BarGraphAttribute = ReactRedux.connect(
   (state, props) => {
     const { name } = props.attribute.plot
     const consignment = selectConsignment(state, name)

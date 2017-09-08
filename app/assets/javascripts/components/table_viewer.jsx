@@ -1,4 +1,5 @@
 import React from 'react'
+import * as ReactRedux from 'react-redux';
 import Magma from 'magma'
 import { requestTSV } from '../actions/timur_actions'
 
@@ -50,7 +51,7 @@ class TableViewer extends React.Component {
   }
 }
 
-export default connect(
+export default ReactRedux.connect(
   function(state,props) {
     var magma = new Magma(state)
     var template = magma.template(props.model_name)

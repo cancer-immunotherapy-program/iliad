@@ -1,3 +1,4 @@
+import React from 'react';
 var HeatmapPlot = React.createClass({
   getInitialState: function() {
     return { highlight_cell: null }

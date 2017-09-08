@@ -1,3 +1,4 @@
+import React from 'react';
 var DendrogramPlot = React.createClass({
   render: function() {
     var self = this

@@ -1,3 +1,6 @@
+import React from 'react';
+import * as ReactRedux from 'react-redux';
+
 var help_nodes = {
   edit: [
     "Click the pencil to edit this record.  \n"+
@@ -59,7 +62,7 @@ var HelpButton = React.createClass({
   }
 })
 
-var Help = connect(
+var Help = ReactRedux.connect(
   function (state) {
     return {
       helpShown: state.timur.help_shown

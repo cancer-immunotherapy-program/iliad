@@ -1,3 +1,5 @@
+import React from 'react';
+import * as ReactRedux from 'react-redux';
 var Noauth = React.createClass({
   componentDidMount: function () {
     this.props.message([
@@ -13,7 +15,7 @@ var Noauth = React.createClass({
   }
 })
 
-Noauth = connect(
+Noauth = ReactRedux.connect(
   null,
   function(dispatch,props) {
     return {

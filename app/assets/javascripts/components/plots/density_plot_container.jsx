@@ -1,3 +1,4 @@
+import React from 'react';
 var DensityPlotContainer = React.createClass({
   getInitialState: function() {
     return { mode: 'plot' }

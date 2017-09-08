@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { connect } from 'react-redux'
+import * as ReactRedux from 'react-redux';
 import { requestManifests } from '../../actions/manifest_actions'
 import ManifestSelector from './manifest_selector'
 import debounce from 'lodash.debounce'
@@ -70,7 +70,7 @@ const mapDispatchToProps = (dispatch, ownProps)=>{
   };
 };
 
-export default connect(
+export default ReactRedux.connect(
   mapStateToProps,
   mapDispatchToProps
 )(Manifests);

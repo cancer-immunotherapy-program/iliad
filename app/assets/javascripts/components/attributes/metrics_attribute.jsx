@@ -1,3 +1,5 @@
+import React from 'react';
+import * as ReactRedux from 'react-redux';
 import { selectConsignment } from '../../selectors/consignment'
 
 var CategoryControl = React.createClass({
@@ -74,7 +76,7 @@ var Metric = React.createClass({
   }
 })
 
-Metric = connect(
+Metric = ReactRedux.connect(
   null,
   function(dispatch,props) {
     var metric = props.metric
@@ -150,7 +152,7 @@ var MetricsAttribute = React.createClass({
   },
 })
 
-MetricsAttribute = connect(
+MetricsAttribute = ReactRedux.connect(
   function(state,props) {
     var consignment = selectConsignment(state,props.attribute.plot.name)
 

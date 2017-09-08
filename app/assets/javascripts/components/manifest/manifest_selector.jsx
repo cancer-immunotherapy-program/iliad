@@ -1,4 +1,6 @@
 import * as React from 'react';
+import * as ReactRedux from 'react-redux';
+
 import {toggleEdit, selectManifest} from '../../actions/manifest_actions';
 
 class ManifestSelector extends React.Component{
@@ -88,7 +90,7 @@ const mapDispatchToProps = (dispatch, ownProps)=>{
   };
 };
 
-export default connect(
+export default ReactRedux.connect(
   mapStateToProps,
   mapDispatchToProps
 )(ManifestSelector);

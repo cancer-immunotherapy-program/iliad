@@ -1,3 +1,4 @@
+import React from 'react';
 var MagmaLink = React.createClass({
   render: function(){
 

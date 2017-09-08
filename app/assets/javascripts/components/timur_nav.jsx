@@ -1,4 +1,5 @@
 import * as React from 'react';
+import * as ReactRedux from 'react-redux';
 import IdentifierSearch from './identifier_search';
 import {toggleConfig, changeMode} from '../actions/timur_actions';
 
@@ -167,7 +168,7 @@ const mapDispatchToProps = (dispatch, ownProps)=>{
   };
 };
 
-export default connect(
+export default ReactRedux.connect(
   mapStateToProps,
   mapDispatchToProps
 )(TimurNav);

@@ -1,3 +1,4 @@
+import React from 'react';
 let { cancelPlotConfig, requestPlotData, closePlot } = plotActions
 
 

@@ -1,4 +1,5 @@
 import * as React from 'react';
+import * as ReactRedux from 'react-redux';
 import ToggleSwitch from '../toggle_switch';
 import Dates from '../../dates';
 import {requestConsignments} from '../../actions/consignment_actions';
@@ -112,7 +113,7 @@ const mapDispatchToProps = (dispatch, ownProps)=>{
   };
 };
 
-export default connect(
+export default ReactRedux.connect(
   mapStateToProps,
   mapDispatchToProps
 )(ManifestView);

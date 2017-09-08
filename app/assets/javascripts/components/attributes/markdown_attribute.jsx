@@ -1,3 +1,4 @@
+import React from 'react';
 import { reviseDocument } from '../../actions/magma_actions'
 import markdown from '../../markdown'
 

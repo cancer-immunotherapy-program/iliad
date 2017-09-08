@@ -1,3 +1,5 @@
+import React from 'react';
+import * as ReactRedux from 'react-redux';
 import markdown from '../markdown'
 
 var Messages = React.createClass({
@@ -65,7 +67,7 @@ var Messages = React.createClass({
   }
 })
 
-Messages = connect(
+Messages = ReactRedux.connect(
   function(state) {
     return {
       messages: state.messages
