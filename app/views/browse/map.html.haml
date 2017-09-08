@@ -1,18 +1,14 @@
 = content_for :title, "#{Rails.env.development? ? :"Dev Timur" : :Timur } - Map"
 
 #root
-%script(src="/js/timur.bundle.js")
-%script{ type: "text/javascript" }
+
+%div{id: 'ui-group'}
+%script{type: 'text/javascript'}
   :plain
     var PROJECT_NAME = '#{@project_name}';
+    var USER = "#{current_user ? current_user.name : 'null'}";
+    var MODE = 'map';
+    var ENVIRONMENT = '#{Rails.env.development? ? 'development' : 'production'}';
 
-    $(function() {
-      ReactDOM.render(
-        React.createElement(Timur, {
-          user: "#{current_user ? current_user.name : 'null'}",
-          mode: 'map',
-          environment: '#{Rails.env.development? ? 'development' : 'production'}'
-        }),
-        $('#root')[0]
-      );
-    })
+%script(src='/js/timur.bundle.js')
+

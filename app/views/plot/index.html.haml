@@ -1,20 +1,16 @@
 = content_for :title, "#{Rails.env.development? ? :"Dev Timur" : :Timur } - Plot"
 
 #root
-%script(src="/js/timur.bundle.js")
-%script{ type: "text/javascript" }
+
+%div{id: 'ui-group'}
+%script{type: 'text/javascript'}
   :plain
     var PROJECT_NAME = '#{@project_name}';
+    var USER = "#{current_user ? current_user.name : 'null'}";
+    var MODE = 'plot';
+    var ENVIRONMENT = '#{Rails.env.development? ? 'development' : 'production'}';
+    var CAN_EDIT = #{current_user && current_user.can_edit?(@project_name) ? :true : :false};
+    var IS_ADMIN = #{current_user && current_user.is_admin?(@project_name) ? :true : :false};
 
-    $(function() {
-      ReactDOM.render(
-        React.createElement(Timur, {
-          user: "#{current_user ? current_user.name : 'null'}",
-          mode: 'plot',
-          can_edit: #{ current_user && current_user.can_edit? ? :true : :false },
-          environment: '#{Rails.env.development? ? 'development' : 'production'}',
-          is_admin: #{ current_user && current_user.is_admin? ? :true : :false }
-        }),
-        $('#root')[0]
-      );
-    })
+%script(src='/js/timur.bundle.js')
+
