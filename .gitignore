@@ -25,3 +25,7 @@ tmp
 /node_modules
 .DS_Store
 ._*
+
+# Ignore the compiled JS
+/app/assets/js/*.js
+/public/js/*.js
