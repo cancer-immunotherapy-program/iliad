@@ -1,4 +1,5 @@
-import markdown from '../markdown'
+import * as React from 'react';
+import markdown from '../markdown';
 
 var Activity = React.createClass({
   render: function() {
@@ -21,4 +22,4 @@ var Activity = React.createClass({
   }
 })
 
-module.exports = Activity
+export default Activity
