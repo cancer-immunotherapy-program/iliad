@@ -1,4 +1,4 @@
-const consignments = (state = {}, action) => {
+const consignmentsReducer = (state = {}, action) => {
   switch (action.type) {
     case 'ADD_CONSIGNMENT':
       return {
@@ -10,4 +10,4 @@ const consignments = (state = {}, action) => {
   }
 }
 
-export default consignments
+export default consignmentsReducer

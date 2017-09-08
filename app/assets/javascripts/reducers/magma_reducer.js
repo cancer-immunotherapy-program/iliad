@@ -122,4 +122,4 @@ var magmaReducer = function(magma, action) {
   }
 }
 
-module.exports = magmaReducer
+export default magmaReducer;

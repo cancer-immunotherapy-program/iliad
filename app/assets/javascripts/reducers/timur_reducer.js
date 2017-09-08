@@ -42,4 +42,4 @@ var timurReducer = function(timur, action) {
   }
 }
 
-module.exports = timurReducer
+export default timurReducer;

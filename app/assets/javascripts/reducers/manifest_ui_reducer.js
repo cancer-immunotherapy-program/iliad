@@ -1,6 +1,4 @@
-import { combineReducers } from 'redux'
-
-const filter = (state = null, action) => {
+export const filter = (state = null, action) => {
   switch (action.type) {
     case 'TOGGLE_MANIFESTS_FILTER':
       if (state === action.filter) {
@@ -12,7 +10,7 @@ const filter = (state = null, action) => {
   }
 }
 
-const selected = (state = null, action) => {
+export const selected = (state = null, action) => {
   switch (action.type) {
     case 'SELECT_MANIFEST':
       return action.id
@@ -21,7 +19,7 @@ const selected = (state = null, action) => {
   }
 }
 
-const isEditing = (state = false, action) => {
+export const isEditing = (state = false, action) => {
   switch (action.type) {
     case 'TOGGLE_IS_EDITING_MANIFEST':
       return !state
@@ -30,8 +28,8 @@ const isEditing = (state = false, action) => {
   }
 }
 
-export default combineReducers({
-  filter,
-  selected,
-  isEditing
-})
+//export default combineReducers({
+//  filter,
+//  selected,
+//  isEditing
+//})

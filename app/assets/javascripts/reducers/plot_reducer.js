@@ -57,4 +57,4 @@ var plotReducer = function(plots, action) {
   }
 }
 
-module.exports = plotReducer
+export default plotReducer;

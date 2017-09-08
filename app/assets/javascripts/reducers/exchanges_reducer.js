@@ -1,4 +1,4 @@
-const exchanges = (state = {}, action) => {
+const exchangesReducer = (state = {}, action) => {
   switch (action.type) {
     case 'ADD_EXCHANGE':
       return {
@@ -14,4 +14,4 @@ const exchanges = (state = {}, action) => {
   }
 }
 
-export default exchanges
+export default exchangesReducer

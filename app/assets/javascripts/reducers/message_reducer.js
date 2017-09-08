@@ -10,4 +10,4 @@ var messageReducer = function(messages, action) {
   }
 }
 
-module.exports = messageReducer
+export default messageReducer;

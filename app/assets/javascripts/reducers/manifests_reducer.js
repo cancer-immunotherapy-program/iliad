@@ -1,4 +1,4 @@
-const manifests = (state = {}, action) => {
+const manifestsReducer = (state = {}, action) => {
   switch (action.type) {
     case 'REMOVE_MANIFEST':
       let newState = {...state}
@@ -16,4 +16,4 @@ const manifests = (state = {}, action) => {
   }
 }
 
-export default manifests
+export default manifestsReducer
