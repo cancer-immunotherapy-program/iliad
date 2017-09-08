@@ -1,0 +1,17 @@
+= content_for :title, "#{Rails.env.development? ? :"Dev Timur" : :Timur } - Browse - #{@record_name}"
+
+#root
+
+%div{id: 'ui-group'}
+%script{type: 'text/javascript'}
+  :plain
+    var PROJECT_NAME = '#{@project_name}';
+    var USER = "#{current_user ? current_user.name : 'null'}";
+    var MODE = 'browse';
+    var ENVIRONMENT = '#{Rails.env.development? ? 'development' : 'production'}';
+    var MODEL_NAME = '#{@model_name.underscore}';
+    var RECORD_NAME = '#{@record_name}';
+    var CAN_EDIT = #{current_user && current_user.can_edit?(@project_name) ? :true : :false};
+    var IS_ADMIN = #{current_user && current_user.is_admin?(@project_name) ? :true : :false};
+
+%script(src='/js/timur.bundle.js')
