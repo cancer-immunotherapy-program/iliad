@@ -1,3 +1,5 @@
+import React from 'react';
+import * as ReactRedux from 'react-redux';
 import { reviseDocument } from '../../actions/magma_actions'
 
 var DateTimeView = React.createClass({
@@ -71,7 +73,7 @@ var DateTimeView = React.createClass({
   }
 })
 
-var DateTimeAttribute = connect(
+var DateTimeAttribute = ReactRedux.connect(
   null,
   function(dispatch,props) {
     return {

@@ -1,7 +1,7 @@
 import 'babel-polyfill'
 import 'promise-polyfill'
 import 'whatwg-fetch'
-
+import React from 'react';
 import createLogger from 'redux-logger'
 import rootReducer from '../reducers'
 import Manifests from './manifest/manifests'

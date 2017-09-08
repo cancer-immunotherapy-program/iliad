@@ -1,3 +1,4 @@
+import React from 'react';
 /*
  * State for plots:
  * {

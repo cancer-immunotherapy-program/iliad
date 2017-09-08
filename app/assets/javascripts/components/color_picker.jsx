@@ -1,3 +1,4 @@
+import React from 'react';
 var ColorPicker = React.createClass({
   render: function() {
     return <div className="color_picker">

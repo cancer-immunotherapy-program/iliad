@@ -1,4 +1,6 @@
+import React from 'react';
 import { selectConsignment } from '../../selectors/consignment'
+import * as ReactRedux from 'react-redux';
 
 var BarPlotAttribute = React.createClass({
   render: function() {
@@ -24,7 +26,7 @@ var BarPlotAttribute = React.createClass({
   },
 })
 
-BarPlotAttribute = connect(
+BarPlotAttribute = ReactRedux.connect(
   function(state,props) {
     var consignment = selectConsignment(state,props.attribute.plot.name)
 

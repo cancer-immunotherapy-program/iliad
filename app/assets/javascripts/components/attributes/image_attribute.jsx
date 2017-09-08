@@ -1,3 +1,5 @@
+
+import React from 'react';
 import { reviseDocument } from '../../actions/magma_actions'
 
 var ImageAttribute = React.createClass({

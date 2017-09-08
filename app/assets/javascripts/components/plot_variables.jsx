@@ -1,3 +1,4 @@
+import React from 'react';
 var PlotVariables = React.createClass({
   getInitialState: function() {
     return { mode: 'plot' }

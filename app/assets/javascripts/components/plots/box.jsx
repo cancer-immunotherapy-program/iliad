@@ -1,3 +1,4 @@
+import React from 'react';
 var BoxPlot = React.createClass({
   render: function() {
     var self = this;

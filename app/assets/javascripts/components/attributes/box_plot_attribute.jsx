@@ -1,5 +1,7 @@
+import React from 'react';
 import { autoColors } from '../../utils/colors'
 import { selectConsignment } from '../../selectors/consignment'
+import * as ReactRedux from 'react-redux';
 
 var BoxPlotAttribute = React.createClass({
   render: function() {
@@ -30,7 +32,7 @@ var BoxPlotAttribute = React.createClass({
   },
 })
 
-BoxPlotAttribute = connect(
+BoxPlotAttribute = ReactRedux.connect(
   function(state,props) {
     var consignment = selectConsignment(state,props.attribute.plot.name)
 

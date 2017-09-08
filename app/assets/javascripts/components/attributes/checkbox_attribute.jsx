@@ -1,12 +1,13 @@
+import React from 'react';
 import { reviseDocument } from '../../actions/magma_actions'
 
-var TextAttribute = React.createClass({
+var CheckboxAttribute = React.createClass({
   render: function() {
-    var store = this.context.store
     var self = this
+    var store = this.context.store
     if (this.props.mode == "edit") {
       return <div className="value">
-              <textarea className="text_box" 
+              <input type="checkbox" className="text_box" 
                 onChange={
                   function(e) {
                     store.dispatch(
@@ -14,21 +15,19 @@ var TextAttribute = React.createClass({
                         self.props.document,
                         self.props.template,
                         self.props.attribute,
-                        e.target.value
+                        e.target.checked ? true : false
                       )
                     )
                   }
                 }
-                defaultValue={ this.props.revision } />
+                defaultChecked={ this.props.revision } />
              </div>
     }
-    return <div className="value">
-            { this.props.value }
-           </div>
+    return <div className="value"> { this.props.value ? "yes" : "no" } </div>
   }
 })
-TextAttribute.contextTypes = {
+CheckboxAttribute.contextTypes = {
   store: React.PropTypes.object
 }
 
-module.exports = TextAttribute
+module.exports = CheckboxAttribute

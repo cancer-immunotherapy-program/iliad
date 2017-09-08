@@ -10,6 +10,7 @@
  */
 
 // Class imports.
+import * as ReactRedux from 'react-redux';
 import Magma from 'magma';
 import BrowserTab from './browser_tab';
 import Tab from '../models/tab';
@@ -178,7 +179,7 @@ var Browser = React.createClass({
   }
 })
 
-Browser = connect(
+Browser = ReactRedux.connect(
   function(state, props){
     var magma = new Magma(state);
     var template = magma.template(props.model_name);

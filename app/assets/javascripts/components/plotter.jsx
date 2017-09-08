@@ -1,3 +1,6 @@
+import React from 'react';
+import * as ReactRedux from 'react-redux';
+
 const PLOT_TYPES = {
   "ScatterPlot": {
     name: "XY Scatter",
@@ -142,7 +145,7 @@ var mapStateToProps = function(state) {
   }
 }
 
-var Plotter = connect(
+var Plotter = ReactRedux.connect(
   mapStateToProps
 )(PlotList);
 

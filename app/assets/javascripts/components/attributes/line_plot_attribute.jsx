@@ -1,3 +1,6 @@
+import React from 'react';
+
+import * as ReactRedux from 'react-redux';
 import { autoColors } from '../../utils/colors'
 import { selectConsignment } from '../../selectors/consignment'
 
@@ -31,7 +34,7 @@ var LinePlotAttribute = React.createClass({
   }
 })
 
-LinePlotAttribute = connect(
+LinePlotAttribute = ReactRedux.connect(
   function(state,props) {
     var consignment = selectConsignment(state,props.attribute.plot.name)
 

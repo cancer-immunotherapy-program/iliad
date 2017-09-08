@@ -1,3 +1,4 @@
+import React from 'react';
 var ListSelector = React.createClass({
   getInitialState: function() {
     return { new_item: null }

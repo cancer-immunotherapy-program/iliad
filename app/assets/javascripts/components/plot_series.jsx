@@ -1,3 +1,4 @@
+import React from 'react';
 var PlotSeries = React.createClass({
   getInitialState: function() {
     return { chain_state: {} }

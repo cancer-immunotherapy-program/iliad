@@ -1,3 +1,4 @@
+import React from 'react';
 var Selector = React.createClass({
   onChange: function(evt) {
     if (this.props.onChange) {
