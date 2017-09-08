@@ -9,9 +9,11 @@
  * shown).
  */
 
-// Class imports.
+// Framework Libraries.
 import * as React from 'react';
 import * as ReactRedux from 'react-redux';
+
+// Class imports.
 import Magma from '../magma';
 import BrowserTab from './browser_tab';
 import Tab from '../models/tab';

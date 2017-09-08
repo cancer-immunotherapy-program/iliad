@@ -1,103 +1,7 @@
-import * as React from 'react';
+import { Component } from 'react'
 import * as ReactRedux from 'react-redux';
+import { toggleEdit, selectManifest} from '../../actions/manifest_actions'
 
-import {toggleEdit, selectManifest} from '../../actions/manifest_actions';
-
-class ManifestSelector extends React.Component{
-
-  renderManifestEntries(manifests){
-
-    return manifests.map((manifest)=>{
-
-      var manifestProp = {
-        'className': 'manifest-selection',
-        'title': manifest['description'],
-        'key': 'manifest-'+manifest['id'],
-        'onClick': ()=>{
-          if(this['props']['isEditing']) this['props'].toggleEdit();
-          this['props'].selectManifest(manifest['id']);
-        }
-      };
-
-      return(
-        <div {...manifestProp}>
-
-          {manifest['name']}
-        </div>
-      );
-    });
-  }
-
-  render(){
-    var newManifestButtonProps = {
-      'id': 'manifest-selector-new-btn',
-      'onClick': ()=>{
-        this['props'].selectManifest(null);
-        this['props'].toggleEdit();
-      }
-    };
-
-    return(
-      <div id='manifests-selector-group'>
-
-        <button {...newManifestButtonProps}>
-
-          <i className='fa fa-plus' aria-hidden='true'></i>
-          {' NEW MANIFEST'}
-        </button>
-        <div id='manifests-selector-panel'>
-
-          <div className='manifest-selector-header'>
-
-            {'PUBLIC'}
-          </div>
-          {this.renderManifestEntries(this['props']['publicManifests'])}
-          <div className='manifest-selector-header'>
-
-            {'PRIVATE'}
-          </div>
-          {this.renderManifestEntries(this['props']['privateManifests'])}
-        </div>
-      </div>
-    );
-  }
-}
-
-const mapStateToProps = (state, ownProps)=>{
-  var publicFilter = (m)=> m['access'] == 'public';
-  var privateFilter = (m)=> m['access'] == 'private';
-  var sortFunction = (a, b)=> a > b;
-
-  return {
-    'publicManifests': Object.values(ownProps['manifests'])
-      .filter(publicFilter)
-      .sort(sortFunction),
-    'privateManifests': Object.values(ownProps['manifests'])
-      .filter(privateFilter)
-      .sort(sortFunction)
-  };
-};
-
-const mapDispatchToProps = (dispatch, ownProps)=>{
-  return {
-    'selectManifest': function(id){
-      dispatch(selectManifest(id));
-    },
-
-    'toggleEdit': function(){
-      dispatch(toggleEdit());
-    }
-  };
-};
-
-export default ReactRedux.connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(ManifestSelector);
-
-
-
-/*
 // Selection item for a single manifest
 const ManifestSelection = (selectManifest) => (manifest) => {
   return <li key={manifest.id}>
@@ -140,7 +44,7 @@ class ManifestSelector extends Component {
   }
 }
 
-export default connect(
+export default ReactRedux.connect(
   (state, props) => {
     return {
       public_manifests: Object.values(props.manifests).filter((m) => m.access == 'public').sort((a,b) => a > b),
@@ -149,5 +53,3 @@ export default connect(
   },
   { toggleEdit, selectManifest }
 )(ManifestSelector)
-
-*/

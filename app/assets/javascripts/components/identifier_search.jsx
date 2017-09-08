@@ -1,30 +1,37 @@
 import * as React from 'react';
 import * as ReactRedux from 'react-redux';
+import { requestIdentifiers } from '../actions/magma_actions';
 
-import {requestIdentifiers} from '../actions/magma_actions';
+var IdentifierSearch = React.createClass({
 
-class IdentifierSearch extends React.Component{
-  constructor(props){
-    super(props);
-    this['state'] = {
-      'open': false,
-      'inputValue': ''
+  getInitialState: function(){
+
+    return {
+
+      'match_string': '',
+      'has_focus': false 
     };
-  }
+  },
 
-  componentWillMount(){
-    this.props.requestIdentifiers(this['props']['project_name']);
-  }
+  componentWillMount: function(){
 
-  findMatches(){
+    this.props.requestIdentifiers();
+  },
+
+  find_matches: function(){
+
     var self = this;
+    if(!this.state.has_focus) return null;
+    if(!this.props.identifiers) return null;
+    if(!this.state.match_string) return null;
+    if(this.state.match_string.length < 2) return null;
 
-    var match_exp = new RegExp(this['state']['inputValue'], 'i');
+    var match_exp = new RegExp(this.state.match_string, 'i');
     var matches = null;
 
-    Object.keys(this['props']['identifiers']).forEach(function(model_name){
+    Object.keys(this.props.identifiers).forEach(function(model_name){
 
-      var identifiers = self['props']['identifiers'][model_name];
+      var identifiers = self.props.identifiers[model_name];
       identifiers.forEach(function(name){
 
         if(name.match(match_exp)){
@@ -35,142 +42,136 @@ class IdentifierSearch extends React.Component{
     });
 
     return matches;
-  }
+  },
 
-  renderIdentifiers(matches, modelName){
-    var self = this;
+  renderIdentifiers: function(matches, modelName){
+
     return matches.map(function(identifier){
 
-      var linkProps = {
-        'className': 'identifier-search-group-item',
+      var identProps = {
+
         'key': identifier,
-        'href': Routes.browse_model_path(
-          self.props.project_name,
-          modelName,
-          encodeURIComponent(identifier)
-        )
+        'className': 'identifier'
+      };
+
+      var magmaLinkProps = {
+
+        'link': identifier,
+        'model': modelName
       };
 
       return(
-        <a {...linkProps}>
+        <div {...identProps}>
 
-          {identifier}
-        </a>
+          <MagmaLink {...magmaLinkProps} />
+        </div>
       );
     });
-  }
+  },
 
-  renderMatches(matchingIdents){
+  renderMatches: function(matchingIdents){
+
     var self = this;
     return Object.keys(matchingIdents).map(function(modelName){
 
       var matches = matchingIdents[modelName];
       return(
-        <div className='identifier-search-group' key={modelName}>
 
-          <div className='identifier-search-group-header'>
+        <div key={modelName}>
 
-            {modelName.charAt(0).toUpperCase()+modelName.slice(1)}
-           </div>
-          {self.renderIdentifiers(matches, modelName)}
+          <div className='title'>
+
+            {modelName}
+          </div>
+          <div className='list'>
+
+            {self.renderIdentifiers(matches, modelName)}
+          </div>
         </div>
       );
     });
-  }
+  },
 
-  renderDropdown(){
-    if(!this['state']['open']) return null;
-    if(this['state']['inputValue']['length'] < 3) return null;
+  renderMatchingIdentifiers: function(){
 
-    var matchingIdents = this.findMatches();
-    if(!matchingIdents) return null;
+    var matchingIdents = this.find_matches();
+    if(matchingIdents){
 
-    var dropdownProps = {
-      'id': 'identifier-drop-down',
-      'ref': (component)=>{this['dropdownTrayComponent'] = component}
-    };
+      return(
+        <div className='drop_down'>
 
-    return(
-      <div {...dropdownProps}>
+          {this.renderMatches(matchingIdents)}
+        </div>
+      );
+    }
+    else{
 
-        {this.renderMatches(matchingIdents)}
-      </div>
-    );
-  }
+      return null;
+    }
+  },
 
-  render(){
-
-    // Don't render until we have data to search on.
-    if(this['props']['identifiers'] == null) return null;
+  render: function(){
 
     var self = this;
-    var identSearchProps = {
-      'id': 'identifier-serach-group',
-      'onBlur': function(evt){
 
-        /*
-         * 'currentTarget' prevents the state set if the element is a child of
-         * of the <IdentifierSearch /> component. i.e. this prevents the 
-         * dropdown tray from closing when a child component is clicked.
-         */
-        var currentTarget = evt.currentTarget;
+    var identSearchProps = {
+
+      'id': 'identifier_search',
+      'onBlur': function(e){
         setTimeout(function(){
-          if(!currentTarget.contains(document.activeElement)){
-            self.setState({'open': false});
-          }
-        },200);
+          self.setState({'has_focus': false});
+        }, 200);
       },
-      'onClick': function(evt){
-        self.setState({'open': true});
+      'onFocus': function(e){
+        self.setState({'has_focus': true});
       }
     };
 
     var inputProps = {
-      'id': 'identifier-search-input',
+
       'type': 'text',
-      'maxLength': 26,
-      'onChange': function(evt){
-        self.setState({'inputValue': evt['target']['value']});
+      'value': this.state.match_string,
+      'onChange': function(e){
+        self.setState({'match_string': e.target.value});
       }
     };
 
     return(
       <div {...identSearchProps}>
 
-        <input {...inputProps} />
-        <button id='identifier-search-button'>
+        <div className='search'>
 
-          <i className='fa fa-search' aria-hidden='true'></i>
-        </button>
-        {this.renderDropdown()}
+          <span className='fa fa-search' />
+          <input {...inputProps} />
+        </div>
+        {this.renderMatchingIdentifiers()}
       </div>
     );
   }
-}
+});
 
-const mapStateToProps = (state, ownProps)=>{
-  var idents = {};
-  var models = state['magma']['models'];
+IdentifierSearch = ReactRedux.connect(
 
-  Object.keys(models).forEach(function(model_name){
-    idents[model_name] = Object.keys(models[model_name]['documents']);
-  });
+  function(state, props){
 
-  return {
-    'identifiers': Object.keys(idents)['length'] ? idents : null
-  };
-};
+    var idents = {};
+    var models = state.magma.models;
 
-const mapDispatchToProps = (dispatch, ownProps)=>{
-  return {
-    requestIdentifiers: function(project_name){
-      dispatch(requestIdentifiers(project_name));
-    }
-  };
-};
+    Object.keys(models).forEach(function(model_name){
 
-export default ReactRedux.connect(
-  mapStateToProps,
-  mapDispatchToProps
+      idents[model_name] = Object.keys(models[model_name].documents);
+    });
+
+    var data = {
+
+      'identifiers': Object.keys(idents).length ? idents : null
+    };
+
+    return data;
+  },
+  {
+    requestIdentifiers
+  }
 )(IdentifierSearch);
 
+module.exports = IdentifierSearch;

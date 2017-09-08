@@ -1,21 +1,20 @@
-import * as React from 'react';
+import { Component } from 'react'
 import * as ReactRedux from 'react-redux';
-import ToggleSwitch from '../toggle_switch';
-import Dates from '../../dates';
-import {requestConsignments} from '../../actions/consignment_actions';
-import {selectConsignment} from '../../selectors/consignment';
-import {manifestToReqPayload, deleteManifest, toggleEdit, copyManifest} from '../../actions/manifest_actions';
+import ManifestElement from './manifest_element'
+import ManifestPreview from './manifest_preview'
+import ToggleSwitch from '../toggle_switch'
+import { requestConsignments } from '../../actions/consignment_actions'
+import { selectConsignment } from '../../selectors/consignment'
+import { manifestToReqPayload, deleteManifest, toggleEdit, copyManifest } from '../../actions/manifest_actions'
 
-/*
- * Shows a single manifest - It has two states, 'script' (which shows the 
- * manifest script) and 'output' (which shows the resulting data). Sends a
- * request for a consignment when 'output' is clicked if none exists.
- */
-
-class ManifestView extends React.Component{
-  constructor(){
-    super();
-    this['state'] = {'viewMode': 'script'};
+// Shows a single manifest - it has two states, 'script', which
+// shows the manufest script, and 'output', which shows the
+// resulting data. Sends a request for a consignment when 'output'
+// is clicked if none exists.
+class ManifestView extends Component {
+  constructor() {
+    super()
+    this.state = { view_mode: 'script' }
   }
 
   render() {
@@ -82,38 +81,18 @@ class ManifestView extends React.Component{
           </ol>
         </div>
       </div>
-    );
+    )
   }
 }
 
-const mapStateToProps = (state, ownProps)=>{
-  var consignment = selectConsignment(state, ownProps['manifest']['name']);
-  return {
-     'consignment': consignment
-  };
-};
-
-const mapDispatchToProps = (dispatch, ownProps)=>{
-  return {
-    'deleteManifest': function(manifestId){
-      dispatch(deleteManifest(manifestId));
-    },
-
-    'copyManifest': function(projectName, manifest){
-      dispatch(copyManifest(projectName, manifest));
-    },
-
-    'toggleEdit': function(){
-      dispatch(toggleEdit());
-    },
-
-    'requestConsignments': function(){
-      dispatch(requestConsignments());
-    }
-  };
-};
-
 export default ReactRedux.connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(ManifestView);
+  (state,props) => ({
+    consignment: selectConsignment(state,props.manifest.name)
+  }),
+  {
+    deleteManifest,
+    copyManifest,
+    toggleEdit,
+    requestConsignments
+  }
+)(ManifestView)
