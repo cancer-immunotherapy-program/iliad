@@ -75,7 +75,8 @@ class Pane{
         return template_attribute;
       });
 
-      this.display = this.display.compact();
+      // Compact.
+      this.display = this.display.filter((item)=>((item) ? true : false));
     }
     else{
       this.display = [];
