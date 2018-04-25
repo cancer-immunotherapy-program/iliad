@@ -5,6 +5,7 @@ import * as ReactRedux from 'react-redux';
 // Class imports.
 import {GenericClinicalAttribute} from './generic_clinical_attribute';
 import AdverseEventWidget from '../../browser/clinical/adverse_event_widget';
+import TimelineWidget from '../../browser/clinical/timeline_widget';
 import Magma from '../../../magma';
 
 import data from 'json-loader!../../../../data/ctcae_data.json';
@@ -26,6 +27,7 @@ export class AdverseEventAttribute extends GenericClinicalAttribute{
       <div className='value'>
 
         <AdverseEventWidget {...ae_props} />
+        <TimelineWidget className='timeline1' {...ae_props} />
       </div>
     );
   }
