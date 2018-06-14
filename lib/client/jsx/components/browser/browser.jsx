@@ -15,9 +15,9 @@ import * as ReactRedux from 'react-redux';
 
 // Class imports.
 import Magma from '../../magma';
-import Header from '../header';
+import Header from '../general/header';
 import {HelpContainer as Help} from '../help';
-import {TabBarContainer as TabBar} from '../tab_bar';
+import {TabBarContainer as TabBar} from '../general/tab_bar';
 import BrowserTab from './browser_tab';
 
 // Module imports.
@@ -188,12 +188,9 @@ export class Browser extends React.Component{
 
         <Header {...header_props}>
 
-          <div className='model-name'>
+          <div className='page-detail-group'>
 
-            {this.camelize(this.props.model_name)}
-          </div>
-          <div className='record-name'>
-
+            <span>{`${this.camelize(this.props.model_name)} : `}</span>
             {this.props.record_name}
           </div>
           <Help info='edit' />

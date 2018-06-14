@@ -3,8 +3,8 @@ import * as React from 'react';
 import * as ReactRedux from 'react-redux';
 
 // Class imports.
-import ListMenu from '../list_menu';
-import ButtonBar from '../button_bar';
+import ListMenu from '../general/list_menu';
+import ButtonBar from '../general/button_bar';
 
 // Module imports.
 import {
@@ -265,7 +265,7 @@ export class SettingsView extends React.Component{
   createNewView(){
     let view_settings_object = {
       model_name: '',
-      project_name: PROJECT_NAME,
+      project_name: TIMUR_CONFIG.project_name,
       tabs:{
         default:{
           description: '',

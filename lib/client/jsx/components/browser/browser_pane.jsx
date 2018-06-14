@@ -9,9 +9,29 @@ export default class BrowserPane extends React.Component{
     super(props);
   }
 
+/*
   renderTitle(){
     let {title, name} = this.props.pane;
     if(title) return <div className='title' title={name}>{title}</div>;
+    return null;
+  }
+*/
+
+  renderTitle(){
+    let {title, name} = this.props.pane;
+
+    if(title){
+      return(
+        <div className='title' title={name}>
+
+          <div className='title-group'>
+
+            {title}
+          </div>
+        </div>
+      );
+    }
+
     return null;
   }
 
