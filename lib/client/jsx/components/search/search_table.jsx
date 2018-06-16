@@ -1,8 +1,12 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
-import Magma from '../../magma';
 import SearchTableColumnHeader from './search_table_column_header';
 import SearchTableRow from './search_table_row';
+
+import {
+  selectModelDocuments,
+  selectModelTemplate
+} from '../../selectors/magma_selector';
 
 // exclude things not shown and tables
 const displayedAttributes = (template) =>
@@ -58,18 +62,28 @@ class SearchTable extends Component {
 }
 
 export default connect(
-  function(state,props) {
-    if (!props.model_name) return {}
+  function(state, props){
+    if(!props.model_name) return {};
 
-    let magma = new Magma(state)
-    let documents = magma.documents(props.model_name, props.record_names)
-    let template = magma.template(props.model_name)
-    let attribute_names = displayedAttributes(template)
+    let documents = selectModelDocuments(
+      state,
+      TIMUR_CONFIG.project_name,
+      props.model_name,
+      props.record_names
+    );
+
+    let template = selectModelTemplate(
+      state,
+      TIMUR_CONFIG.project_name,
+      props.model_name
+    );
+
+    let attribute_names = displayedAttributes(template);
 
     return {
       template,
       attribute_names,
       documents
-    }
+    };
   }
 )(SearchTable)

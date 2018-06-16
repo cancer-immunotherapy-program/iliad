@@ -1,10 +1,15 @@
-import { connect } from 'react-redux';
+import React, {Component} from 'react'
+import {connect} from 'react-redux';
 
-import { easeQuadIn } from 'd3-ease';
-import React, { Component } from 'react'
-import { requestModels } from '../actions/magma_actions'
-import Magma from '../magma'
-import { Animate } from 'react-move'
+import {easeQuadIn} from 'd3-ease';
+import {Animate} from 'react-move'
+
+import {requestModels} from '../actions/magma_actions';
+import {
+  selectModelNames,
+  selectModelTemplate,
+  selectModelTemplates
+} from '../selectors/magma_selector';
 
 class ModelLink extends Component {
   render() {
@@ -78,10 +83,14 @@ class ModelReport extends Component {
 
 ModelReport = connect(
   (state,props) => {
-    let magma = new Magma(state)
-    return {
-      template: magma.template(props.model_name)
-    }
+
+    let template = selectModelTemplate(
+      state,
+      TIMUR_CONFIG.project_name,
+      props.model_name
+    );
+
+    return {template};
   }
 )(ModelReport)
 
@@ -307,12 +316,13 @@ class ModelMap extends Component {
 
 export default connect(
   (state) => {
-    let magma = new Magma(state);
-    let model_names = magma.modelNames();
+    let model_names = selectModelNames(state, TIMUR_CONFIG.project_name);
+    let templates = selectModelTemplates(state, TIMUR_CONFIG.project_name);
+
     return {
       model_names,
-      templates: model_names.map(model_name => magma.template(model_name))
-    }
+      templates
+    };
   },
   {
     requestModels
