@@ -47,7 +47,6 @@ class TimurApplication{
       consignments: {},
       exchanges: {},
       magma: {
-        models: {},
         tables: {}
       },
       manifestsUI: {

@@ -4,6 +4,7 @@ import * as ReactRedux from 'react-redux';
 
 import MagmaLink from './magma_link';
 import * as MagmaActions from '../actions/magma_actions';
+import {selectModels} from '../selectors/magma_selector';
 
 export class IdentifierSearch extends React.Component{
   constructor(props){
@@ -152,7 +153,7 @@ export class IdentifierSearch extends React.Component{
 
 const mapStateToProps = (state = {}, own_props)=>{
   let identifiers = {};
-  let models = state.magma.models;
+  let models = selectModels(state, TIMUR_CONFIG.project_name);
 
   Object.keys(models).forEach(function(model_name){
 
