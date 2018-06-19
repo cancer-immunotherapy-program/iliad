@@ -2,9 +2,20 @@
 import * as React from 'react';
 import * as ReactRedux from 'react-redux';
 
-import * as MagmaActions from '../../actions/magma_actions';
+import {reviseDocument} from '../../actions/magma_actions';
 
-export default class CheckboxAttribute extends React.Component{
+class CheckboxAttribute extends React.Component{
+  revise(e) {
+    let { document, template, attribute, reviseDocument } = this.props;
+
+    reviseDocument(
+      document,
+      template,
+      attribute,
+      e.target.checked ? true : false
+    );
+  }
+
   renderEdit(){
     let {document, template, attribute, reviseDocument} = this.props;
     let input_props = {
@@ -52,7 +63,7 @@ const mapDispatchToProps = (dispatch, own_props)=>{
   };
 };
 
-export const CheckboxAttributeContainer = ReactRedux.connect(
+export default ReactRedux.connect(
   mapStateToProps,
   mapDispatchToProps
 )(CheckboxAttribute);

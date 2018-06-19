@@ -88,11 +88,6 @@ class TableViewer extends React.Component {
 
 export default connect(
   function(state, props){
-    /*
-    let magma = new Magma(state);
-    let template = magma.template(props.model_name);
-    let documents = magma.documents( props.model_name, props.record_names, props.filter );
-    */
 
     let prj_nm = TIMUR_CONFIG.project_name;
     let template = selectModelTemplate(state, prj_nm, props.model_name);
@@ -110,16 +105,10 @@ export default connect(
     if(template){
       attribute_names = Object.keys(template.attributes).filter((attr_name)=>{
 
-        let attr = template.attributes[att_name];
+        let attr = template.attributes[attr_name];
         return (attr.shown && attr.attribute_class != 'Magma::TableAttribute');
       });
     }
-
-    /*
-    let attribute_names = template ? Object.keys(template.attributes).filter(
-      att_name => template.attributes[att_name].shown && template.attributes[att_name].attribute_class != 'Magma::TableAttribute'
-    ) : null;
-    */
 
     return {
       template,

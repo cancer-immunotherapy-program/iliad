@@ -2,9 +2,19 @@
 import * as React from 'react';
 import * as ReactRedux from 'react-redux';
 
-import * as MagmaActions from '../../actions/magma_actions';
+import {reviseDocument} from '../../actions/magma_actions';
 
-export default class DocumentAttribute extends React.Component{
+class DocumentAttribute extends React.Component{
+  revise(e) {
+    let { document, template, attribute, reviseDocument } = this.props;
+
+    reviseDocument(
+      document,
+      template,
+      attribute,
+      e.target.files[0]
+    )
+  }
   renderEdit(){
     let {document, template, attribute, reviseDocument} = this.props;
     let input_props = {
@@ -66,7 +76,7 @@ const mapDispatchToProps = (dispatch, own_props)=>{
   };
 };
 
-export const DocumentAttributeContainer = ReactRedux.connect(
+export default ReactRedux.connect(
   mapStateToProps,
   mapDispatchToProps
 )(DocumentAttribute);

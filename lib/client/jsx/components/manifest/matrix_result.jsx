@@ -4,12 +4,12 @@ import * as TSV from '../../utils/tsv';
 import ConsignmentTable from './consignment_table';
 
 class MatrixResult extends React.Component{
-  constructor(props){
+  constructor(props) {
     super(props);
-    this.state = {hidden: true};
+    this.state = { hidden: true };
   }
 
-  toggle(){
+  toggle() {
     this.setState({hidden: !this.state.hidden});
   }
 
@@ -44,17 +44,16 @@ class MatrixResult extends React.Component{
     let {hidden} = this.state;
     return(
       <div className='consignment-matrix'>
+        <i className='fas fa-table'/>
 
-        <i className='fa fa-table'/>
         {` ${matrix.num_rows} rows x ${matrix.num_cols} cols`}
-        <button className='consignment-btn' onClick={this.downloadMatrix.bind(this)}>
 
-          <i className='fa fa-download' aria-hidden='true' ></i>
+        <button className='consignment-btn' onClick={this.downloadMatrix.bind(this)}>
+          <i className='fas fa-download' aria-hidden='true' ></i>
           {'DOWNLOAD'}
         </button>
         <button className='consignment-btn' onClick={this.toggle.bind(this)}>
-
-          <i className='fa fa-table' aria-hidden='true'></i>
+          <i className='fas fa-table' aria-hidden='true'></i>
           { hidden ? 'SHOW' : 'HIDE'}
         </button>
         { !hidden && this.table() }
