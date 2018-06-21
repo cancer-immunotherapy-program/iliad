@@ -293,12 +293,12 @@ const mapDispatchToProps = (dispatch, own_props)=>{
       }));
     },
 
-    discardRevision: ()=>{
-      dispatch(discardRevision());
+    discardRevision: (record_name, model_name)=>{
+      dispatch(discardRevision(record_name, model_name));
     },
 
     sendRevisions: (model_name, revisions, success, error)=>{
-      dispatch(sendRevisions(model_name,revisions,success,error));
+      dispatch(sendRevisions({model_name, revisions, success, error}));
     }
   };
 };
