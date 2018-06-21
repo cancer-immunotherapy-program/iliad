@@ -1,4 +1,4 @@
-export default {
+export const manifest_store = {
  8:{
    id:8,
    name:"manifest1",

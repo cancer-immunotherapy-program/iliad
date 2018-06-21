@@ -48,7 +48,7 @@ export const plot = {
   "updated_at":"2017-09-19T21:06:30.430Z"
 };
 
-export default {
+export const all_manifest_response = {
   "manifests":[
     {
       "id":8,

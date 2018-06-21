@@ -1,4 +1,4 @@
-export default {
+export const manifest_response = {
   'manifest': {
     'id': 12,
     'name': 'NEW MANIFEST',
