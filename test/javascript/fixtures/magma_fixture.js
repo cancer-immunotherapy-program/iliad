@@ -1,4 +1,4 @@
-const documents = {
+const model_documents = {
   'Caledonian Boar': {
     created_at: '2018-05-12T03:00:28+00:00',
     updated_at: '2018-05-12T03:00:28+00:00',
@@ -31,7 +31,7 @@ const documents = {
   }
 };
 
-const template = {
+export const model_template = {
   name: 'monster',
   attributes: {
     created_at: {
@@ -85,8 +85,8 @@ const template = {
 export const document_response = {
   models: {
     monster: {
-      documents: documents,
-      template: template
+      documents: model_documents,
+      template: model_template
     }
   }
 };
@@ -111,7 +111,7 @@ export const revision_response = {
           ]
         }
       },
-      template: template
+      template: model_template
     }
   }
 };

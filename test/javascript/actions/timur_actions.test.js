@@ -7,7 +7,7 @@ import nock from 'nock';
 import {
   view_data,
   default_view_data
-} from '../fixtures/tab_test_data';
+} from '../fixtures/timur_fixture';
 
 // Actions to test.
 import {

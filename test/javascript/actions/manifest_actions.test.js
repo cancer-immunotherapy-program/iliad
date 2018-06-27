@@ -4,22 +4,6 @@ import fetch from 'isomorphic-fetch';
 import nock from 'nock';
 
 // Fixtures for data mocking.
-
-/*
-import {manifest_response} from '../fixtures/manifest_response';
-
-import {
-  all_manifest_response,
-  plot
-} from '../fixtures/all_manifests_response';
-
-import {
-  manifest_store,
-  manifest
-} from '../fixtures/manifests_store';
-*/
-
-
 import {
   manifest_data,
   new_manifest_request,
