@@ -225,27 +225,6 @@ export class Browser extends React.Component{
   }
 }
 
-/*
-const mapStateToProps = (state = {}, own_props)=>{
-
-  let {model_name, record_name} = own_props;
-
-  let magma = new Magma(state);
-  let template = magma.template(model_name);
-  let doc = magma.document(model_name, record_name);
-  let revision = magma.revision(model_name, record_name) || {};
-  let view = (state.timur.views ? state.timur.views[model_name] : null);
-
-  return {
-    template,
-    revision,
-    view,
-    doc,
-    has_revisions: (Object.keys(revision).length > 0)
-  };
-};
-*/
-
 const mapStateToProps = (state = {}, own_props)=>{
   let {model_name, record_name} = own_props;
 
