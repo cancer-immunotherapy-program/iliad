@@ -4,6 +4,8 @@ import fetch from 'isomorphic-fetch';
 import nock from 'nock';
 
 // Fixtures for data mocking.
+
+/*
 import {manifest_response} from '../fixtures/manifest_response';
 
 import {
@@ -15,6 +17,14 @@ import {
   manifest_store,
   manifest
 } from '../fixtures/manifests_store';
+*/
+
+
+import {
+  manifest_data,
+  new_manifest_request,
+  new_manifest_response
+} from '../fixtures/manifest_actions_fixtures';
 
 // Actions to test.
 import {
@@ -80,17 +90,16 @@ describe('async actions', ()=>{
   let long_str = '';
 
   long_str = `creates ADD_EXCHANGE, REMOVE_EXCHANGE, LOAD_MANIFESTS, and 
-ADD_PLOT when fetching user manifests has been done`;
+ADD_PLOT when fetching a users manifests from the requestManifests action.`;
 
   it(long_str, ()=>{
     stub_url(
       `/${PROJECT_NAME}/manifests`,
-      all_manifest_response,
+      manifest_data,
       'get'
     );
 
     let exchange_name = 'request-manifest';
-
     let expected_actions = [
       {
         type: 'ADD_EXCHANGE',
@@ -106,39 +115,42 @@ ADD_PLOT when fetching user manifests has been done`;
         exchange_name
       },
       {
-        type: 'LOAD_MANIFESTS',
-        manifests_by_id: manifest_store
+        type: 'ADD_MANIFEST',
+        manifest: manifest_data.manifests[0]
+      },
+      {
+        type: 'ADD_MANIFEST',
+        manifest: manifest_data.manifests[1]
       }
     ];
 
-    let store = mockStore({manifests: manifest_store});
-
+    let store = mockStore({});
     return store.dispatch(requestManifests()).then(()=>{
       expect(store.getActions()).toEqual(expected_actions);
     });
   });
 
   long_str = `creates ADD_EXCHANGE, REMOVE_EXCHANGE and REMOVE_MANIFEST when
-deleting a user manifest has been done`;
+deleting a user manifest from the deleteManifest action.`;
 
   it(long_str, ()=>{
-    let manifest = {id: 1};
+
+    let id = manifest_data.manifests[0].id;
 
     stub_url(
-      `/${PROJECT_NAME}/manifests/destroy/${manifest.id}`,
-      {manifest},
+      `/${PROJECT_NAME}/manifests/destroy/${id}`,
+      {manifest: {id}},
       'delete'
     );
 
     let exchange_name = 'delete-manifest';
-
     let expected_actions = [
       {
         type: 'ADD_EXCHANGE',
         exchange_name,
         exchange:{
           exchange_name,
-          exchange_path:`${url}${PROJECT_NAME}/manifests/destroy/${manifest.id}`,
+          exchange_path:`${url}${PROJECT_NAME}/manifests/destroy/${id}`,
           start_time: current_date
         }
       },
@@ -148,29 +160,27 @@ deleting a user manifest has been done`;
       },
       {
         type: 'REMOVE_MANIFEST',
-        id: manifest.id
+        id
       }
     ];
 
     let store = mockStore({});
-
-    return store.dispatch(deleteManifest(manifest)).then(()=>{
+    return store.dispatch(deleteManifest(manifest_data.manifests[0])).then(()=>{
       expect(store.getActions()).toEqual(expected_actions);
     });
   });
 
   long_str = `creates ADD_EXCHANGE, REMOVE_EXCHANGE and ADD_MANIFEST when
-creating a new user manifest has been done`;
+creating a new user manifest from the saveNewManifest action.`;
 
   it(long_str, ()=>{
     stub_url(
       `/${PROJECT_NAME}/manifests/create`,
-      manifest_response,
+      {manifest: new_manifest_response},
       'post'
     );
 
     let exchange_name = 'save-new-manifest';
-
     let expected_actions = [
       {
         type:'ADD_EXCHANGE',
@@ -187,38 +197,37 @@ creating a new user manifest has been done`;
       },
       {
         type: 'ADD_MANIFEST',
-        ...manifest_response
+        manifest: new_manifest_response
       }
     ];
 
     let store = mockStore({});
-
-    return store.dispatch(saveNewManifest(manifest)).then(() => {
+    return store.dispatch(saveNewManifest(new_manifest_request)).then(()=>{
       expect(store.getActions()).toEqual(expected_actions);
     });
   });
 
   long_str = `creates ADD_EXCHANGE, REMOVE_EXCHANGE, and UPDATE_USER_MANIFEST
-when updating user manifest has been done`;
+when updating user manifest from the saveManifest action.`;
 
   it(long_str, ()=>{
-    let mani_id = manifest_response.manifest.id
+    let id = manifest_data.manifests[0].id
+    manifest_data.manifests[0].script = "@record_name = '1023'";
 
     stub_url(
-      `/${PROJECT_NAME}/manifests/update/${mani_id}`,
-      manifest_response,
+      `/${PROJECT_NAME}/manifests/update/${id}`,
+      {manifest: manifest_data.manifests[0]},
       'post'
     );
 
     let exchange_name = 'save-manifest';
-
     let expected_actions = [
       {
         type: 'ADD_EXCHANGE',
         exchange_name,
         exchange:{
           exchange_name,
-          exchange_path:`${url}${PROJECT_NAME}/manifests/update/${mani_id}`,
+          exchange_path:`${url}${PROJECT_NAME}/manifests/update/${id}`,
           start_time: current_date
         }
       },
@@ -228,37 +237,34 @@ when updating user manifest has been done`;
       },
       {
         type: 'UPDATE_USER_MANIFEST',
-        ...manifest_response
+        manifest: manifest_data.manifests[0]
       }
     ];
 
     let store = mockStore({});
-    let mani_resp = {...manifest_response.manifest};
-    return store.dispatch(saveManifest(mani_resp)).then(()=>{
+    return store.dispatch(saveManifest(manifest_data.manifests[0])).then(()=>{
       expect(store.getActions()).toEqual(expected_actions);
     });
   });
 
+
   long_str = `creates ADD_EXCHANGE, REMOVE_EXCHANGE and ADD_MANIFEST when
-copying a user manifest has been done`;
+copying a user manifest from the copyManifest action.`;
 
   it(long_str, ()=>{
-    let new_manifest_id =  manifest_response.manifest.id + 1;
 
-    let copied_manifest_response = {
-      ...manifest_response.manifest,
-      name: `${manifest_response.manifest.name}(copy)`,
-      id: new_manifest_id
-    };
+    let manifest_copy = Object.assign({}, manifest_data.manifests[0], {
+      id: 20,
+      name: `${manifest_data.manifests[0]}(copy)`
+    });
 
     stub_url(
       `/${PROJECT_NAME}/manifests/create`,
-      {manifest: copied_manifest_response},
+      {manifest: manifest_copy},
       'post'
     );
 
     let exchange_name = 'copy-manifest';
-
     let expectedActions = [
       {
         type: 'ADD_EXCHANGE',
@@ -275,13 +281,13 @@ copying a user manifest has been done`;
       },
       {
         type: 'ADD_MANIFEST',
-        manifest: copied_manifest_response
+        manifest: manifest_copy
       }
     ];
 
     let store = mockStore({});
 
-    return store.dispatch(copyManifest(manifest_response.manifest)).then(()=>{
+    return store.dispatch(copyManifest(manifest_data.manifests[0])).then(()=>{
       expect(store.getActions()).toEqual(expectedActions);
     });
   });
