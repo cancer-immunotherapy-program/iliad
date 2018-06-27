@@ -79,7 +79,6 @@ requesting a single model view from the requestView action.`;
     );
 
     let exchange_name = `view for ${model_nm} ${rec_nm}`;
-
     let expected_actions = [
       {
         type: 'ADD_EXCHANGE',
@@ -141,7 +140,6 @@ requesting a non existant model view from the requestView action.`;
     );
 
     let exchange_name = `view for ${model_nm} ${rec_nm}`;
-
     let expected_actions = [
       {
         type: 'ADD_EXCHANGE',
