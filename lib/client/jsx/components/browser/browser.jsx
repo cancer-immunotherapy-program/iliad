@@ -238,7 +238,7 @@ const mapStateToProps = (state = {}, own_props)=>{
     template,
     revision,
     view,
-    doc,
+    doc: doc[record_name],
     has_revisions: (Object.keys(revision).length > 0)
   };
 };
