@@ -63,12 +63,11 @@ ADD_TEMPLATE when requesting documents from the Magma /retrieve endpoint.`;
 
     stub_url(
       '/retrieve',
-      document_response,
+      {models: {monster: document_response.models.monster}},
       'post'
     );
 
     let exchange_name = 'magma-test-retrieve';
-
     let expected_actions = [
       {
         type: 'ADD_EXCHANGE',
@@ -164,7 +163,9 @@ ADD_TEMPLATE, and DISCARD_REVISION when revising documents from the Magma
     let request = [
       {
         model_name: 'monster',
-        revisions: revisions
+        revisions: {
+          'Caledonian Boar': revisions['Caledonian Boar']
+        }
       },
       PROJECT_NAME
     ];

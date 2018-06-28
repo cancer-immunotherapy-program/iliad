@@ -37,7 +37,7 @@ import {
 } from '../../selectors/tab_selector';
 
 import {
-  selectModelDocument,
+  selectModelDocuments,
   selectModelTemplate,
   selectModelRevision
 } from '../../selectors/magma_selector';
@@ -230,7 +230,7 @@ const mapStateToProps = (state = {}, own_props)=>{
 
   let prj_nm = TIMUR_CONFIG.project_name;
   let template = selectModelTemplate(state, prj_nm, model_name);
-  let doc = selectModelDocument(state, prj_nm, model_name, record_name);
+  let doc = selectModelDocuments(state, prj_nm, model_name, [record_name]);
   let revision = selectModelRevision(state, prj_nm, model_name, record_name);
   let view = (state.timur.views ? state.timur.views[model_name] : null);
 

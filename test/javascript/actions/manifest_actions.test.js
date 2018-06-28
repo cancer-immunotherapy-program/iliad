@@ -8,7 +8,7 @@ import {
   manifest_data,
   new_manifest_request,
   new_manifest_response
-} from '../fixtures/manifest_actions_fixtures';
+} from '../fixtures/manifest_fixture';
 
 // Actions to test.
 import {

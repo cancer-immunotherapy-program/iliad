@@ -1,4 +1,4 @@
-const model_documents = {
+export const model_documents = {
   'Caledonian Boar': {
     created_at: '2018-05-12T03:00:28+00:00',
     updated_at: '2018-05-12T03:00:28+00:00',
@@ -33,6 +33,9 @@ const model_documents = {
 
 export const model_template = {
   name: 'monster',
+  identifier: 'name',
+  parent: 'labor',
+
   attributes: {
     created_at: {
       name: 'created_at',
@@ -77,16 +80,67 @@ export const model_template = {
       display_name: 'Victim',
       shown: true
     }
-  },
-  identifier: 'name',
-  parent: 'labor'
+  }
 };
 
-export const document_response = {
-  models: {
-    monster: {
-      documents: model_documents,
-      template: model_template
+const hunter_documents = {
+  'Echion': {
+    created_at: '2018-05-12T03:00:28+00:00',
+    updated_at: '2018-05-12T03:00:28+00:00',
+    name: 'Echion',
+    notes: `one of the Argonauts, son of Mercurius (Hermes) and Antianeira 
+(daughter of Menoetius), brother of Erytusson`
+  },
+
+  'Theseus': {
+    created_at: '2018-05-12T03:00:28+00:00',
+    updated_at: '2018-05-12T03:00:28+00:00',
+    name: 'Theseus',
+    notes: `faced another dangerous chthonic creature, the dusky wild 
+Crommyonian Sow, on a separate occasion`
+  },
+
+  'Jason': {
+    created_at: '2018-05-12T03:00:28+00:00',
+    updated_at: '2018-05-12T03:00:28+00:00',
+    name: 'Jason',
+    notes: 'Aeson’s son, from Iolkos'
+  }
+};
+
+export const hunter_template = {
+  name: 'hunter',
+  identifier: 'name',
+  parent: 'labor',
+
+  attributes: {
+    created_at: {
+      name: 'created_at',
+      type: 'DateTime',
+      attribute_class: 'Magma::Attribute',
+      display_name: 'Created At',
+      shown: false
+    },
+    updated_at: {
+      name: 'updated_at',
+      type: 'DateTime',
+      attribute_class: 'Magma::Attribute',
+      display_name: 'Updated At',
+      shown: false
+    },
+    name: {
+      name: 'name',
+      type: 'String',
+      attribute_class: 'Magma::Attribute',
+      display_name: 'Name',
+      shown: true
+    },
+    notes: {
+      name: 'name',
+      type: 'String',
+      attribute_class: 'Magma::Attribute',
+      display_name: 'Notes',
+      shown: true
     }
   }
 };
@@ -97,21 +151,31 @@ export const revisions = {
     victim: [
       'farmer'
     ]
+  },
+  'Nemean Lion': {
+    labor: 1
   }
 };
 
 export const revision_response = {
   models: {
     monster: {
-      documents: {
-        'Caledonian Boar': {
-          name: 'Aetolian Boar',
-          victim: [
-            'farmer'
-          ]
-        }
-      },
+      documents: revisions,
       template: model_template
+    }
+  }
+};
+
+export const document_response = {
+  models: {
+    monster: {
+      documents: model_documents,
+      template: model_template,
+      revisions
+    },
+    hunter: {
+      documents: hunter_documents,
+      template: hunter_template
     }
   }
 };
