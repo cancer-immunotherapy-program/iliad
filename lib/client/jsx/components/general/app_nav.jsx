@@ -3,9 +3,9 @@ import * as React from 'react';
 import * as ReactRedux from 'react-redux';
 
 import {IdentifierSearchContainer as IdentifierSearch} from '../identifier_search';
-import * as TimurActions from '../../actions/timur_actions';
+import {toggleConfig} from '../../actions/app_actions';
 
-export class TimurNav extends React.Component{
+export class AppNav extends React.Component{
   constructor(props){
     super(props);
     this.state = {};
@@ -13,11 +13,11 @@ export class TimurNav extends React.Component{
 
   renderTabs(){
     let tabs = {
-      PLOT: Routes.plots_path(TIMUR_CONFIG.project_name),
-      MANIFEST: Routes.manifests_path(TIMUR_CONFIG.project_name),
-      MAP: Routes.map_path(TIMUR_CONFIG.project_name),
-      SEARCH: Routes.search_path(TIMUR_CONFIG.project_name),
-      BROWSE: Routes.browse_path(TIMUR_CONFIG.project_name),
+      PLOT: Routes.plots_path(APP_CONFIG.project_name),
+      MANIFEST: Routes.manifests_path(APP_CONFIG.project_name),
+      MAP: Routes.map_path(APP_CONFIG.project_name),
+      SEARCH: Routes.search_path(APP_CONFIG.project_name),
+      BROWSE: Routes.browse_path(APP_CONFIG.project_name),
     };
 
     return (
@@ -48,7 +48,7 @@ export class TimurNav extends React.Component{
 
     let activity_props = {
       className: 'nav-menu-btn',
-      href: Routes.activity_path(TIMUR_CONFIG.project_name)
+      href: Routes.activity_path(APP_CONFIG.project_name)
     }
 
     let help_props = {
@@ -66,7 +66,7 @@ export class TimurNav extends React.Component{
 
           <button className='title-menu-btn'>
 
-            {'Timur'}
+            {'Iliad'}
             <br />
             <span className='title-menu-btn-sub'>
 
@@ -97,21 +97,21 @@ export class TimurNav extends React.Component{
 
 const mapStateToProps = (state = {}, own_props)=>{
   return {
-    project: state.timur.path ? state.timur.path.project : '',
-    component: state.timur.path ? state.timur.path.component : '',
-    helpShown: state.timur.help_shown
+    project: state.app.path ? state.app.path.project : '',
+    component: state.app.path ? state.app.path.component : '',
+    helpShown: state.app.help_shown
   };
 };
 
 const mapDispatchToProps = (dispatch, own_props)=>{
   return {
     toggleConfig: (text)=>{
-      dispatch(TimurActions.toggleConfig(text));
+      dispatch(toggleConfig(text));
     }
   };
 };
 
-export const TimurNavContainer = ReactRedux.connect(
+export const AppNavContainer = ReactRedux.connect(
   mapStateToProps,
   mapDispatchToProps
-)(TimurNav);
+)(AppNav);

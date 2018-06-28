@@ -24,7 +24,7 @@ import {ManifestsContainer as Manifests} from './components/manifest/manifests';
 import {BrowserContainer as Browser} from './components/browser/browser';
 import {PlotterContainer as Plotter} from './components/plotter/plotter';
 import {MessagesContainer as Messages} from './components/messages';
-import {AppNavContainer as AppNav} from './components/app_nav';
+import {AppNavContainer as AppNav} from './components/general/app_nav';
 import {HomePageContainer as HomePage} from './components/home_page';
 import {Settings} from './components/settings/settings';
 
