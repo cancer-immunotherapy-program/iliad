@@ -67,14 +67,14 @@ export default connect(
 
     let documents = selectModelDocuments(
       state,
-      TIMUR_CONFIG.project_name,
+      APP_CONFIG.project_name,
       props.model_name,
       props.record_names
     );
 
     let template = selectModelTemplate(
       state,
-      TIMUR_CONFIG.project_name,
+      APP_CONFIG.project_name,
       props.model_name
     );
 

@@ -153,7 +153,7 @@ export class IdentifierSearch extends React.Component{
 
 const mapStateToProps = (state = {}, own_props)=>{
   let idents = {};
-  let models = selectModels(state, TIMUR_CONFIG.project_name);
+  let models = selectModels(state, APP_CONFIG.project_name);
 
   Object.keys(models).forEach(function(model_name){
     idents[model_name] = Object.keys(models[model_name].documents);

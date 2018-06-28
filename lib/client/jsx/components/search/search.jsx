@@ -147,7 +147,7 @@ export default connect(
   function(state, props) {
     var cache = selectSearchCache(state);
     return {
-      model_names: selectModelNames(state, TIMUR_CONFIG.project_name),
+      model_names: selectModelNames(state, APP_CONFIG.project_name),
       page_cache: cache,
       current_page: cache.current_page,
       page_size: cache.page_size,

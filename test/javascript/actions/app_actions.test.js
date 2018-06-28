@@ -7,7 +7,7 @@ import nock from 'nock';
 import {
   view_data,
   default_view_data
-} from '../fixtures/timur_fixture';
+} from '../fixtures/app_fixture';
 
 // Actions to test.
 import {
@@ -41,7 +41,7 @@ const stub_url = (path, response, verb)=>{
 
 global.fetch = fetch;
 global.Date = jest.fn(() => current_date);
-global.TIMUR_CONFIG = {
+global.APP_CONFIG = {
   project_name: PROJECT_NAME,
   magma_host: 'http://magma.test'
 };
@@ -98,7 +98,7 @@ requesting a single model view from the requestView action.`;
         exchange_name: `tab ${tab_nm} for ${model_nm} ${rec_nm}`,
         exchange: {
           exchange_name: `tab ${tab_nm} for ${model_nm} ${rec_nm}`,
-          exchange_path: `${TIMUR_CONFIG.magma_host}/retrieve`,
+          exchange_path: `${APP_CONFIG.magma_host}/retrieve`,
           start_time: current_date,
         }
       },

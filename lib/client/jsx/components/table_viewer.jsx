@@ -89,7 +89,7 @@ class TableViewer extends React.Component {
 export default connect(
   function(state, props){
 
-    let prj_nm = TIMUR_CONFIG.project_name;
+    let prj_nm = APP_CONFIG.project_name;
     let template = selectModelTemplate(state, prj_nm, props.model_name);
     let documents = selectModelDocuments(
       state,

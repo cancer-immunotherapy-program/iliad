@@ -40,7 +40,7 @@ const stub_url = (path, response, verb)=>{
 
 global.fetch = fetch;
 global.Date = jest.fn(() => current_date);
-global.TIMUR_CONFIG = {
+global.APP_CONFIG = {
   project_name: PROJECT_NAME,
   magma_host: 'http://magma.test',
 };

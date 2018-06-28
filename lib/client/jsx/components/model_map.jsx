@@ -86,7 +86,7 @@ ModelReport = connect(
 
     let template = selectModelTemplate(
       state,
-      TIMUR_CONFIG.project_name,
+      APP_CONFIG.project_name,
       props.model_name
     );
 
@@ -316,8 +316,8 @@ class ModelMap extends Component {
 
 export default connect(
   (state) => {
-    let model_names = selectModelNames(state, TIMUR_CONFIG.project_name);
-    let templates = selectModelTemplates(state, TIMUR_CONFIG.project_name);
+    let model_names = selectModelNames(state, APP_CONFIG.project_name);
+    let templates = selectModelTemplates(state, APP_CONFIG.project_name);
 
     return {
       model_names,
