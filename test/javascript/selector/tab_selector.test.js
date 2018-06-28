@@ -1,6 +1,6 @@
 // Fixtures for data mocking.
 import {model_template} from '../fixtures/magma_fixture.js';
-import {view_data} from '../fixtures/timur_fixture.js';
+import {view_data} from '../fixtures/app_fixture.js';
 
 // Actions to test.
 import {
