@@ -11,7 +11,7 @@ import {
   requestViewSettings,
   updateViewSettings,
   deleteViewSettings
-} from '../../actions/timur_actions';
+} from '../../actions/app_actions';
 
 export class SettingsView extends React.Component{
   constructor(props){
@@ -265,7 +265,7 @@ export class SettingsView extends React.Component{
   createNewView(){
     let view_settings_object = {
       model_name: '',
-      project_name: TIMUR_CONFIG.project_name,
+      project_name: APP_CONFIG.project_name,
       tabs:{
         default:{
           description: '',
@@ -322,8 +322,8 @@ export class SettingsView extends React.Component{
 }
 
 const mapStateToProps = (state = {}, own_props)=>{
-  if(state.timur.views === undefined) return {};
-  return {views: state.timur.views};
+  if(state.app.views === undefined) return {};
+  return {views: state.app.views};
 };
 
 const mapDispatchToProps = (dispatch, own_props)=>{

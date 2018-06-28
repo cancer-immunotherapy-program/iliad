@@ -1,4 +1,4 @@
-class ViewController < Timur::Controller
+class ViewController < App::Controller
 
   # Get the tab view data. The tab view data is a json representation of a
   # front-end layout.
