@@ -232,7 +232,7 @@ const mapStateToProps = (state = {}, own_props)=>{
   let template = selectModelTemplate(state, prj_nm, model_name);
   let doc = selectModelDocuments(state, prj_nm, model_name, [record_name]);
   let revision = selectModelRevision(state, prj_nm, model_name, record_name);
-  let view = (state.timur.views ? state.timur.views[model_name] : null);
+  let view = (state.app.views ? state.app.views[model_name] : null);
 
   return {
     template,
