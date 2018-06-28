@@ -41,7 +41,7 @@ export default class BrowserPane extends React.Component{
         template,
         value,
         mode,
-        attribute: attr,
+        attribute: pane.attributes[attr_name],
         document: doc,
         revision: revised_value
       };
