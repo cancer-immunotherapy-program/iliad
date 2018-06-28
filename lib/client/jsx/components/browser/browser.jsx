@@ -14,18 +14,33 @@ import * as React from 'react';
 import * as ReactRedux from 'react-redux';
 
 // Class imports.
-import Magma from '../../magma';
 import Header from '../general/header';
 import {HelpContainer as Help} from '../help';
 import {TabBarContainer as TabBar} from '../general/tab_bar';
 import BrowserTab from './browser_tab';
 
 // Module imports.
-import * as ManifestActions from '../../actions/manifest_actions';
-import * as PlotActions from '../../actions/plot_actions';
-import * as TimurActions from '../../actions/timur_actions';
-import * as MagmaActions from '../../actions/magma_actions';
-import * as TabSelector from '../../selectors/tab_selector';
+import {requestView} from '../../actions/app_actions';
+import {requestManifests} from '../../actions/manifest_actions';
+import {requestPlots} from '../../actions/plot_actions';
+
+import{
+  requestDocuments,
+  discardRevision,
+  sendRevisions
+} from '../../actions/magma_actions';
+
+import {
+  getAttributes,
+  getTabByIndexOrder,
+  interleaveAttributes
+} from '../../selectors/tab_selector';
+
+import {
+  selectModelDocuments,
+  selectModelTemplate,
+  selectModelRevision
+} from '../../selectors/magma_selector';
 
 export class Browser extends React.Component{
 
@@ -45,7 +60,12 @@ export class Browser extends React.Component{
 
     this.props.requestManifests();
     this.props.requestPlots();
-    this.props.requestView(model_name, record_name, 'overview', onSuccess.bind(this));
+    this.props.requestView(
+      model_name,
+      record_name,
+      'overview',
+      onSuccess.bind(this)
+    );
   }
 
   camelize(str){
@@ -110,7 +130,7 @@ export class Browser extends React.Component{
          * If the attributes from the tab are already present in the model's
          * document then we break.
          */
-        let tab_attr = TabSelector.getAttributes(view.tabs[tab_name]);
+        let tab_attr = getAttributes(view.tabs[tab_name]);
         for(let attr_name in doc){
           if(tab_attr.includes(attr_name)) break tab_check_loop;
         }
@@ -163,13 +183,13 @@ export class Browser extends React.Component{
     };
 
     // Select the current tab data from by the 'current_tab_index'.
-    let tab = TabSelector.getTabByIndexOrder(view.tabs, current_tab_index);
+    let tab = getTabByIndexOrder(view.tabs, current_tab_index);
 
     /*
-     * Add the attribute details from the Magma model into the Timur view model.
+     * Add the attribute details from the Magma model into the app view model.
      * and append the actual data to it.
      */
-    tab = TabSelector.interleaveAttributes(tab, template);
+    tab = interleaveAttributes(tab, template);
 
     var browser_tab_props = {
       template,
@@ -203,16 +223,13 @@ export class Browser extends React.Component{
 }
 
 const mapStateToProps = (state = {}, own_props)=>{
-
   let {model_name, record_name} = own_props;
 
-  let magma = new Magma(state);
-  let template = magma.template(model_name);
-  let doc = magma.document(model_name, record_name);
-  let revision = magma.revision(model_name, record_name) || {};
-  let view = (state.timur.views ? state.timur.views[model_name] : null);
-
-  //let tab = getTabByIndexOrder(view.tabs, 0);
+  let prj_nm = APP_CONFIG.project_name;
+  let template = selectModelTemplate(state, prj_nm, model_name);
+  let doc = selectModelDocuments(state, prj_nm, model_name, [record_name]);
+  let revision = selectModelRevision(state, prj_nm, model_name, record_name);
+  let view = (state.app.views ? state.app.views[model_name] : null);
 
   return {
     template,
@@ -226,15 +243,15 @@ const mapStateToProps = (state = {}, own_props)=>{
 const mapDispatchToProps = (dispatch, own_props)=>{
   return {
     requestPlots: ()=>{
-      dispatch(PlotActions.requestPlots());
+      dispatch(requestPlots());
     },
 
     requestManifests: ()=>{
-      dispatch(ManifestActions.requestManifests());
+      dispatch(requestManifests());
     },
 
     requestView: (model_name, record_name, tab_name, onSuccess)=>{
-      dispatch(TimurActions.requestView(
+      dispatch(requestView(
         model_name,
         record_name,
         tab_name,
@@ -244,7 +261,7 @@ const mapDispatchToProps = (dispatch, own_props)=>{
 
     requestDocuments: (model_name, record_name, attribute_names)=>{
       let exchange_name = `${model_name} ${record_name}`;
-      dispatch(MagmaActions.requestDocuments({
+      dispatch(requestDocuments({
         model_name,
         exchange_name,
         record_names: [record_name],
@@ -252,12 +269,12 @@ const mapDispatchToProps = (dispatch, own_props)=>{
       }));
     },
 
-    discardRevision: ()=>{
-      dispatch(MagmaActions.discardRevision());
+    discardRevision: (record_name, model_name)=>{
+      dispatch(discardRevision(record_name, model_name));
     },
 
     sendRevisions: (model_name, revisions, success, error)=>{
-      dispatch(MagmaActions.sendRevisions(model_name,revisions,success,error));
+      dispatch(sendRevisions({model_name, revisions, success, error}));
     }
   };
 };

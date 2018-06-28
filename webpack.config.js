@@ -10,9 +10,9 @@ module.exports = {
       'font-awesome': path.join(__dirname, 'node_modules/font-awesome')
     }
   },
-  entry: ['./jsx/timur.jsx', './scss/application.scss' ],
+  entry: ['./jsx/iliad.jsx', './scss/application.scss' ],
   output: {
-    filename: 'public/js/timur.bundle.js',
+    filename: 'public/js/iliad.bundle.js',
     path: __dirname
   },
   module: {
@@ -46,24 +46,8 @@ module.exports = {
 
         options: {
           name: '[name].[ext]',
-          outputPath: 'public/img/',
-          publicPath: function(url) { return url.replace(/public/,'') }
-        }
-      },
-
-      {
-        test: /\.(png|jpg|jpeg|gif|svg|woff|woff2|ttf|eot)(\?.*$|$)/,
-
-        include: [
-          path.resolve(__dirname, 'node_modules/font-awesome'),
-        ],
-
-        loader: 'file-loader',
-        
-        options: {
-          name: '[name].[ext]',
-          outputPath: 'public/fonts/',
-          publicPath: function(url) { return url.replace(/public/,'') }
+          outputPath: 'public/images/',
+          publicPath: '/images'
         }
       },
 
@@ -77,7 +61,7 @@ module.exports = {
   },
   plugins: [
     new ExtractTextPlugin({ // define where to save the file
-      filename: 'public/css/timur.bundle.css',
+      filename: 'public/css/iliad.bundle.css',
       allChunks: true,
     }),
   ],

@@ -3,7 +3,7 @@ import * as React from 'react';
 import * as ReactRedux from 'react-redux';
 
 // Module imports.
-import * as TimurActions from '../../actions/timur_actions';
+import {addTokenUser} from '../../actions/app_actions';
 
 export class SettingsUser extends React.Component{
   constructor(props){
@@ -26,14 +26,14 @@ export class SettingsUser extends React.Component{
 }
 
 const mapStateToProps = (state = {}, own_props)=>{
-  if(state.timur.user === undefined) return {};
-  return {token_user: state.timur.user};
+  if(state.app.user === undefined) return {};
+  return {token_user: state.app.user};
 };
 
 const mapDispatchToProps = (dispatch, own_props)=>{
   return {
     fetchUserSettings: ()=>{
-      dispatch(TimurActions.addTokenUser());
+      dispatch(addTokenUser());
     }
   };
 };

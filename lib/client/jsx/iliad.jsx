@@ -11,7 +11,7 @@ import {createLogger} from 'redux-logger';
 import magma from './reducers/magma_reducer';
 import messages from './reducers/message_reducer';
 import plots from './reducers/plots_reducer';
-import timur from './reducers/timur_reducer';
+import app from './reducers/app_reducer';
 import search from './reducers/search_reducer';
 import manifestsUI from './reducers/manifest_ui_reducer';
 import manifests from './reducers/manifests_reducer';
@@ -24,7 +24,7 @@ import {ManifestsContainer as Manifests} from './components/manifest/manifests';
 import {BrowserContainer as Browser} from './components/browser/browser';
 import {PlotterContainer as Plotter} from './components/plotter/plotter';
 import {MessagesContainer as Messages} from './components/messages';
-import {TimurNavContainer as TimurNav} from './components/general/timur_nav';
+import {AppNavContainer as AppNav} from './components/app_nav';
 import {HomePageContainer as HomePage} from './components/home_page';
 import {Settings} from './components/settings/settings';
 
@@ -34,7 +34,7 @@ import Activity from './components/activity';
 import Noauth from './components/noauth';
 
 
-class TimurApplication{
+class IliadApplication{
   constructor(initial_props, container_id){
     this.store = null;
     this.createStore();
@@ -47,7 +47,6 @@ class TimurApplication{
       consignments: {},
       exchanges: {},
       magma: {
-        models: {},
         tables: {}
       },
       manifestsUI: {
@@ -65,14 +64,14 @@ class TimurApplication{
       search: {
         pages: {}
       },
-      timur: {}
+      app: {}
     };
 
     let reducers = Redux.combineReducers({
       magma,
       messages,
       plots,
-      timur,
+      app,
       search,
       manifestsUI,
       manifests,
@@ -121,7 +120,7 @@ class TimurApplication{
   }
 
   createUI(props, container_id){
-    let timur_nav_props = {
+    let app_nav_props = {
       user: props.user,
       can_edit: props.can_edit,
       mode: props.mode,
@@ -133,7 +132,7 @@ class TimurApplication{
 
         <div id='ui-container'>
 
-          <TimurNav {...timur_nav_props} />
+          <AppNav {...app_nav_props} />
           <Messages />
           {this.createComponent(props)}
         </div>
@@ -143,4 +142,4 @@ class TimurApplication{
   }
 }
 
-window.TimurApp = TimurApplication;
+window.IliadApp = IliadApplication;

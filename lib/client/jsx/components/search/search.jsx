@@ -1,4 +1,4 @@
-import Pager from '../pager';
+
 /*
  * TODO! The <Header /> component has been disabled here. The <Header />
  * component is used to render the bulk edit buttons and events. Editing is
@@ -11,16 +11,25 @@ import Pager from '../pager';
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
 
-import Magma from '../../magma';
 import SelectInput from '../inputs/select_input';
-import { requestTSV, requestModels, requestDocuments } from '../../actions/magma_actions';
-import { selectSearchCache } from '../../selectors/search_cache';
-import { cacheSearchPage, setSearchPageSize, setSearchPage } from '../../actions/search_actions';
-
 import SearchQuery from './search_query';
 import Header from '../general/header';
 import SearchTable from './search_table';
 import SearchQuestion from './search_question';
+import Pager from '../pager';
+
+import {selectSearchCache} from '../../selectors/search_cache';
+import {selectModelNames} from '../../selectors/magma_selector';
+import {
+  cacheSearchPage,
+  setSearchPageSize,
+  setSearchPage
+} from '../../actions/search_actions';
+import {
+  requestTSV,
+  requestModels,
+  requestDocuments
+} from '../../actions/magma_actions';
 
 class Search extends Component {
   constructor(props) {
@@ -136,10 +145,9 @@ class Search extends Component {
 
 export default connect(
   function(state, props) {
-    var magma = new Magma(state)
-    var cache = selectSearchCache(state)
+    var cache = selectSearchCache(state);
     return {
-      model_names: magma.modelNames(),
+      model_names: selectModelNames(state, APP_CONFIG.project_name),
       page_cache: cache,
       current_page: cache.current_page,
       page_size: cache.page_size,

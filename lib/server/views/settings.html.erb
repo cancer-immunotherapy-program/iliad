@@ -4,28 +4,28 @@
   <head>
     <title>
 
-      <%= Timur.instance.environment == :development ? 'Dev Timur' : 'Timur' %> - Search
+      Search
     </title>
-    <link rel='stylesheet' media='screen' href='/css/timur.bundle.css'/>
+    <link rel='stylesheet' media='screen' href='/css/iliad.bundle.css'/>
     <script src='/js/routes.js'></script>
-    <script src='/js/timur.bundle.js'></script>
+    <script src='/js/iliad.bundle.js'></script>
   </head>
   <body>
 
     <div id='root'></div>
     <script type='text/javascript'>
 
-      var TIMUR_CONFIG = <%= config_json %>;
-      var timur_props = {
+      var APP_CONFIG = <%= config_json %>;
+      var iliad_props = {
         user: <%= @user ? "'#{@user.first} #{@user.last}'" : 'null'%>,
         mode: 'settings',
-        environment: '<%= Timur.instance.environment %>',
+        environment: '<%= App.instance.environment %>',
         can_edit: <%=  @user && @user.can_edit?(@params[:project_name]) ? :true : :false  %>,
         is_admin: <%=  @user && @user.is_admin?(@params[:project_name]) ? :true : :false  %>,
         settings_page: '<%= @params[:settings_page] %>'
       };
 
-      const timur = new TimurApp(timur_props, 'root');
+      const iliad = new IliadApp(iliad_props, 'root');
     </script>
   </body>
 </html>

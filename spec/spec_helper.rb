@@ -14,16 +14,16 @@ require 'database_cleaner'
 require 'rack/test'
 
 require_relative '../lib/server'
-require_relative '../lib/timur'
+require_relative '../lib/iliad'
 
 OUTER_APP = Rack::Builder.new do
   use Etna::ParseBody
   use Etna::SymbolizeParams
 
   use Etna::TestAuth
-  run Timur::Server.new(YAML.load(File.read('config.yml')))
+  run App::Server.new(YAML.load(File.read('config.yml')))
 end
-Magma.instance.configure(Timur.instance.config(:magma))
+Magma.instance.configure(App.instance.config(:magma))
 
 AUTH_USERS = {
   admin: {
@@ -70,17 +70,17 @@ end
 
 
 def run_script script
+  txt = script.map do |name, exp|
+    "@#{name} = #{exp}"
+  end.join("\n")
+
   manifest = Archimedes::Manifest.new(
     'xyzzy',
-    'timur',
-    script.to_a
+    'iliad',
+    txt
   )
   manifest.payload
   manifest.instance_variable_get('@vars')
-end
-
-def json_body(body)
-  JSON.parse(body, symbolize_names: true)
 end
 
 FactoryBot.define do
@@ -104,11 +104,7 @@ FactoryBot.define do
     end
 
     trait :script do
-      data({
-        elements: [
-          { name: 'value', script: '1+1' }
-        ]
-      }.to_json)
+      script '@value = 1 + 1'
     end
 
     trait :public do
@@ -153,8 +149,8 @@ FactoryBot.define do
   end
 end
 
-def json_body(body)
-  JSON.parse(body, symbolize_names: true)
+def json_body
+  JSON.parse(last_response.body, symbolize_names: true)
 end
 
 def json_post(endpoint, hash)
