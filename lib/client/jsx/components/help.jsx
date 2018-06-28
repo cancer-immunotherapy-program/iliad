@@ -68,7 +68,7 @@ export class HelpButton extends React.Component{
 
 const mapStateToProps = (state = {}, own_props)=>{
   return {
-    helpShown: state.timur.help_shown
+    //helpShown: state.timur.help_shown
   };
 };
 

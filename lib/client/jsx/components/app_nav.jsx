@@ -3,8 +3,8 @@ import * as React from 'react';
 import * as ReactRedux from 'react-redux';
 
 import {IdentifierSearchContainer as IdentifierSearch} from './identifier_search';
-import {HelpContainer as Help} from './help';
-import * as ViewActions from '../actions/view_actions';
+//import {HelpContainer as Help} from './help';
+import * as AppActions from '../actions/app_actions';
 
 export class AppNav extends React.Component{
   constructor(props){
@@ -114,7 +114,7 @@ const mapStateToProps = (state = {}, own_props)=>{
 const mapDispatchToProps = (dispatch, own_props)=>{
   return {
     toggleConfig: (text)=>{
-      dispatch(ViewActions.toggleConfig(text));
+      dispatch(AppActions.toggleConfig(text));
     }
   };
 };

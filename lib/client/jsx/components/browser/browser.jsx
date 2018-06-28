@@ -23,7 +23,7 @@ import BrowserTab from './browser_tab';
 // Module imports.
 import * as ManifestActions from '../../actions/manifest_actions';
 import * as PlotActions from '../../actions/plot_actions';
-import * as ViewActions from '../../actions/view_actions';
+import * as AppActions from '../../actions/app_actions';
 import * as MagmaActions from '../../actions/magma_actions';
 import * as TabSelector from '../../selectors/tab_selector';
 
@@ -237,7 +237,7 @@ const mapDispatchToProps = (dispatch, own_props)=>{
     },
 
     requestView: (model_name, record_name, tab_name, onSuccess)=>{
-      dispatch(ViewActions.requestView(
+      dispatch(AppActions.requestView(
         model_name,
         record_name,
         tab_name,
