@@ -1,6 +1,6 @@
 require_relative '../../models/archimedes'
 
-class ArchimedesController <  Timur::Controller
+class ArchimedesController <  App::Controller
   def consignment
     manifests = @params[:queries]
 

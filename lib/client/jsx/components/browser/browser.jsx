@@ -20,7 +20,7 @@ import {TabBarContainer as TabBar} from '../tab_bar';
 import BrowserTab from './browser_tab';
 
 // Module imports.
-import {requestView} from '../../actions/timur_actions';
+import {requestView} from '../../actions/app_actions';
 import {requestManifests} from '../../actions/manifest_actions';
 import {requestPlots} from '../../actions/plot_actions';
 
@@ -186,7 +186,7 @@ export class Browser extends React.Component{
     let tab = getTabByIndexOrder(view.tabs, current_tab_index);
 
     /*
-     * Add the attribute details from the Magma model into the Timur view model.
+     * Add the attribute details from the Magma model into the app view model.
      * and append the actual data to it.
      */
     tab = interleaveAttributes(tab, template);
@@ -228,7 +228,7 @@ export class Browser extends React.Component{
 const mapStateToProps = (state = {}, own_props)=>{
   let {model_name, record_name} = own_props;
 
-  let prj_nm = TIMUR_CONFIG.project_name;
+  let prj_nm = APP_CONFIG.project_name;
   let template = selectModelTemplate(state, prj_nm, model_name);
   let doc = selectModelDocuments(state, prj_nm, model_name, [record_name]);
   let revision = selectModelRevision(state, prj_nm, model_name, record_name);

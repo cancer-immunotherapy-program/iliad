@@ -1,4 +1,4 @@
-class PlotsController < Timur::Controller
+class PlotsController < App::Controller
   def create
     manifest = Manifest[@params[:manifest_id]]
 

@@ -2,7 +2,7 @@
 import * as React from 'react';
 import Prism from 'prismjs';
 
-const timur_lang = {
+const script_lang = {
   comment: /\#.*$/m,
   macro: /@[\w]+(?=\()/i,
   variable: /@[\w]+/,
@@ -29,7 +29,7 @@ export default class ManifestScript extends React.Component {
   render() {
     let { is_editing, onChange, script } = this.props;
 
-    let __html = Prism.highlight(script, timur_lang);
+    let __html = Prism.highlight(script, script_lang);
     //let __html = script;
     return <div className='manifest-body'>
       <pre
