@@ -22,7 +22,7 @@
     "messageActions": false,
     "connect": false,
     "plotActions": false,
-    "timurActions": false,
+    "viewActions": false,
     "Keycode": false,
     "Matrix": false,
     "classNames": false,

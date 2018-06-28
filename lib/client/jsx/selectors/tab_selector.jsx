@@ -58,10 +58,10 @@ export const getTabByIndexOrder = (tabs, view_index)=>{
 };
 
 /*
- * There is a correlation between the Timur view model attributes and the Magma
+ * There is a correlation between the app view model attributes and the Magma
  * model attributes. When we want to render the attributes we interleave the two
  * models and then can display the totality of the information they represent. 
- * Timur view models keep the layout and order, Magma data models keep the data
+ * App view models keep the layout and order, Magma data models keep the data
  * type and editability.
  *
  * See `/app/models/view_tab.rb` over in the server code for an idea about the 
@@ -83,7 +83,7 @@ export const interleaveAttributes = (tab, template)=>{
       Object.keys(pane.attributes).forEach((attr_name, index)=>{
         /*
          * If there is an attribute in the Magma model that matches an attribute
-         * in the Timur view pane...
+         * in the app view pane...
          */
         if(attr_name in template.attributes){
           let view_attr = pane.attributes[attr_name];
