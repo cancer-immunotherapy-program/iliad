@@ -1,4 +1,4 @@
-class Timur
+class App
   class Controller < Etna::Controller
     VIEW_PATH=File.expand_path('../views', __dir__)
 
@@ -16,13 +16,13 @@ class Timur
     def config_json
       {
         project_name: @params[:project_name],
-        token_name: Timur.instance.config(:token_name),
-        magma_host: Timur.instance.config(:magma)[:host]
+        token_name: App.instance.config(:token_name),
+        magma_host: App.instance.config(:magma)[:host]
       }.to_json
     end
 
     def token
-      @token ||= @request.cookies[Timur.instance.config(:token_name)]
+      @token ||= @request.cookies[App.instance.config(:token_name)]
     end
 
     def janus_login_path(refer)

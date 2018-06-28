@@ -1,10 +1,10 @@
-require_relative './server/controllers/timur_controller'
+require_relative './server/controllers/iliad_controller'
 require_relative './server/controllers/archimedes_controller'
 require_relative './server/controllers/browse_controller'
 require_relative './server/controllers/manifests_controller'
 require_relative './server/controllers/plots_controller'
 
-class Timur
+class Iliad
   class Server < Etna::Server
     # root path
     get '/' do

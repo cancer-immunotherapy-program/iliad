@@ -1,4 +1,4 @@
-class ManifestsController < Timur::Controller
+class ManifestsController < App::Controller
   def fetch
     # Pull the manifests from the database.
     manifests = Manifest.where(

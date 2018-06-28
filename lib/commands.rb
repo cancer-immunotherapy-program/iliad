@@ -2,13 +2,13 @@ require 'extlib'
 require 'date'
 require 'logger'
 
-class Timur
+class Iliad
   class Help < Etna::Command
     usage 'List this help'
 
     def execute
       puts 'Commands:'
-      Timur.instance.commands.each do |name,cmd|
+      Iliad.instance.commands.each do |name,cmd|
         puts cmd.usage
       end
     end
@@ -19,7 +19,7 @@ class Timur
 
     def execute(version=nil)
       Sequel.extension(:migration)
-      db = Timur.instance.db
+      db = Iliad.instance.db
 
       if version
         puts "Migrating to version #{version}"
@@ -32,12 +32,12 @@ class Timur
 
     def setup(config)
       super
-      Timur.instance.setup_db
+      Iliad.instance.setup_db
     end
   end
 
   class Console < Etna::Command
-    usage 'Open a console with a connected Timur instance.'
+    usage 'Open a console with a connected Iliad instance.'
 
     def execute
       require 'irb'
@@ -47,20 +47,21 @@ class Timur
 
     def setup(config)
       super
-      Timur.instance.setup_db
-      Timur.instance.setup_magma
+      Iliad.instance.setup_db
+      Iliad.instance.setup_magma
     end
   end
 
   class CreateRoutes < Etna::Command
-    usage 'Create the routes.js file for the Timur javascript application to use to match routes'
+    usage `Create the routes.js file for the Iliad javascript application to use
+ to match routes`
 
     def route_js
       require_relative 'server'
       %Q!
 window.Routes = {
 #{
-  Timur::Server.routes.map do |route|
+  Iliad::Server.routes.map do |route|
     route_func(route)
   end.join(",\n")
 }

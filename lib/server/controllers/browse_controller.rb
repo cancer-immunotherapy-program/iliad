@@ -1,4 +1,4 @@
-class BrowseController < Timur::Controller
+class BrowseController < App::Controller
   def index
     response = Magma::Client.instance.query(
       token,
