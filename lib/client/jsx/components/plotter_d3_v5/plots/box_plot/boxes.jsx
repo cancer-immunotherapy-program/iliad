@@ -99,7 +99,6 @@ class Boxes extends Component {
       }
 
       let upper_quartile_props = {
-        visibility: this.state.hover ? 'visible' : 'hidden',
         x: xScale(group.label) - (2 * width),
         y: yScale(group.inliers.quartile_data[2]),
         'fontSize': '8',
@@ -107,7 +106,6 @@ class Boxes extends Component {
       }
 
       let median_quartile_props = {
-        visibility: this.state.hover ? 'visible' : 'hidden',
         x: xScale(group.label) - (2 * width),
         y: yScale(group.inliers.quartile_data[1]),
         'fontSize': '8',
@@ -115,7 +113,6 @@ class Boxes extends Component {
       }
 
       let lower_quartile_props = {
-        visibility: this.state.hover ? 'visible' : 'hidden',
         x: xScale(group.label) - (2 * width),
         y: yScale(group.inliers.quartile_data[0]),
         'fontSize': '8',
@@ -123,7 +120,6 @@ class Boxes extends Component {
       }
 
       let whisker_min_props = {
-        visibility: this.state.hover ? 'visible' : 'hidden',
         x: xScale(group.label) - (2 * width),
         y: yScale(group.inliers.whisker_min),
         'fontSize': '8',
@@ -131,7 +127,6 @@ class Boxes extends Component {
       }
 
       let whisker_max_props = {
-        visibility: this.state.hover ? 'visible' : 'hidden',
         x: xScale(group.label) - (2 * width),
         y: yScale(group.inliers.whisker_max),
         'fontSize': '8',
@@ -139,12 +134,11 @@ class Boxes extends Component {
       }
 
       let g_props = {
-        onMouseOver: this.toggleHover.bind(this), 
-        onMouseOut: this.toggleHover.bind(this)
+        
       }
 
       return (
-        <g {...g_props}>
+        <g className='box-group' {...g_props}>
         <line {...center_props} />
         <rect {...rect_props} />
         <line {...whisker_upper_props} />

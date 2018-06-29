@@ -330,3 +330,11 @@
   transform: rotate(-45deg);
   text-anchor: end;
 }
+
+.box-group text {
+  visibility: hidden;
+}
+
+.box-group:hover text {
+  visibility: visible;
+}
