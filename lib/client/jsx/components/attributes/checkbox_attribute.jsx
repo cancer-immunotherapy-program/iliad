@@ -1,8 +1,8 @@
 // Framework libraries.
 import * as React from 'react';
-import { connect } from 'react-redux';
+import * as ReactRedux from 'react-redux';
 
-import { reviseDocument } from '../../actions/magma_actions';
+import {reviseDocument} from '../../actions/magma_actions';
 
 class CheckboxAttribute extends React.Component{
   revise(e) {
@@ -17,29 +17,53 @@ class CheckboxAttribute extends React.Component{
   }
 
   renderEdit(){
-    let { revision } = this.props;
+    let {document, template, attribute, reviseDocument} = this.props;
     let input_props = {
-      type:"checkbox",
-      className:"text_box",
-      onChange: this.revise.bind(this),
-      defaultChecked: revision
+      type: 'checkbox',
+      className: 'text_box',
+      onChange:function(event){
+        reviseDocument({
+           document,
+           template,
+           attribute,
+           revised_value: event.target.checked ? true : false
+        })
+      },
+      defaultChecked: this.props.revision
     };
 
     return(
-      <div className="value">
+      <div className='value'>
+
         <input {...input_props} />
       </div>
     );
   }
 
   render(){
-    let { mode, value } = this.props;
-    if (mode == "edit") return this.renderEdit();
-    return <div className="value"> { value ? "yes" : "no" } </div>
+    if (this.props.mode == 'edit') return this.renderEdit();
+    return(
+      <div className='value'>
+
+        {this.props.value ? 'yes' : 'no'}
+      </div>
+    );
   }
 }
 
-export default connect(
-  null,
-  { reviseDocument }
+const mapStateToProps = (dispatch, own_props)=>{
+  return {};
+};
+
+const mapDispatchToProps = (dispatch, own_props)=>{
+  return {
+    reviseDocument: (args)=>{
+      dispatch(MagmaActions.reviseDocument(args));
+    }
+  };
+};
+
+export default ReactRedux.connect(
+  mapStateToProps,
+  mapDispatchToProps
 )(CheckboxAttribute);
