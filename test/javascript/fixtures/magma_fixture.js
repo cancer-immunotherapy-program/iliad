@@ -1,4 +1,4 @@
-export const model_documents = {
+export const monster_documents = {
   'Caledonian Boar': {
     created_at: '2018-05-12T03:00:28+00:00',
     updated_at: '2018-05-12T03:00:28+00:00',
@@ -31,7 +31,19 @@ export const model_documents = {
   }
 };
 
-export const model_template = {
+export const monster_revisions = {
+  'Caledonian Boar': {
+    name: 'Aetolian Boar',
+    victim: [
+      'farmer'
+    ]
+  },
+  'Nemean Lion': {
+    labor: 1
+  }
+};
+
+export const monster_template = {
   name: 'monster',
   identifier: 'name',
   parent: 'labor',
@@ -83,7 +95,7 @@ export const model_template = {
   }
 };
 
-const hunter_documents = {
+export const hunter_documents = {
   'Echion': {
     created_at: '2018-05-12T03:00:28+00:00',
     updated_at: '2018-05-12T03:00:28+00:00',
@@ -145,23 +157,11 @@ export const hunter_template = {
   }
 };
 
-export const revisions = {
-  'Caledonian Boar': {
-    name: 'Aetolian Boar',
-    victim: [
-      'farmer'
-    ]
-  },
-  'Nemean Lion': {
-    labor: 1
-  }
-};
-
 export const revision_response = {
   models: {
     monster: {
-      documents: revisions,
-      template: model_template
+      documents: monster_documents,
+      template: monster_template
     }
   }
 };
@@ -169,9 +169,9 @@ export const revision_response = {
 export const document_response = {
   models: {
     monster: {
-      documents: model_documents,
-      template: model_template,
-      revisions
+      documents: monster_documents,
+      revisions: monster_revisions,
+      template: monster_template,
     },
     hunter: {
       documents: hunter_documents,

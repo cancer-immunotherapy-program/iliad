@@ -1,5 +1,5 @@
 // Fixtures for data mocking.
-import {model_template} from '../fixtures/magma_fixture.js';
+import {monster_template} from '../fixtures/magma_fixture.js';
 import {view_data} from '../fixtures/app_fixture.js';
 
 // Actions to test.
@@ -45,7 +45,7 @@ attribute properties.`;
 
   it(long_str, ()=>{
     let tab = view_data.views.monster.tabs.default;
-    tab = interleaveAttributes(tab, model_template);
+    tab = interleaveAttributes(tab, monster_template);
 
     let expected_value = {
       species: {

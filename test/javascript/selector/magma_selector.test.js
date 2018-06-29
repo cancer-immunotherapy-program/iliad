@@ -1,10 +1,10 @@
 // Fixtures for data mocking.
 import {
-  model_documents,
-  revisions,
-  document_response,
-  model_template,
-  hunter_template
+  monster_documents,
+  monster_revisions,
+  monster_template,
+  hunter_template,
+  document_response
 } from '../fixtures/magma_fixture.js';
 
 // Actions to test.
@@ -42,8 +42,8 @@ describe('magma selector', ()=>{
     );
 
     let expected_value = {
-      'Caledonian Boar': model_documents['Caledonian Boar'],
-      'Nemean Lion': model_documents['Nemean Lion']
+      'Caledonian Boar': monster_documents['Caledonian Boar'],
+      'Nemean Lion': monster_documents['Nemean Lion']
     };
 
     expect(documents).toEqual(expected_value);
@@ -64,7 +64,7 @@ describe('magma selector', ()=>{
       'Nemean Lion'
     );
 
-    let expected_value = revisions['Nemean Lion'];
+    let expected_value = monster_revisions['Nemean Lion'];
 
     expect(revision).toEqual(expected_value);
   });
@@ -79,7 +79,7 @@ describe('magma selector', ()=>{
     let templates = selectModelTemplates(state, PROJECT_NAME);
 
     let expected_value = [
-      model_template,
+      monster_template,
       hunter_template
     ];
 
