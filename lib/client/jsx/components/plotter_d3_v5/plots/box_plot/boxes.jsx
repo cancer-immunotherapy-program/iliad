@@ -6,9 +6,6 @@ import {interpolateLab} from 'd3-interpolate';
 class Boxes extends Component {
   constructor(props) {
     super(props);
-    this.state = {
-      hover: false,
-    }
   }
 
   toggleHover() {
@@ -37,17 +34,24 @@ class Boxes extends Component {
 
         let outlier_props = {
           key: `outlier_${index}`,
-          'data-type': 'outlier',
-          'data-datum': JSON.stringify({
-            outlier,
-            metrics: {left: x_position, top: yScale(outlier), width: 3}}),
           r: 3,
           cx: x_position,
           cy: yScale(outlier),
           stroke: '#333333',
           fill: 'none'
         }
-        return <circle {...outlier_props} />
+
+        let outlier_text_priops = {
+          x: xScale(group.label) - (2 * width),
+          y: yScale(outlier),
+          'fontSize': '8',
+          'alignmentBaseline': "middle"
+        }
+
+        return [
+          <circle {...outlier_props} />, 
+          <text {...outlier_text_priops}>{outlier.toFixed(2)}</text>
+        ]
       });
 
       let center_props = {
@@ -133,27 +137,23 @@ class Boxes extends Component {
         'alignmentBaseline': "middle"
       }
 
-      let g_props = {
-        
-      }
-
       return (
-        <g className='box-group' {...g_props}>
-        <line {...center_props} />
-        <rect {...rect_props} />
-        <line {...whisker_upper_props} />
-        <line {...median_props} />
-        <line {...whisker_lower_props} />
-        <text {...upper_quartile_props}>{group.inliers.quartile_data[2].toFixed(2)} </text>
-        <text {...median_quartile_props}>{group.inliers.quartile_data[1].toFixed(2)} </text>
-        <text {...lower_quartile_props}>{group.inliers.quartile_data[0].toFixed(2)}</text>
-        <text {...upper_quartile_props}>{group.inliers.quartile_data[2].toFixed(2)} </text>
-        <text {...median_quartile_props}>{group.inliers.quartile_data[1].toFixed(2)} </text>
-        <text {...lower_quartile_props}>{group.inliers.quartile_data[0].toFixed(2)}</text>
-        <text {...whisker_min_props}>{group.inliers.whisker_min.toFixed(2)} </text>
-        <text {...whisker_max_props}>{group.inliers.whisker_max.toFixed(2)}</text>
-        
-        {outliers}
+        <g className='box-group'>
+
+          <line {...center_props} />
+          <rect {...rect_props} />
+          <line {...whisker_upper_props} />
+          <line {...median_props} />
+          <line {...whisker_lower_props} />
+          <text {...upper_quartile_props}>{group.inliers.quartile_data[2].toFixed(2)} </text>
+          <text {...median_quartile_props}>{group.inliers.quartile_data[1].toFixed(2)} </text>
+          <text {...lower_quartile_props}>{group.inliers.quartile_data[0].toFixed(2)}</text>
+          <text {...upper_quartile_props}>{group.inliers.quartile_data[2].toFixed(2)} </text>
+          <text {...median_quartile_props}>{group.inliers.quartile_data[1].toFixed(2)} </text>
+          <text {...lower_quartile_props}>{group.inliers.quartile_data[0].toFixed(2)}</text>
+          <text {...whisker_min_props}>{group.inliers.whisker_min.toFixed(2)} </text>
+          <text {...whisker_max_props}>{group.inliers.whisker_max.toFixed(2)}</text>
+          {outliers}
         </g>
       )
     });
