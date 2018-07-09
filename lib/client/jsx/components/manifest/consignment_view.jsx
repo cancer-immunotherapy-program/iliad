@@ -1,5 +1,5 @@
 import * as React from 'react';
-import {manifestResult} from './manifest_result';
+import ConsignmentResult from './consignment_result';
 
 export default class ConsignmentView extends React.Component{
   renderData(consignment){
@@ -9,7 +9,7 @@ export default class ConsignmentView extends React.Component{
         <div key={index} className='consignment-result'>
 
           <div className='consignment-variable-name'>@{name}:</div>
-          {manifestResult(name, consignment[name])}
+          <ConsignmentResult name={name} data={consignment[name]}/>
         </div>
       );
     });
