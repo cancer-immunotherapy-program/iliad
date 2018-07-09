@@ -1,10 +1,10 @@
 /*
  * The Browser presents views of a record/model. The views are organized into
  * tabs/panes.
- * 
+ *
  * The Browser should request data for a record/model/tab - this comes with an
  * associated payload and any extra data required to draw this tab.
- * 
+ *
  * The Browser has state in the form of mode (edit or not) and tab (which one is
  * shown).
  */
@@ -20,9 +20,9 @@ import {TabBarContainer as TabBar} from '../general/tab_bar';
 import BrowserTab from './browser_tab';
 
 // Module imports.
-import {requestView} from '../../actions/app_actions';
 import {requestManifests} from '../../actions/manifest_actions';
 import {requestPlots} from '../../actions/plot_actions';
+import {requestView} from '../../actions/app_actions';
 
 import{
   requestDocuments,
@@ -58,6 +58,7 @@ export class Browser extends React.Component{
     let {model_name, record_name} = this.props;
     let onSuccess = ()=>{this.setState({mode: 'browse'})};
 
+    //this.props.addTokenUser();
     this.props.requestManifests();
     this.props.requestPlots();
     this.props.requestView(
@@ -223,19 +224,21 @@ export class Browser extends React.Component{
 }
 
 const mapStateToProps = (state = {}, own_props)=>{
-  let {model_name, record_name} = own_props;
+  let {project, model, record} = state.app.path;
 
-  let prj_nm = APP_CONFIG.project_name;
-  let template = selectModelTemplate(state, prj_nm, model_name);
-  let doc = selectModelDocuments(state, prj_nm, model_name, [record_name]);
-  let revision = selectModelRevision(state, prj_nm, model_name, record_name);
-  let view = (state.app.views ? state.app.views[model_name] : null);
+  let template = selectModelTemplate(state, project, model);
+  let doc = selectModelDocuments(state, project, model, [record]);
+  let revision = selectModelRevision(state, project, model, record);
+  let view = (state.app.views ? state.app.views[model] : null);
 
   return {
     template,
     revision,
     view,
-    doc: doc[record_name],
+    project_name: project,
+    model_name: model,
+    record_name: record,
+    doc: doc[record],
     has_revisions: (Object.keys(revision).length > 0)
   };
 };
