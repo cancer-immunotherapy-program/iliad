@@ -8,10 +8,6 @@ class Boxes extends Component {
     super(props);
   }
 
-  toggleHover() {
-    this.setState({hover: !this.state.hover})
-  }
-
   render() {
     let {y_min_max, groups, scales, color_range} = this.props;
     let {xScale, yScale} = scales;
@@ -43,9 +39,7 @@ class Boxes extends Component {
 
         let outlier_text_priops = {
           x: xScale(group.label) - (2 * width),
-          y: yScale(outlier),
-          'fontSize': '8',
-          'alignmentBaseline': "middle"
+          y: yScale(outlier)
         }
 
         return [
@@ -54,7 +48,7 @@ class Boxes extends Component {
         ]
       });
 
-      let center_props = {
+      let whisker_props = {
         key: `${group.label}_stem`,
         x1: x_position,
         x2: x_position,
@@ -99,55 +93,42 @@ class Boxes extends Component {
         height: bar_height,
         width: xScale.bandwidth(),
         fill: colorScale(group.inliers.quartile_data[1]),
-        stroke: colorScale(group.inliers.quartile_data[2]),
+        stroke: colorScale(group.inliers.quartile_data[2])
       }
 
       let upper_quartile_props = {
         x: xScale(group.label) - (2 * width),
-        y: yScale(group.inliers.quartile_data[2]),
-        'fontSize': '8',
-        'alignmentBaseline': "middle"
+        y: yScale(group.inliers.quartile_data[2])
       }
 
       let median_quartile_props = {
         x: xScale(group.label) - (2 * width),
-        y: yScale(group.inliers.quartile_data[1]),
-        'fontSize': '8',
-        'alignmentBaseline': "middle"
+        y: yScale(group.inliers.quartile_data[1])
       }
 
       let lower_quartile_props = {
         x: xScale(group.label) - (2 * width),
-        y: yScale(group.inliers.quartile_data[0]),
-        'fontSize': '8',
-        'alignmentBaseline': "middle"
+        y: yScale(group.inliers.quartile_data[0])
       }
 
       let whisker_min_props = {
         x: xScale(group.label) - (2 * width),
-        y: yScale(group.inliers.whisker_min),
-        'fontSize': '8',
-        'alignmentBaseline': "middle"
+        y: yScale(group.inliers.whisker_min)
       }
 
       let whisker_max_props = {
         x: xScale(group.label) - (2 * width),
-        y: yScale(group.inliers.whisker_max),
-        'fontSize': '8',
-        'alignmentBaseline': "middle"
+        y: yScale(group.inliers.whisker_max)
       }
 
       return (
         <g className='box-group'>
 
-          <line {...center_props} />
+          <line {...whisker_props} />
           <rect {...rect_props} />
           <line {...whisker_upper_props} />
           <line {...median_props} />
           <line {...whisker_lower_props} />
-          <text {...upper_quartile_props}>{group.inliers.quartile_data[2].toFixed(2)} </text>
-          <text {...median_quartile_props}>{group.inliers.quartile_data[1].toFixed(2)} </text>
-          <text {...lower_quartile_props}>{group.inliers.quartile_data[0].toFixed(2)}</text>
           <text {...upper_quartile_props}>{group.inliers.quartile_data[2].toFixed(2)} </text>
           <text {...median_quartile_props}>{group.inliers.quartile_data[1].toFixed(2)} </text>
           <text {...lower_quartile_props}>{group.inliers.quartile_data[0].toFixed(2)}</text>
