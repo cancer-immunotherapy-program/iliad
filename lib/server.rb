@@ -47,7 +47,7 @@ class App
 
       # Plots page.
       get ':project_name/plots', as: :plots do
-        erb_view(:plots)
+        erb_view(:index)
       end
 
 # CONTROLLER ACTIONS. Supports the API and backend calls.
