@@ -340,3 +340,22 @@
   font-size: 8px;
   alignment-baseline: middle;
 }
+
+.label-group {
+  display: inline-block;
+  margin-right: 24px;
+  vertical-align: middle
+}
+
+.label-box {
+  display: inline-block;
+  margin-right: 8px;
+  width: 16px;
+  height: 8px;
+  vertical-align: middle;
+}
+
+.label-text {
+  display: inline;
+  font-size: 12px;
+}

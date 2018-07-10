@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import * as d3 from 'd3';
 import Lines from './lines';
 import Axis from '../../axis';
+import Legend from '../../legend';
 
 class LineGraph extends Component {
   constructor(props) {
@@ -17,6 +18,14 @@ class LineGraph extends Component {
     let svg_dimensions = {
       width: Math.max(svg_width, 300),
       height: plot.height};
+    
+    let color = d3.scaleOrdinal(d3.schemeCategory10);
+    let labels = lines.map((line) => {
+      return {
+        color: color(line.label),
+        text: line.label
+      };
+    });
 
     // Create time scale.
     let xScale = this.timeScale
@@ -49,13 +58,18 @@ class LineGraph extends Component {
       tickSize: svg_dimensions.width - margins.left - margins.right,
     }
 
-    let line_props ={
+    let line_props = {
       lines,
       scales: { xScale, yScale }
     }
 
+    let legend_props = {
+      labels,
+    }
+
     return (
       <div>
+        <Legend {...legend_props}/>
         <svg {...svg_props}>
           <Axis {...axis_x_props}/>
           <Axis {...axis_y_props}/>
