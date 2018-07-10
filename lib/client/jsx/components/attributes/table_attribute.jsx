@@ -1,7 +1,7 @@
 // Framework libraries.
 import * as React from 'react';
 
-import TableViewer from '../table_viewer'
+import {TableViewerContainer as TableViewer} from '../table_viewer';
 
 export default class TableAttribute extends React.Component{
   constructor(props){
