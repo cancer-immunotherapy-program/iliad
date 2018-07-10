@@ -12,12 +12,12 @@ export class IdentifierSearch extends React.Component{
 
     this.state = {
       match_string: '',
-      has_focus: false 
+      has_focus: false
     };
   }
 
   componentWillMount(){
-    this.props.requestIdentifiers();
+    //this.props.requestIdentifiers();
   }
 
   find_matches(){

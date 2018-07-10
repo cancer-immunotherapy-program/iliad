@@ -17,7 +17,8 @@ class App
       {
         project_name: @params[:project_name],
         token_name: App.instance.config(:token_name),
-        magma_host: App.instance.config(:magma)[:host]
+        magma_host: App.instance.config(:magma)[:host],
+        environment: App.instance.environment
       }.to_json
     end
 

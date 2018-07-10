@@ -2,41 +2,46 @@
 import * as React from 'react';
 
 class ConsignmentTable extends React.Component{
-  header() {
-    let { headers } = this.props;
+  tableHeader(){
+    let {headers} = this.props;
 
     return(
-      <div className='consignment-row'>
-        {
-          headers.map(
-            (col_name, index) =>
-              <div className='consignment-header' key={index}>{col_name}</div>
-          )
-        }
-      </div>
+      <tr className='consignment-row'>
+        {headers.map((col_name, index)=>{
+          return <th className='consignment-header' key={index}>{col_name}</th>;
+        })}
+      </tr>
     );
   }
 
   tableRows(){
-    let { headers, rows } = this.props;
-    return rows.map( (row, i) =>
-      <div className='consignment-row' key={i}>
-        {row.map((data, j)=>(<div className='consignment-cell' key={j}>{data}</div>))}
-      </div>
-    );
+    let {headers, rows} = this.props;
+    return rows.map((row, i)=>{
+
+      return(
+        <tr className='consignment-row' key={i}>
+
+          {row.map((data, j)=>{
+            return(
+              <td className='consignment-cell' key={j}>{data}</td>
+            );
+          })}
+        </tr>
+      );
+    });
   }
 
-  render() {
-    return <div className='consignment-result-group'>
-      <div className='consignment-table'>
-        <div className='consignment-head'>
-          {this.header()}
-        </div>
-        <div className='consignment-body'>
+  render(){
+    return(
+      <div className='consignment-result-group'>
+
+        <table className='consignment-table'>
+
+          {this.tableHeader()}
           {this.tableRows()}
-        </div>
+        </table>
       </div>
-    </div>
+    );
   }
 }
 
