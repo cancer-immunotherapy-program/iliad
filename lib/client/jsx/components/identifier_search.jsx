@@ -158,17 +158,17 @@ const mapStateToProps = (state = {}, own_props)=>{
   Object.keys(models).forEach(function(model_name){
 
     /*
-     * There are two kinds of models in the magma data store. Regular data 
+     * There are two kinds of models in the magma data store. Regular data
      * models and dictionarires. Dictionaries do not have a document object. So,
      * we filter for it here.
      */
     if('documents' in models[model_name]){
-      identifiers[model_name] = Object.keys(models[model_name].documents);
+      idents[model_name] = Object.keys(models[model_name].documents);
     }
   });
 
   return {
-    identifiers: Object.keys(identifiers).length ? identifiers : null
+    identifiers: Object.keys(idents).length ? idents : null
   };
 };
 
