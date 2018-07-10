@@ -58,15 +58,14 @@ export class Browser extends React.Component{
     let {model_name, record_name} = this.props;
     let onSuccess = ()=>{this.setState({mode: 'browse'})};
 
-    //this.props.addTokenUser();
     this.props.requestManifests();
     this.props.requestPlots();
-    this.props.requestView({
+    this.props.requestView(
       model_name,
       record_name,
-      tab_name: 'overview',
-      success: onSuccess.bind(this)
-    });
+      'overview',
+      onSuccess.bind(this)
+    );
   }
 
   camelize(str){
