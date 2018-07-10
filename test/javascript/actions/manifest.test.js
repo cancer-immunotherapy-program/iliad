@@ -80,11 +80,24 @@ describe('async actions', () => {
   it('creates ADD_EXCHANGE, REMOVE_EXCHANGE and REMOVE_MANIFEST when deleting a user manifest has been done', () => {
     const manifest = { id: 1 };
 
+<<<<<<< HEAD
     stub_url(
       `/${PROJECT_NAME}/manifests/destroy/${manifest.id}`,
       { manifest },
       'delete'
     );
+=======
+    nock('http://www.fake.com')
+      .delete(`/${PROJECT_NAME}/manifests/destroy/${manifestId}`)
+      .reply(
+        200,
+        { manifest: { id: manifestId } },
+        {
+          'Access-Control-Allow-Origin': '*',
+          'Content-type': 'application/json'
+        }
+      );
+>>>>>>> 0f4b90710d4aae23050e2606a209b04cb320de6f
 
     const expectedActions = [
       {
