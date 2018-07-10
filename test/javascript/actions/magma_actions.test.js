@@ -5,9 +5,9 @@ import nock from 'nock';
 
 // Fixtures for data mocking.
 import {
+  monster_revisions,
+  revision_response,
   document_response,
-  revisions,
-  revision_response
 } from '../fixtures/magma_fixture';
 
 // Actions to test.
@@ -40,7 +40,7 @@ const stub_url = (path, response, verb)=>{
 
 global.fetch = fetch;
 global.Date = jest.fn(() => current_date);
-global.TIMUR_CONFIG = {
+global.APP_CONFIG = {
   project_name: PROJECT_NAME,
   magma_host: 'http://magma.test',
 };
@@ -63,12 +63,11 @@ ADD_TEMPLATE when requesting documents from the Magma /retrieve endpoint.`;
 
     stub_url(
       '/retrieve',
-      document_response,
+      {models: {monster: document_response.models.monster}},
       'post'
     );
 
     let exchange_name = 'magma-test-retrieve';
-
     let expected_actions = [
       {
         type: 'ADD_EXCHANGE',
@@ -164,7 +163,9 @@ ADD_TEMPLATE, and DISCARD_REVISION when revising documents from the Magma
     let request = [
       {
         model_name: 'monster',
-        revisions: revisions
+        revisions: {
+          'Caledonian Boar': monster_revisions['Caledonian Boar']
+        }
       },
       PROJECT_NAME
     ];

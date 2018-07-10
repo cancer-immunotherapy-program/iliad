@@ -46,10 +46,7 @@ class IliadApplication{
     let default_state = {
       consignments: {},
       exchanges: {},
-      magma: {
-        models: {},
-        tables: {}
-      },
+      magma: {},
       manifestsUI: {
         filter: null,
         selected: null

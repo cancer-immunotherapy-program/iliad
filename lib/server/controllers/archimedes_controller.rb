@@ -43,4 +43,3 @@ class ArchimedesController <  App::Controller
     @params[:record_name] ? "@record_name = '#{@params[:record_name].gsub(/'/, "''")}'\n#{script}" : script
   end
 end
-

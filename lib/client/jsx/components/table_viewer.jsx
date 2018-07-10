@@ -1,12 +1,15 @@
 import { connect } from 'react-redux';
 import React from 'react';
 
-import Magma from '../magma';
-import { requestTSV } from '../actions/magma_actions';
-
 import Pager from './pager';
 import {HelpContainer as Help} from './help';
 import AttributeViewer from './attributes/attribute_viewer';
+
+import {requestTSV} from '../actions/magma_actions';
+import {
+  selectModelTemplate,
+  selectModelDocuments
+} from '../selectors/magma_selector';
 
 const TableColumn = (template, document) => (att_name) => (
     <div className='table_data' key={att_name}>
@@ -84,16 +87,36 @@ class TableViewer extends React.Component {
 }
 
 export default connect(
-  function(state,props) {
-    let magma = new Magma(state);
-    let template = magma.template(props.model_name);
-    let documents = magma.documents( props.model_name, props.record_names, props.filter );
+  function(state, props){
+
+    let prj_nm = APP_CONFIG.project_name;
+    let template = selectModelTemplate(state, prj_nm, props.model_name);
+    let documents = selectModelDocuments(
+      state,
+      prj_nm,
+      props.model_name,
+      props.record_names
+    );
+
     let record_names = Object.keys(documents).sort();
     let pages = Math.ceil(record_names.length / props.page_size);
-    let attribute_names = template ? Object.keys(template.attributes).filter(
-      att_name => template.attributes[att_name].shown && template.attributes[att_name].attribute_class != 'Magma::TableAttribute'
-    ) : null;
-    return { template, documents, record_names, pages, attribute_names };
+
+    let attribute_names = null;
+    if(template){
+      attribute_names = Object.keys(template.attributes).filter((attr_name)=>{
+
+        let attr = template.attributes[attr_name];
+        return (attr.shown && attr.attribute_class != 'Magma::TableAttribute');
+      });
+    }
+
+    return {
+      template,
+      documents,
+      record_names,
+      pages,
+      attribute_names
+    };
   },
   { requestTSV }
 )(TableViewer);

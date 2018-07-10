@@ -37,7 +37,7 @@ describe BrowseController do
       get_browse('browse/monster/Lernean%20Hydra')
 
       expect(last_response.status).to eq(200)
-      expect(last_response.body).to match(/TIMUR_CONFIG/)
+      expect(last_response.body).to match(/APP_CONFIG/)
       expect(last_response.body).to match(/record_name: 'Lernean Hydra'/)
     end
   end
@@ -47,7 +47,7 @@ describe BrowseController do
       get_browse('map')
 
       expect(last_response.status).to eq(200)
-      expect(last_response.body).to match(/TIMUR_CONFIG/)
+      expect(last_response.body).to match(/APP_CONFIG/)
       expect(last_response.body).to match(/mode: 'map'/)
     end
   end
