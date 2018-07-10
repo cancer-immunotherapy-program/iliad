@@ -9,9 +9,13 @@ import ListMenu from '../list_menu';
 import ManifestView from './manifest_view';
 
 // Module imports.
-import {addTokenUser} from '../../actions/timur_actions';
+import {addTokenUser} from '../../actions/app_actions';
 import {
-  requestManifests, saveNewManifest, saveManifest, copyManifest, deleteManifest
+  requestManifests,
+  saveNewManifest,
+  saveManifest,
+  copyManifest,
+  deleteManifest
 } from '../../actions/manifest_actions';
 import {
   getAllManifests,

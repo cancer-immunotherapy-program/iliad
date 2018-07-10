@@ -23,7 +23,7 @@ import BrowserTab from './browser_tab';
 // Module imports.
 import * as ManifestActions from '../../actions/manifest_actions';
 import * as PlotActions from '../../actions/plot_actions';
-import * as TimurActions from '../../actions/timur_actions';
+import * as AppActions from '../../actions/app_actions';
 import * as MagmaActions from '../../actions/magma_actions';
 import * as TabSelector from '../../selectors/tab_selector';
 
@@ -166,7 +166,7 @@ export class Browser extends React.Component{
     let tab = TabSelector.getTabByIndexOrder(view.tabs, current_tab_index);
 
     /*
-     * Add the attribute details from the Magma model into the Timur view model.
+     * Add the attribute details from the Magma model into the app view model.
      * and append the actual data to it.
      */
     tab = TabSelector.interleaveAttributes(tab, template);
@@ -213,9 +213,7 @@ const mapStateToProps = (state = {}, own_props)=>{
   let template = magma.template(model_name);
   let doc = magma.document(model_name, record_name);
   let revision = magma.revision(model_name, record_name) || {};
-  let view = (state.timur.views ? state.timur.views[model_name] : null);
-
-  //let tab = getTabByIndexOrder(view.tabs, 0);
+  let view = (state.app.views ? state.app.views[model_name] : null);
 
   return {
     template,
@@ -237,7 +235,7 @@ const mapDispatchToProps = (dispatch, own_props)=>{
     },
 
     requestView: (model_name, record_name, tab_name, onSuccess)=>{
-      dispatch(TimurActions.requestView(
+      dispatch(AppActions.requestView(
         model_name,
         record_name,
         tab_name,

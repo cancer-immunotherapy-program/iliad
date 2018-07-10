@@ -1,14 +1,11 @@
 <!DOCTYPE html>
-<meta charset='utf-8' />
+<meta charset='utf-8'/>
 <html>
-
   <head>
-
     <title>
 
-      Welcome
+      Search
     </title>
-    <link rel='stylesheet' href='https://use.fontawesome.com/releases/v5.0.13/css/all.css' integrity='sha384-DNOHZ68U8hZfKXOrtjWvjxusGo9WQnrNx2sqG0tfsghAvtVlRW3tvkXWZh58N9jp' crossorigin='anonymous'>
     <link rel='stylesheet' media='screen' href='/css/iliad.bundle.css'/>
     <script src='/js/routes.js'></script>
     <script src='/js/iliad.bundle.js'></script>
@@ -19,14 +16,16 @@
     <script type='text/javascript'>
 
       var APP_CONFIG = <%= config_json %>;
-      var app_props = {
+      var iliad_props = {
         user: <%= @user ? "'#{@user.first} #{@user.last}'" : 'null'%>,
-        mode: 'home',
+        mode: 'settings',
         environment: '<%= App.instance.environment %>',
-        is_admin: <%=  @user && @user.is_admin?(@params[:project_name]) ? :true : :false %>
+        can_edit: <%=  @user && @user.can_edit?(@params[:project_name]) ? :true : :false  %>,
+        is_admin: <%=  @user && @user.is_admin?(@params[:project_name]) ? :true : :false  %>,
+        settings_page: '<%= @params[:settings_page] %>'
       };
 
-      const iliad = new IliadApp(app_props, 'root');
+      const iliad = new IliadApp(iliad_props, 'root');
     </script>
   </body>
 </html>

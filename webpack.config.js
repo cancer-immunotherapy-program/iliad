@@ -10,9 +10,9 @@ module.exports = {
       'code-mirror': path.join(__dirname, 'node_modules/codemirror/lib')
     }
   },
-  entry: ['./jsx/timur.jsx', './scss/application.scss' ],
+  entry: ['./jsx/iliad.jsx', './scss/application.scss' ],
   output: {
-    filename: 'public/js/timur.bundle.js',
+    filename: 'public/js/iliad.bundle.js',
     path: __dirname
   },
   module: {
@@ -61,7 +61,7 @@ module.exports = {
   },
   plugins: [
     new ExtractTextPlugin({ // define where to save the file
-      filename: 'public/css/timur.bundle.css',
+      filename: 'public/css/iliad.bundle.css',
       allChunks: true,
     }),
   ],

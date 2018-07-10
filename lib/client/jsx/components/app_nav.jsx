@@ -3,10 +3,10 @@ import * as React from 'react';
 import * as ReactRedux from 'react-redux';
 
 import {IdentifierSearchContainer as IdentifierSearch} from './identifier_search';
-import {HelpContainer as Help} from './help';
-import * as TimurActions from '../actions/timur_actions';
+//import {HelpContainer as Help} from './help';
+import * as AppActions from '../actions/app_actions';
 
-export class TimurNav extends React.Component{
+export class AppNav extends React.Component{
   constructor(props){
     super(props);
     this.state = {};
@@ -15,12 +15,11 @@ export class TimurNav extends React.Component{
   renderTabs(){
     let tabs = {
 
-      browse: Routes.browse_path(TIMUR_CONFIG.project_name),
-      search: Routes.search_path(TIMUR_CONFIG.project_name),
-      map: Routes.map_path(TIMUR_CONFIG.project_name),
-      manifests: Routes.manifests_path(TIMUR_CONFIG.project_name),
-      plots: Routes.plots_path(TIMUR_CONFIG.project_name),
-      help: 'https://github.com/mountetna/timur/wiki'
+      browse: Routes.browse_path(APP_CONFIG.project_name),
+      search: Routes.search_path(APP_CONFIG.project_name),
+      map: Routes.map_path(APP_CONFIG.project_name),
+      manifests: Routes.manifests_path(APP_CONFIG.project_name),
+      plots: Routes.plots_path(APP_CONFIG.project_name)
     };
 
     return(
@@ -67,11 +66,11 @@ export class TimurNav extends React.Component{
   render(){
 
     let login = this.props.user;
-    let heading = <span>{'Timur'}<b>{' : '}</b>{'Data Browser'}</span>;
+    let heading = <span>{'Iliad'}<b>{' : '}</b>{'Data Browser'}</span>;
     let logo_id = 'normal';
 
     if(this.props.environment == 'development'){
-      heading = <span>{'Timur Development'}</span>;
+      heading = <span>{'Iliad Development'}</span>;
       logo_id = 'dev';
     }
 
@@ -88,10 +87,6 @@ export class TimurNav extends React.Component{
               {this.renderHalo()}
             </div>
           </a>
-        </div>
-        <div id='help_float'>
-
-          <Help info='timur' />
         </div>
         <div id='heading'>
 
@@ -112,7 +107,6 @@ export class TimurNav extends React.Component{
 
 const mapStateToProps = (state = {}, own_props)=>{
   return {
-    helpShown: state.timur.help_shown,
     exchanges: state.exchanges
   };
 };
@@ -120,12 +114,12 @@ const mapStateToProps = (state = {}, own_props)=>{
 const mapDispatchToProps = (dispatch, own_props)=>{
   return {
     toggleConfig: (text)=>{
-      dispatch(TimurActions.toggleConfig(text));
+      dispatch(AppActions.toggleConfig(text));
     }
   };
 };
 
-export const TimurNavContainer = ReactRedux.connect(
+export const AppNavContainer = ReactRedux.connect(
   mapStateToProps,
   mapDispatchToProps
-)(TimurNav);
+)(AppNav);

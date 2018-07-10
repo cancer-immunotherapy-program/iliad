@@ -24,7 +24,7 @@ export default class BrowserPane extends React.Component{
 
       if (mode == 'edit' && !pane.attributes[attr_name].editable) return null;
 
-      // The Timur view attribute.
+      // The App view attribute.
       let attr = pane.attributes[attr_name];
 
       // The data of the attribute
@@ -41,7 +41,7 @@ export default class BrowserPane extends React.Component{
         template,
         value,
         mode,
-        attribute: attr,
+        attribute: pane.attributes[attr_name],
         document: doc,
         revision: revised_value
       };

@@ -1,4 +1,4 @@
-class BrowseController < Timur::Controller
+class BrowseController < App::Controller
   def index
     response = Magma::Client.instance.query(
       token,
@@ -21,13 +21,5 @@ class BrowseController < Timur::Controller
     )
   rescue Magma::ClientError => e
     raise Etna::ServerError, 'Could not contact magma'
-  end
-
-  def view
-    view = ViewTab.retrieve_view(
-      @params[:project_name],
-      @params[:model_name]
-    )
-    success(view.to_json, 'application/json')
   end
 end

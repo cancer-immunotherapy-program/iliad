@@ -1,10 +1,10 @@
 {
-  "name": "Timur",
+  "name": "Iliad",
   "version": "1.0.0",
   "description": "Front end to the Mt. Etna system.",
   "repository": {
     "type": "git",
-    "url": "https://github.com/mountetna/timur.git"
+    "url": "https://github.com/cancer-immunotherapy-program/iliad.git"
   },
   "dependencies": {
     "babel-core": "^6.26.0",

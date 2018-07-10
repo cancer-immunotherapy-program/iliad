@@ -56,7 +56,7 @@ describe BrowseController do
     it 'redirects to the main project record' do
       stub_request(
         :post,
-        Timur.instance.config(:magma)[:host]+'/query'
+        App.instance.config(:magma)[:host]+'/query'
       ).with(
           body: {
             project_name: "labors",

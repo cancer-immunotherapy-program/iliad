@@ -1,6 +1,6 @@
 require_relative 'commands'
 
-class Timur
+class App
   include Etna::Application
   attr_reader :db
 
