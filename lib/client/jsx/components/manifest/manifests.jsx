@@ -5,7 +5,7 @@ import * as ReactRedux from 'react-redux';
 import md5 from 'md5';
 
 // Class imports.
-import ListMenu from '../list_menu';
+import ListMenu from '../general/list_menu';
 import ManifestView from './manifest_view';
 
 // Module imports.

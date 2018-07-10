@@ -50,11 +50,11 @@ class MatrixResult extends React.Component{
 
         <button className='consignment-btn' onClick={this.downloadMatrix.bind(this)}>
           <i className='fas fa-download' aria-hidden='true' ></i>
-          {'DOWNLOAD'}
+          &nbsp;{'DOWNLOAD'}
         </button>
         <button className='consignment-btn' onClick={this.toggle.bind(this)}>
           <i className='fas fa-table' aria-hidden='true'></i>
-          { hidden ? 'SHOW' : 'HIDE'}
+          &nbsp;{ hidden ? 'SHOW' : 'HIDE'}
         </button>
         { !hidden && this.table() }
       </div>

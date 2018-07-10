@@ -6,6 +6,7 @@ import * as Redux from 'redux';
 import {Provider} from 'react-redux';
 import thunk from 'redux-thunk';
 import {createLogger} from 'redux-logger';
+import {addTokenUser} from './actions/app_actions';
 
 // Reducers.
 import magma from './reducers/magma_reducer';
@@ -24,9 +25,9 @@ import {ManifestsContainer as Manifests} from './components/manifest/manifests';
 import {BrowserContainer as Browser} from './components/browser/browser';
 import {PlotterContainer as Plotter} from './components/plotter/plotter';
 import {MessagesContainer as Messages} from './components/messages';
-import {AppNavContainer as AppNav} from './components/app_nav';
+import {AppNavContainer as AppNav} from './components/general/app_nav';
 import {HomePageContainer as HomePage} from './components/home_page';
-import {Settings} from './components/settings/settings';
+import {SettingsContainer as Settings} from './components/settings/settings';
 
 import ModelMap from './components/model_map';
 import Search from './components/search/search';
@@ -35,10 +36,12 @@ import Noauth from './components/noauth';
 
 
 class IliadApplication{
-  constructor(initial_props, container_id){
+  constructor(){
     this.store = null;
     this.createStore();
-    this.createUI(initial_props, container_id);
+    this.store.dispatch(addTokenUser());
+    this.parsePath();
+    this.createUI();
   }
 
   createStore(){
@@ -92,9 +95,45 @@ class IliadApplication{
     );
   }
 
-  createComponent(props){
-    switch(props.mode){
-      case 'home':
+  parsePath(){
+    // Pull the URL.
+    let parser = document.createElement('a');
+    parser.href = window.location.href;
+
+    // Split and compact the path.
+    let path = [];
+    if(parser.pathname){
+      path = parser.pathname
+        .split('/')
+        .filter((item)=>((item) ? true : false)); // Compact.
+    }
+
+    // Hash the path parts.
+    if(path.length > 0){
+      path = {
+        project: path[0] ? path[0] : null,
+        component: path[1] ? path[1] : null,
+        model: path[2] ? path[2] : null,
+        record: path[3] ? decodeURIComponent(path[3]) : null
+      };
+
+      // Set the path on the store.
+      this.store.dispatch({
+        type: 'SET_PATH',
+        path
+      });
+    }
+  }
+
+    createComponent(){
+    // Extract the component portion of the path out of the store.
+    let state = this.store.getState();
+    let component = (state.app.path) ? state.app.path.component : '';
+    let props = {};
+    //return <HomePage {...props} />;
+
+    switch(component){
+      case '':
         return <HomePage {...props} />;
       case 'manifests':
         return <Manifests {...props} />;
@@ -117,25 +156,27 @@ class IliadApplication{
     }
   }
 
-  createUI(props, container_id){
+  createUI(){
+/*
     let app_nav_props = {
       user: props.user,
       can_edit: props.can_edit,
       mode: props.mode,
       environment: props.environment
     };
+*/
 
     ReactDOM.render(
       <Provider store={this.store}>
 
         <div id='ui-container'>
 
-          <AppNav {...app_nav_props} />
+          <AppNav />
           <Messages />
-          {this.createComponent(props)}
+          {this.createComponent()}
         </div>
       </Provider>,
-      document.getElementById(container_id)
+      document.getElementById('root-container')
     );
   }
 }

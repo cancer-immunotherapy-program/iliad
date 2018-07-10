@@ -3,7 +3,8 @@ import * as React from 'react';
 import { connect } from 'react-redux';
 
 // Class imports.
-import ButtonBar from '../button_bar';
+import ButtonBar from '../general/button_bar';
+import Consignment from '../../models/consignment';
 
 // Module imports.
 import ManifestScript from './manifest_script';
@@ -29,7 +30,7 @@ export class ManifestView extends React.Component{
     this.buttons = {
       copy: {
         click: ()=>{this.props.copy();},
-        icon: 'files-o',
+        icon: 'far fa-file',
         label: 'COPY'
       },
       remove: {
@@ -38,27 +39,27 @@ export class ManifestView extends React.Component{
             this.props.remove();
           }
         },
-        icon: 'trash-o',
+        icon: 'far fa-trash-alt',
         label: 'DELETE'
       },
       edit: {
         click: this.toggleEdit.bind(this),
-        icon: 'pencil-square-o',
+        icon: 'fas fa-pencil-alt',
         label: 'EDIT'
       },
       run: {
-        icon: 'play',
+        icon: 'fas fa-play',
         label: 'RUN',
         click: this.runManifest.bind(this)
       },
       save: {
         click: this.updateManifest.bind(this),
-        icon: 'floppy-o',
+        icon: 'far fa-save',
         label: 'SAVE'
       },
       cancel: {
         click: this.cancelEdit.bind(this),
-        icon: 'ban',
+        icon: 'fas fa-ban',
         label: 'CANCEL'
       }
     };
@@ -124,7 +125,7 @@ export class ManifestView extends React.Component{
     let buttons = this.getButtons();
 
     let input_props = {
-      className: 'manifest-form-title-input',
+      className: `${disabled} manifest-form-title-input`,
       onChange: update('name'),
       value: name,
       placeholder: 'No name',
@@ -133,14 +134,24 @@ export class ManifestView extends React.Component{
     };
 
     let textarea_props = {
+      className: `${disabled} manifest-form-description`,
       onChange: update('description'),
       value: (description) ? description : '',
       placeholder: 'No description',
       disabled
     };
 
-    let access_props = {
+    let priv_props = {
       name: 'manifest-access',
+      value: 'private',
+      onChange: update('access'),
+      type: 'radio',
+      disabled
+    };
+
+    let pub_props = {
+      name: 'manifest-access',
+      value: 'public',
       onChange: update('access'),
       type: 'radio',
       disabled
@@ -148,30 +159,37 @@ export class ManifestView extends React.Component{
 
     return(
       <div className='manifest-elements'>
+
         <div className='manifest-form-group'>
+
           <div className='manifest-form-header'>
+
             <div className='manifest-form-title'>
+
               <input {...input_props} />
               <ButtonBar className='manifest-action-btn-group' buttons={buttons} />
               <span style={{float: 'right'}}>
+
                 {is_editing && 'EDITING'}
               </span>
             </div>
             <div className='manifest-form-details'>
-              Updated <strong>{ formatDate(updated_at) }</strong> by <strong>{user}</strong>
+
+              {`AUTHOR: ${user}`}
               <br />
-              Access
-              <input value='private' checked={access=='private'} {...access_props} />{'PRIVATE'}
-              <input value='public' checked={access=='public'} {...access_props} />{'PUBLIC'}
+              {`LAST UPDATED: ${updated_at}`}
               <br />
-              <textarea className='manifest-form-description' {...textarea_props} />
+              {'ACCESS: '}
+              <input {...priv_props} />{'PRIVATE'}
+              <input {...pub_props} />{'PUBLIC'}
+              <br />
+              {'DESCRIPTION: '}
+              <br />
+              <textarea {...textarea_props} />
             </div>
 
           </div>
-          <ManifestScript
-            script={script}
-            is_editing={is_editing}
-            onChange={ update('script') }/>
+          <ManifestScript script={script} is_editing={is_editing} onChange={update('script')} />
           <ConsignmentView consignment={consignment}/>
         </div>
       </div>
