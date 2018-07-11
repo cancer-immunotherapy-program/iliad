@@ -5,7 +5,7 @@ import * as ReactRedux from 'react-redux';
 import SelectInput from '../inputs/select_input';
 import {reviseDocument} from '../../actions/magma_actions';
 
-class SelectAttribute extends React.Component{
+export class SelectAttribute extends React.Component{
   revise(value) {
     let { document, template, attribute, reviseDocument } = this.props;
 
@@ -60,7 +60,7 @@ const mapDispatchToProps = (dispatch, own_props)=>{
   };
 };
 
-export default ReactRedux.connect(
+export const SelectAttributeContainer = ReactRedux.connect(
   mapStateToProps,
   mapDispatchToProps
 )(SelectAttribute);

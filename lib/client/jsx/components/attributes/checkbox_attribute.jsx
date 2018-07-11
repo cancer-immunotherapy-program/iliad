@@ -4,7 +4,7 @@ import * as ReactRedux from 'react-redux';
 
 import {reviseDocument} from '../../actions/magma_actions';
 
-class CheckboxAttribute extends React.Component{
+export class CheckboxAttribute extends React.Component{
   revise(e) {
     let { document, template, attribute, reviseDocument } = this.props;
 
@@ -58,12 +58,12 @@ const mapStateToProps = (dispatch, own_props)=>{
 const mapDispatchToProps = (dispatch, own_props)=>{
   return {
     reviseDocument: (args)=>{
-      dispatch(MagmaActions.reviseDocument(args));
+      dispatch(reviseDocument(args));
     }
   };
 };
 
-export default ReactRedux.connect(
+export const CheckboxAttributeContainer = ReactRedux.connect(
   mapStateToProps,
   mapDispatchToProps
 )(CheckboxAttribute);

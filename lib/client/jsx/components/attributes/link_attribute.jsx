@@ -6,7 +6,7 @@ import SlowTextInput from '../inputs/slow_text_input';
 import MagmaLink from '../magma_link';
 import {reviseDocument} from '../../actions/magma_actions';
 
-class LinkAttribute extends React.Component{
+export class LinkAttribute extends React.Component{
   renderEdit(){
     let {document, template, attribute, reviseDocument} = this.props;
     let link_props = {
@@ -85,7 +85,7 @@ const mapDispatchToProps = (dispatch, own_props)=>{
   };
 };
 
-export default ReactRedux.connect(
+export const LinkAttributeContainer = ReactRedux.connect(
   mapStateToProps,
   mapDispatchToProps
 )(LinkAttribute);

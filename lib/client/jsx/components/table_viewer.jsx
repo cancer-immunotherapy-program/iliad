@@ -3,6 +3,7 @@ import * as React from 'react';
 import * as ReactRedux from 'react-redux';
 
 import Pager from './pager';
+import AttributeViewer from './attributes/attribute_viewer';
 
 import {requestTSV} from '../actions/magma_actions';
 import {
@@ -22,7 +23,7 @@ const TableColumn = (template, document)=>{
     return(
       <div className='table_data' key={attr_name}>
 
-        {document[attr_name]}
+        <AttributeViewer {...attr_props} />
       </div>
     );
   };

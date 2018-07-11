@@ -30,6 +30,7 @@ import {HistogramAttributeContainer as HistogramAttribute} from './plot_attribut
 
 export default class AttributeViewer extends React.Component{
   render(){
+
     let {attribute} = this.props;
 
     switch(attribute.attribute_class){
@@ -62,8 +63,10 @@ export default class AttributeViewer extends React.Component{
         return <MarkdownAttribute {...this.props} />;
       case 'MetricsAttribute':
         return <MetricsAttribute {...this.props} />;
+
       case 'Magma::CollectionAttribute':
         return <CollectionAttribute {...this.props} />;
+
       case 'Magma::ForeignKeyAttribute':
       case 'Magma::ChildAttribute':
         return <LinkAttribute {...this.props} />;
@@ -73,6 +76,7 @@ export default class AttributeViewer extends React.Component{
         return <DocumentAttribute {...this.props} />;
       case 'Magma::ImageAttribute':
         return <ImageAttribute {...this.props} />;
+
       case 'Magma::Attribute':
         if(attribute.options) return <SelectAttribute {...this.props} />;
         switch(attribute.type){
@@ -89,7 +93,7 @@ export default class AttributeViewer extends React.Component{
         }
 
       default:
-        var msg = 'Could not match attribute '+attribute.name;
+        let msg = 'Could not match attribute '+attribute.name;
         msg += ' with class '+attribute.attribute_class+' to a display class!';
         console.log(msg);
         return null;
