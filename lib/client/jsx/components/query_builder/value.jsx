@@ -48,7 +48,7 @@ export class ValuePredicate extends React.Component{
 
 const mapStateToProps = (state, own_props)=>{
 
-  let project_name = TIMUR_CONFIG.project_name;
+  let project_name = APP_CONFIG.project_name;
   let model_name = `${project_name}_${own_props.attribute.model_name}`;
 
   let verbs = selectVerbs(state, own_props.type);
