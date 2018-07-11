@@ -1,34 +1,41 @@
-import React, {Component} from 'react'
-import {connect} from 'react-redux';
+// Framework libraries.
+import * as React from 'react';
+import * as ReactRedux from 'react-redux';
 
+// Class imports.
+import {Animate} from 'react-move';
+import {ModelReportContainer as ModelReport} from './model_report';
+
+// Module imports
 import {easeQuadIn} from 'd3-ease';
-import {Animate} from 'react-move'
-
-import {requestModels} from '../actions/magma_actions';
+import {requestModels} from '../../actions/magma_actions';
 import {
+  selectModels,
   selectModelNames,
-  selectModelTemplate,
   selectModelTemplates
-} from '../selectors/magma_selector';
+} from '../../selectors/magma_selector';
 
-class ModelLink extends Component {
-  render() {
-    let { center, parent, size } = this.props
-    if (!parent || !center) return null
-    return <g className="model_link">
-      <line x1={center[0]} y1={center[1]} x2={parent[0]} y2={parent[1]}/>
-    </g>
+class ModelLink extends React.Component{
+  render(){
+    let {center, parent, size} = this.props;
+    if(!parent || !center) return null;
+    return(
+      <g className='model_link'>
+
+        <line x1={center[0]} y1={center[1]} x2={parent[0]} y2={parent[1]}/>
+      </g>
+    );
   }
 }
 
-class ModelNode extends Component {
+class ModelNode extends React.Component{
   render() {
     let { model_name, center, size } = this.props
     if (!center) return null
     let [ x, y ] = center
     return <g className="model_node">
         <g transform={ `translate(${x},${y})` } onClick={ () => this.props.handler(this.props.model_name) }>
-        <circle 
+        <circle
           r={ size }
           cx={0}
           cy={0}/>
@@ -40,81 +47,31 @@ class ModelNode extends Component {
   }
 }
 
-
-class ModelAttribute extends Component {
-  type() {
-    let attribute = this.props.template.attributes[this.props.att_name]
-
-    if (attribute.type) return attribute.type
-
-    return attribute.attribute_class.replace(/Magma::/,'').replace('Attribute','')
-  }
-  render() {
-    let { att_name, template } = this.props
-    let attribute = template.attributes[att_name]
-    return <div className="attribute" key={ att_name }>
-      <span>{att_name}</span>
-      <span className="type">({this.type()})</span>
-      { attribute.desc ?
-      <span className="description">{ attribute.desc }</span>
-          : null
-      }
-    </div>
-  }
-}
-
-class ModelReport extends Component {
-  render() {
-    let { model_name, template } = this.props
-    if (!template) return <div/>
-    return <div className="report">
-      <span className="title">{model_name}</span>
-      <span className="description">{template.description}</span>
-      {
-        Object.keys(template.attributes).map((att_name,i) =>
-          template.attributes[att_name].shown ? 
-          <ModelAttribute key={i} att_name={att_name} template={template}/>
-          : null
-        )
-      }
-    </div>
-  }
-}
-
-ModelReport = connect(
-  (state,props) => {
-
-    let template = selectModelTemplate(
-      state,
-      APP_CONFIG.project_name,
-      props.model_name
-    );
-
-    return {template};
-  }
-)(ModelReport)
-
-class LayoutNode {
+class LayoutNode{
   constructor(template, layout) {
     this.model_name = template.name
     this.template = template
     this.layout = layout
   }
 
-  createLinks() {
-    let template = this.template
-    this.links = Object.keys(template.attributes).map((att_name) => {
-      let attribute = template.attributes[att_name]
-      if (!attribute.model_name) return null
-      let other = this.layout.nodes[ attribute.model_name ]
-      if (!other) return null
+  createLinks(){
+    let template = this.template;
+    this.links = Object.keys(template.attributes).map((att_name)=>{
+      let attribute = template.attributes[att_name];
+      if (!attribute.model_name) return null;
+      let other = this.layout.nodes[attribute.model_name]
+      if (!other) return null;
 
-      // the link exists if - you are the other model's parents
-      if (!(template.parent == attribute.model_name
-        || other.template.parent == this.model_name 
-        || (!template.parent && other.template.parent)
-        || (!other.template.parent && template.parent))) return null
-      return { other }
+      // The link exists if - you are the other model's parents
+      let other_parent = (
+        template.parent == attribute.model_name ||
+        other.template.parent == this.model_name ||
+        (!template.parent && other.template.parent) ||
+        (!other.template.parent && template.parent)
+      );
+
+      return (other_parent) ? {other} : null;
+
     }).filter(_=>_)
   }
 
@@ -139,7 +96,7 @@ class LayoutNode {
     this.size = 40 / depth
     this.parent_name = parent_name
 
-    if (depth == 1) 
+    if (depth == 1)
       this.center = [ this.layout.width/2, this.layout.height/2 ]
     else {
       let th = (arc[1] + arc[0])/2
@@ -161,24 +118,24 @@ class LayoutNode {
   }
 }
 
-class Layout {
-  constructor(center_model, templates, width, height) {
-    this.nodes = templates.reduce((nodes, template) => {
-      nodes[template.name] = new LayoutNode(template,this)
-      return nodes
+class Layout{
+  constructor(center_model, templates, width, height){
+    this.nodes = templates.reduce((nodes, template)=>{
+      nodes[template.name] = new LayoutNode(template, this);
+      return nodes;
     }, {})
-    this.width = width
-    this.height = height
+    this.width = width;
+    this.height = height;
 
-    for (var model_name in this.nodes) {
-      this.nodes[model_name].createLinks()
+    for(let model_name in this.nodes){
+      this.nodes[model_name].createLinks();
     }
 
     if (this.nodes[center_model]) this.nodes[center_model].place(null, 1, [0,360])
   }
 }
 
-class ModelAnimation extends Component {
+class ModelAnimation extends React.Component{
   nodeCenter(node, parent_name, layout) {
     return {
       size: node.size,
@@ -226,20 +183,23 @@ class ModelAnimation extends Component {
   }
 }
 
-class ModelMap extends Component {
-  constructor() {
-    super()
-    this.state = { current_model: "project" }
+class ModelMap extends React.Component{
+  constructor(){
+    super();
+    this.state = {current_model: `${APP_CONFIG.project_name}_project`};
   }
-  componentDidMount() {
+
+  componentDidMount(){
     this.props.requestModels();
   }
-  showModel(model_name) {
-    this.setState( { new_model: model_name } )
+
+  showModel(model_name){
+    this.setState({new_model: model_name});
   }
-  renderLinks(model_names, layout, layout2) {
+
+  renderLinks(model_names, layout, layout2){
     return model_names.map(
-      (model_name) => {
+      (model_name)=>{
         let node = layout.nodes[model_name];
         if (layout2) {
           return <ModelAnimation
@@ -258,13 +218,15 @@ class ModelMap extends Component {
       }
     )
   }
-  setNewModel(model_name) {
-    let { new_model } = this.state;
+
+  setNewModel(model_name){
+    let {new_model} = this.state;
     this.setState({
       new_model: null,
       current_model: new_model
-    })
+    });
   }
+
   renderModels(new_model, model_names, layout, layout2) {
     return model_names.map(
       (model_name) => {
@@ -291,40 +253,47 @@ class ModelMap extends Component {
       }
     )
   }
-  render() {
-    let [ width, height ] = [ 500, 500 ];
-    let { templates, model_names } = this.props;
-    let { new_model, current_model } = this.state;
+
+  render(){
+    let [width, height] = [500, 500];
+    let {templates, model_names} = this.props;
+    let {new_model, current_model} = this.state;
     let layout = new Layout(current_model, templates, width, height);
     let layout2;
-
     if (new_model) layout2 = new Layout(new_model, templates, width, height);
 
-    return <div id="map">
-      <svg width={width} height={height}>
-        {
-          this.renderLinks(model_names, layout, layout2)
-        }
-        {
-          this.renderModels(new_model, model_names, layout, layout2)
-        }
-      </svg>
-      <ModelReport model_name={ current_model }/>
-    </div>
+    let links = this.renderLinks(model_names, layout, layout2);
+    let models = this.renderModels(new_model, model_names, layout, layout2);
+
+    return(
+      <div id='map'>
+        <svg width={width} height={height}>
+
+          {links}
+          {models}
+        </svg>
+        <ModelReport model_name={current_model} />
+      </div>
+    );
   }
 }
 
-export default connect(
-  (state) => {
-    let model_names = selectModelNames(state, APP_CONFIG.project_name);
-    let templates = selectModelTemplates(state, APP_CONFIG.project_name);
+const mapStateToProps = (state, own_props)=>{
+  return {
+    model_names: selectModelNames(state, APP_CONFIG.project_name),
+    templates: selectModelTemplates(state, APP_CONFIG.project_name)
+  };
+};
 
-    return {
-      model_names,
-      templates
-    };
-  },
-  {
-    requestModels
-  }
+const mapDispatchToProps = (dispatch, own_props)=>{
+  return {
+    requestModels: ()=>{
+      dispatch(requestModels());
+    }
+  };
+};
+
+export const ModelMapContainer = ReactRedux.connect(
+  mapStateToProps,
+  mapDispatchToProps
 )(ModelMap);
