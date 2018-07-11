@@ -341,13 +341,19 @@
   alignment-baseline: middle;
 }
 
-.label-group {
+.legend-container {
+  width: 75%;
+  margin-top: 25px;
+  margin-left: auto;
+}
+
+.category-group {
   display: inline-block;
   margin-right: 24px;
   vertical-align: middle
 }
 
-.label-box {
+.label-rect {
   display: inline-block;
   margin-right: 8px;
   width: 16px;

@@ -10,7 +10,6 @@ import Consignment from '../../../models/consignment';
 
 // Module imports.
 import * as ManifestActions from '../../../actions/manifest_actions';
-import * as Colors from '../../../utils/colors';
 import * as ConsignmentSelector from '../../../selectors/consignment_selector';
 
 export class LinePlotAttribute extends GenericPlotAttribute{
@@ -30,14 +29,6 @@ export class LinePlotAttribute extends GenericPlotAttribute{
       },
       lines
     };
-console.log("================ props from line plot attribute ==============");
-console.log(this.props);
-
-console.log("================ layout from line plot attribute ==============");
-console.log(this.props.selected_plot.layout);
-
-console.log("================ lines from line plot attribute ==============");
-console.log(this.props.lines);
 
     return(
       <div className='value'>
@@ -73,7 +64,6 @@ const mapStateToProps = (state = {}, own_props)=>{
    */
   let lines = [];
   if(selected_consignment && selected_consignment.lines){
-    let colors = Colors.autoColors(selected_consignment.lines.size);
 
     lines = selected_consignment.lines.map((label, line, index_a)=>{
 
@@ -91,8 +81,7 @@ const mapStateToProps = (state = {}, own_props)=>{
 
       return {
         label,
-        points,
-        color: colors[index_a]
+        points
       };
     });
   }

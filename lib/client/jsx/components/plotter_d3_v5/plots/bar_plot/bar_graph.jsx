@@ -4,9 +4,9 @@ import Axis from '../../axis';
 import Bars from './bars';
 //import Tooltip from '../../tooltip';
 
-class BarGraph extends Component {
-  constructor() {
-    super()
+class BarGraph extends Component{
+  constructor(props){
+    super(props)
     this.state = {
       data: [],
       // tooltip: {display: false, data: {key: '',value: ''}}
@@ -23,13 +23,13 @@ class BarGraph extends Component {
     return {data}
   }
 
-  showToolTip(event) {
+  showToolTip(event){
     let {target} = event;
     this.setState({tooltip:{
-      display:true,
+      display: true,
       data: {
-          type:target.getAttribute('data-type'),
-          value:target.getAttribute('data-value')
+          type: target.getAttribute('data-type'),
+          value: target.getAttribute('data-value')
           },
       location:{
           x: parseFloat(target.getAttribute('width')) / 2 + 
@@ -39,17 +39,18 @@ class BarGraph extends Component {
     }});
   }
 
-  hideToolTip() {
+  hideToolTip(){
     this.setState({tooltip:{ display:false,data:{type:'',value:''}}});
   }
 
-  render() {
+  render(){
     let {parent_width, plot}=this.props;
     let {margins, color_range} = plot;
     let svg_width = parent_width > 800 ? 800 : parent_width;
     let svg_dimensions = {
       width: Math.max(svg_width, plot.width),
-      height: plot.height};
+      height: plot.height
+    };
 
     let max_value = Math.max(...this.state.data.map(d => d.value));
     
@@ -68,21 +69,21 @@ class BarGraph extends Component {
     let svg_props = {
       width: svg_dimensions.width,
       height: svg_dimensions.height
-    }
+    };
 
     let axis_x_props = {
       orient: 'Bottom',
       scale: xScale,
       translate: `translate(0, ${svg_dimensions.height - margins.bottom})`,
       tickSize: svg_dimensions.height - margins.top - margins.bottom,
-    }
+    };
 
     let axis_y_props = {
       orient: 'Left',
       scale: yScale,
       translate: `translate(${margins.left}, 0)`,
       tickSize: svg_dimensions.width - margins.left - margins.right,
-    }
+    };
 
     let bars_props = {
       scales: {xScale, yScale},
@@ -93,7 +94,7 @@ class BarGraph extends Component {
       color_range
       // showToolTip: this.showToolTip,
       // hideToolTip: this.hideToolTip
-    }
+    };
 
     let tooltip_props = {
       tooltip: this.state.tooltip, 
@@ -101,9 +102,9 @@ class BarGraph extends Component {
       bg_style: 'tooltip-bg',
       x_value: 'Type', 
       y_value: 'Value'
-    }
+    };
 
-    return (
+    return(
       <div>
         <svg {...svg_props}>
           <Axis {...axis_x_props}/>
@@ -112,7 +113,7 @@ class BarGraph extends Component {
           {/*<Tooltip {...tooltip_props}/>*/}
         </svg>
      </div>
-    )
+    );
   }
 }
 

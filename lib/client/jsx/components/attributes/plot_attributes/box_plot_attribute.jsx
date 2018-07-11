@@ -10,7 +10,6 @@ import Consignment from '../../../models/consignment';
 
 // Module imports.
 import * as ManifestActions from '../../../actions/manifest_actions';
-import * as Colors from '../../../utils/colors';
 import * as ConsignmentSelector from '../../../selectors/consignment_selector';
 
 export class BoxPlotAttribute extends GenericPlotAttribute{
@@ -28,16 +27,6 @@ export class BoxPlotAttribute extends GenericPlotAttribute{
       },
       groups
     };
-
-
-    console.log("+++++++++++++++++ props from box plot attribute ++++++++++++++++");
-    console.log(this.props);
-
-    console.log("+++++++++++++++++ layout from box plot attribute +++++++++++++++++");
-    console.log(this.props.selected_plot.layout);
-
-    console.log("+++++++++++++++++ group from box plot attribute +++++++++++++++++");
-    console.log(this.props.groups);
 
     return(
       <div className='value'>
@@ -85,7 +74,6 @@ const mapStateToProps = (state = {}, own_props)=>{
     let height = selected_consignment.height;
     let category = selected_consignment.category;
     let group_names = [...new Set(category.values)];
-    let colors = Colors.autoColors(group_names.length);
 
     groups = group_names.map((group_name, index)=>{
 

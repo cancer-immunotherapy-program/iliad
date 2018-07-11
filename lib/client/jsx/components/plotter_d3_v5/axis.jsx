@@ -1,16 +1,16 @@
 import React, { Component } from 'react'
 import * as d3 from 'd3';
 
-export default class Axis extends Component {
-  componentDidMount() {
+export default class Axis extends Component{
+  componentDidMount(){
     this.renderAxis();
   }
 
-  componentDidUpdate() {
+  componentDidUpdate(){
     this.renderAxis();
   }
 
-  renderAxis() {
+  renderAxis(){
     
     //Add scales to axis
     let axis_type = `axis${this.props.orient}`;
@@ -21,7 +21,7 @@ export default class Axis extends Component {
     d3.select(this.axisElement).call(axis);
   }
 
-  render() {
+  render(){
     let props = {
       className: `axis axis-${this.props.orient}`,
       ref: (el) => { this.axisElement = el; },

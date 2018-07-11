@@ -3,12 +3,8 @@ import React, {Component} from 'react';
 import * as d3 from 'd3';
 import {interpolateLab} from 'd3-interpolate';
 
-class Bars extends Component {
-  constructor(props) {
-    super(props);
-  }
-
-  render() {
+class Bars extends Component{
+  render(){
     let {
         scales, 
         margins, 
@@ -38,7 +34,7 @@ class Bars extends Component {
         // onMouseOut: this.props.hideToolTip,
         'data-value': datum.value,
         'data-type': datum.id
-      }
+      };
 
       return <rect {...rect_props}/>;
     });

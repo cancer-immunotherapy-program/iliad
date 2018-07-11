@@ -1,12 +1,8 @@
 import React, {Component} from 'react';
 import * as d3 from 'd3';
 
-class Lines extends Component {
-  constructor(props) {
-    super(props);
-  }
-
-  render() {
+class Lines extends Component{
+  render(){
     let {lines, scales} = this.props;
     let {xScale, yScale} = scales;
     let color = d3.scaleOrdinal(d3.schemeCategory10);
@@ -22,7 +18,7 @@ class Lines extends Component {
         d: linePath(line.points),
         fill: 'none',
         stroke: color(line.label)
-      }
+      };
 
       return <path {...path_props}></path>;
     });

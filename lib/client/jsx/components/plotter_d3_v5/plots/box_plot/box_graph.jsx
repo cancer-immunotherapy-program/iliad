@@ -3,14 +3,14 @@ import * as d3 from 'd3';
 import Axis from '../../axis';
 import Boxes from './boxes'
 
-class BoxGraph extends Component {
-  constructor(props) {
+class BoxGraph extends Component{
+  constructor(props){
     super(props);
     this.xScale = d3.scaleBand();
     this.yScale = d3.scaleLinear();
   }
 
-  render() {
+  render(){
     let {parent_width, plot, groups}=this.props;
     let {margins, y_min_max, color_range} = plot;
     let svg_width = parent_width > 800 ? 800 : parent_width;
@@ -33,30 +33,30 @@ class BoxGraph extends Component {
     let svg_props = {
       width: svg_dimensions.width,
       height: svg_dimensions.height
-    }
+    };
 
     let axis_x_props = {
       orient: 'Bottom',
       scale: xScale,
       translate: `translate(0, ${svg_dimensions.height - margins.bottom})`,
-      tickSize: svg_dimensions.height - margins.top - margins.bottom,
-    }
+      tickSize: svg_dimensions.height - margins.top - margins.bottom
+    };
 
     let axis_y_props = {
       orient: 'Left',
       scale: yScale,
       translate: `translate(${margins.left}, 0)`,
-      tickSize: svg_dimensions.width - margins.left - margins.right,
-    }
+      tickSize: svg_dimensions.width - margins.left - margins.right
+    };
 
-    let box_props ={
+    let box_props = {
       groups,
       y_min_max, 
       color_range,
       scales: {xScale, yScale}
-    }
+    };
 
-    return (
+    return(
       <div>
         <svg {...svg_props}>
           <Axis {...axis_x_props}/>
@@ -64,7 +64,7 @@ class BoxGraph extends Component {
           <Boxes {...box_props} />
         </svg>
      </div>
-    )
+    );
   }
 }
 
