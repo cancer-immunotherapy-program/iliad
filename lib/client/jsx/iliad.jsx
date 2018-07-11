@@ -86,7 +86,7 @@ class IliadApplication{
     ];
 
     // Apply the logging if we are not in production.
-    if(process.env.NODE_ENV != 'production') middlewares.push(createLogger());
+    //if(process.env.NODE_ENV != 'production') middlewares.push(createLogger());
 
     this.store = Redux.createStore(
       reducers,
@@ -157,15 +157,6 @@ class IliadApplication{
   }
 
   createUI(){
-/*
-    let app_nav_props = {
-      user: props.user,
-      can_edit: props.can_edit,
-      mode: props.mode,
-      environment: props.environment
-    };
-*/
-
     ReactDOM.render(
       <Provider store={this.store}>
 
