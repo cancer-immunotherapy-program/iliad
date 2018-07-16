@@ -26,7 +26,7 @@ const BarButton = (button)=>{
     <button key={button.label} onClick={button.click}>
 
       <i className={`${ button.icon }`} aria-hidden='true'></i>
-      {button.label}
+      &nbsp;{button.label}
     </button>
   );
 };

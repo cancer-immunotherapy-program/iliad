@@ -3,7 +3,7 @@ import * as React from 'react';
 import * as ReactRedux from 'react-redux';
 
 import MagmaLink from './magma_link';
-import * as MagmaActions from '../actions/magma_actions';
+import {requestIdentifiers} from '../actions/magma_actions';
 import {selectModels} from '../selectors/magma_selector';
 
 export class IdentifierSearch extends React.Component{
@@ -12,12 +12,12 @@ export class IdentifierSearch extends React.Component{
 
     this.state = {
       match_string: '',
-      has_focus: false 
+      has_focus: false
     };
   }
 
   componentWillMount(){
-    this.props.requestIdentifiers();
+    //this.props.requestIdentifiers();
   }
 
   find_matches(){
@@ -169,7 +169,7 @@ const mapStateToProps = (state = {}, own_props)=>{
 const mapDispatchToProps = (dispatch, own_props)=>{
   return {
     requestIdentifiers: ()=>{
-      dispatch(MagmaActions.requestIdentifiers());
+      dispatch(requestIdentifiers());
     }
   };
 };

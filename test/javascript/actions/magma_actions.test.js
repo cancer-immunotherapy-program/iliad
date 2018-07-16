@@ -5,9 +5,9 @@ import nock from 'nock';
 
 // Fixtures for data mocking.
 import {
+  monster_revisions,
+  revision_response,
   document_response,
-  revisions,
-  revision_response
 } from '../fixtures/magma_fixture';
 
 // Actions to test.
@@ -164,7 +164,7 @@ ADD_TEMPLATE, and DISCARD_REVISION when revising documents from the Magma
       {
         model_name: 'monster',
         revisions: {
-          'Caledonian Boar': revisions['Caledonian Boar']
+          'Caledonian Boar': monster_revisions['Caledonian Boar']
         }
       },
       PROJECT_NAME

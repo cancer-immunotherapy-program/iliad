@@ -9,7 +9,7 @@ class App
   class Server < Etna::Server
     # Root path.
     get '/' do
-      erb_view(:welcome)
+      erb_view(:index)
     end
 
     get 'no_auth' do
@@ -22,32 +22,32 @@ class App
 
       # Browse page.
       get ':project_name/browse/:model_name/*record_name', as: :browse_model do
-        erb_view(:model)
+        erb_view(:index)
       end
 
       # Search page.
       get ':project_name/search', as: :search do
-        erb_view(:search)
+        erb_view(:index)
       end
 
       # Map page.
       get ':project_name/map', as: :map do
-        erb_view(:map)
+        erb_view(:index)
       end
 
       # Settings page.
       get ':project_name/settings/:settings_page', as: :settings do
-        erb_view(:settings)
+        erb_view(:index)
       end
 
       # Manifest page.
       get ':project_name/manifests', as: :manifests do
-        erb_view(:manifests)
+        erb_view(:index)
       end
 
       # Plots page.
       get ':project_name/plots', as: :plots do
-        erb_view(:plots)
+        erb_view(:index)
       end
 
 # CONTROLLER ACTIONS. Supports the API and backend calls.

@@ -74,6 +74,7 @@ a:hover{
   padding-top: 15px;
   display: block;
   font-size: 16px;
+  font-family: $body_font;
 }
 
 .home-page-project-link:hover{
@@ -120,7 +121,7 @@ a:hover{
     transform: rotate(360deg);
   }
 }
- 
+
 .loader-graphic:before{
   position: absolute;
   content: '';

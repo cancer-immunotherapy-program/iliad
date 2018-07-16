@@ -48,7 +48,7 @@ class Search extends Component {
         page_size: this.state.page_size,
         collapse_tables: true,
         exchange_name: `request-${this.state.selected_model}`,
-        success: this.makePageCache.bind(this, page, 
+        success: this.makePageCache.bind(this, page,
           newSearch ? this.state.page_size : null)
       })
     }
@@ -84,25 +84,25 @@ class Search extends Component {
         showNone='enabled'/>
 
       <span className='label'>Page size</span>
-      <SelectInput 
+      <SelectInput
         values={ [ 10, 25, 50, 200 ] }
         defaultValue={ this.state.page_size }
         onChange={ (page_size) => this.setState({ page_size }) }
         showNone='disabled'/>
-      <input type='text' className='filter' 
+      <input type='text' className='filter'
         placeholder='filter query'
         onChange={ (e) => this.setState({ current_filter: e.target.value }) }/>
 
-      <input type='button' className='button' value='Search' 
+      <input type='button' className='button' value='Search'
         disabled={ !this.state.selected_model }
-        onClick={ 
+        onClick={
           () => this.getPage(1, true)
         } />
-      <input className='button' 
-        type='button' 
-        value={'\u21af TSV'} 
+      <input className='button'
+        type='button'
+        value={'\u21af TSV'}
         disabled={ !this.state.selected_model }
-        onClick={ () => this.props.requestTSV(this.state.selected_model, 
+        onClick={ () => this.props.requestTSV(this.state.selected_model,
           this.state.current_filter) }/>
     </div>
   }
@@ -117,12 +117,12 @@ class Search extends Component {
               this.renderQuery()
             }
             {
-              pages != null ? 
+              pages != null ?
                 <div className='pages'>
                   <div className='results'>
                     Found { this.state.results } records in <span className='model_name'>{ this.props.model_name }</span>
                   </div>
-                <Pager pages={ pages } 
+                <Pager pages={ pages }
                   current_page={ this.props.current_page }
                   set_page={ this.getPage.bind(this) } >
                 </Pager>
@@ -132,7 +132,7 @@ class Search extends Component {
         }
         {
           this.props.model_name ? <div className='documents'>
-            <SearchTable 
+            <SearchTable
               mode={ this.state.mode }
               model_name={ this.props.model_name }
               record_names={ this.props.record_names }

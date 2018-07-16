@@ -13,11 +13,11 @@ export class AppNav extends React.Component{
 
   renderTabs(){
     let tabs = {
-      PLOT: Routes.plots_path(APP_CONFIG.project_name),
-      MANIFEST: Routes.manifests_path(APP_CONFIG.project_name),
-      MAP: Routes.map_path(APP_CONFIG.project_name),
-      SEARCH: Routes.search_path(APP_CONFIG.project_name),
-      BROWSE: Routes.browse_path(APP_CONFIG.project_name),
+      PLOT: Routes.plots_path(this.props.project),
+      MANIFEST: Routes.manifests_path(this.props.project),
+      MAP: Routes.map_path(this.props.project),
+      SEARCH: Routes.search_path(this.props.project),
+      BROWSE: Routes.browse_path(this.props.project)
     };
 
     return (
@@ -25,7 +25,7 @@ export class AppNav extends React.Component{
         const tab_props = {
           className: 'nav-menu-btn',
           key: Math.random(),
-          href: `${window.location.origin}${tabs[name]}/${this.props.project}`
+          href: `${window.location.origin}${tabs[name]}`
         };
 
         return <a {...tab_props}>{name}</a>;
@@ -42,9 +42,9 @@ export class AppNav extends React.Component{
     })
     return str.toUpperCase();
   }
-  
+
   render() {
-    let login = this.props.user || <a href={Routes.login_path()}>Login</a>;
+    if(!this.props.user) return null;
 
     let activity_props = {
       className: 'nav-menu-btn',
@@ -59,8 +59,7 @@ export class AppNav extends React.Component{
     }
 
     return (
-      <div>
-        <div id='header-group'>
+      <div id='header-group'>
 
         <div id='title-menu'>
 
@@ -75,11 +74,12 @@ export class AppNav extends React.Component{
           </button>
           <img id='ucsf-logo' src='/img/ucsf_logo_dark.png' alt='' />
         </div>
+
         <div id='nav-menu'>
-        
+
           <a className='nav-menu-btn' id='login'>
 
-            {login}
+            {`${this.props.user.first} ${this.props.user.last}`}
           </a>
 
           {this.props.mode !== 'home' && <IdentifierSearch />}
@@ -90,13 +90,13 @@ export class AppNav extends React.Component{
           <img src='/img/timur_logo_basic.png' alt='' />
         </div>
       </div>
-    </div>
     );
   }
 }
 
 const mapStateToProps = (state = {}, own_props)=>{
   return {
+    user: state.app.user,
     project: state.app.path ? state.app.path.project : '',
     component: state.app.path ? state.app.path.component : '',
     helpShown: state.app.help_shown
