@@ -459,7 +459,53 @@
             box-sizing: border-box;
   }
 
+  .manifest-form-title {
+    border-bottom: 1px solid #666666;
+    padding-bottom: 10px;
 
+    .manifest-form-title-input{
+      border: none;
+      font-size: 1em;
+      width: 300px;
+      color: #111;
+      outline: 1px solid #333;
+      &:disabled {
+        @extend .disabled;
+      }
+    }
+
+    .manifest-action-btn-group{
+      float: right;
+
+      button{
+        margin-left: 10px;
+        cursor: pointer;
+      }
+    }
+
+  }
+  .manifest-form-details{
+    font-size: 0.8em;
+    line-height: 25px;
+  }
+
+  .manifest-form-description{
+    text-align: justify;
+    font-size: 1.2em;
+    margin-left: 0px;
+    margin-top: 0px;
+    width: 100%;
+    resize: vertical;
+    border: 0px;
+    outline: 1px solid #333;
+    &:disabled {
+      @extend .disabled;
+      resize: none;
+    }
+    -webkit-box-sizing: border-box;
+       -moz-box-sizing: border-box;
+            box-sizing: border-box;
+  }
 }
 
 .consignment-result-group {
