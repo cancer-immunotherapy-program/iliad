@@ -11,12 +11,13 @@
  * file per style scope.
  */
 
+@import "fonts";
 @import "globals";
 @import "navbar";
 @import "messages";
+@import "table";
 @import "browser";
 @import "plotter";
-@import "table";
 @import "datepicker";
 @import "project";
 @import "plots";

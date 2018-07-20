@@ -1,6 +1,6 @@
 // Framework libraries.
 import * as React from 'react';
-import { connect } from 'react-redux';
+import * as ReactRedux from 'react-redux';
 
 // Class imports.
 import ButtonBar from '../general/button_bar';
@@ -10,14 +10,11 @@ import Consignment from '../../models/consignment';
 import ManifestScript from './manifest_script';
 import ConsignmentView from './consignment_view';
 
-import {
-  requestConsignments
-} from '../../actions/manifest_actions';
-import { cloneManifest } from '../../selectors/manifest_selector';
-import { selectConsignment } from '../../selectors/consignment_selector';
+import {requestConsignments} from '../../actions/manifest_actions';
+import {cloneManifest} from '../../selectors/manifest_selector';
+import {selectConsignment} from '../../selectors/consignment_selector';
 
 import {formatDate} from '../../utils/dates';
-
 
 export class ManifestView extends React.Component{
   constructor(props){
@@ -65,8 +62,8 @@ export class ManifestView extends React.Component{
     };
   }
 
-  runManifest() {
-    let { consignment, requestConsignments, manifest } = this.props;
+  runManifest(){
+    let {consignment, requestConsignments, manifest} = this.props;
     if(!consignment) requestConsignments([manifest]);
   }
 
@@ -175,15 +172,27 @@ export class ManifestView extends React.Component{
             </div>
             <div className='manifest-form-details'>
 
-              {`AUTHOR: ${user}`}
+              <div className='manifest-form-detail'>
+
+                <span>{'AUTHOR:'}&nbsp;&nbsp;</span>
+                {user}
+              </div>
+              <div className='manifest-form-detail'>
+
+                <span>{'LAST UPDATED:'}&nbsp;&nbsp;</span>
+                {updated_at}
+              </div>
+              <div className='manifest-form-detail'>
+                <span>{'ACCESS:'}&nbsp;&nbsp;</span>
+                <input {...priv_props} />{'PRIVATE'}
+                &nbsp;
+                <input {...pub_props} />{'PUBLIC'}
+              </div>
               <br />
-              {`LAST UPDATED: ${updated_at}`}
-              <br />
-              {'ACCESS: '}
-              <input {...priv_props} />{'PRIVATE'}
-              <input {...pub_props} />{'PUBLIC'}
-              <br />
-              {'DESCRIPTION: '}
+              <div className='manifest-form-detail'>
+
+                <span>{'DESCRIPTION: '}</span>
+              </div>
               <br />
               <textarea {...textarea_props} />
             </div>
@@ -196,17 +205,21 @@ export class ManifestView extends React.Component{
     );
   }
 }
+const mapStateToProps = (state = {}, own_props)=>{
+  return {
+    consignment: own_props.md5sum && selectConsignment(state, own_props.md5sum)
+  };
+};
 
-export default connect(
-  // map state
-  (state = {}, {manifest,md5sum})=>{
-    return {
-      consignment: md5sum && selectConsignment(state, md5sum)
-    };
-  },
+const mapDispatchToProps = (dispatch, own_props)=>{
+  return {
+    requestConsignments: (manifests)=>{
+      dispatch(requestConsignments(manifests));
+    }
+  };
+}
 
-  // map dispatch
-  {
-    requestConsignments
-  }
+export const ManifestViewContainer = ReactRedux.connect(
+  mapStateToProps,
+  mapDispatchToProps
 )(ManifestView);

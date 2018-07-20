@@ -37,8 +37,14 @@ class ConsignmentTable extends React.Component{
 
         <table className='consignment-table'>
 
-          {this.tableHeader()}
-          {this.tableRows()}
+          <thead>
+
+            {this.tableHeader()}
+          </thead>
+          <tbody>
+
+            {this.tableRows()}
+          </tbody>
         </table>
       </div>
     );
