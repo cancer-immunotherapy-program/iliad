@@ -70,16 +70,16 @@ export class Search extends React.Component{
     this.props.requestModels();
   }
 
-  makePageCache(page, page_size, payload) {
-    let model = payload.models[this.state.selected_model]
-    if (model.count) this.setState({ results: model.count })
-    if (page_size) this.props.setSearchPageSize(page_size)
+  makePageCache(page, page_size, payload){
+    let model = payload.models[this.state.selected_model];
+    if(model.count) this.setState({ results: model.count });
+    if(page_size) this.props.setSearchPageSize(page_size);
     this.props.cacheSearchPage(
       page,
       this.state.selected_model,
       Object.keys(model.documents),
       page == 1
-    )
+    );
   }
 
 /*
@@ -169,7 +169,7 @@ export class Search extends React.Component{
     };
 
     return(
-      <div className='query'>
+      <div className='search-table-query-group'>
 
         <span className='label'>Show table</span>
         <SelectInput {...table_sel_props} />
@@ -198,12 +198,16 @@ export class Search extends React.Component{
     if(this.props.model_name){
       pages = Math.ceil(this.state.results / this.props.page_size);
       page_elems = (
-        <div className='pages'>
+        <div className='search-table-page-group'>
 
-          <div className='results'>
+          <div className='search-table-summary'>
 
-            Found {this.state.results} records in <span className='model_name'>{this.props.model_name}</span>
+            Found
+            <span> {this.state.results} </span>
+            records in table
+            <span> {this.props.model_name} </span>
           </div>
+          &nbsp;&nbsp;
           <Pager pages={pages} current_page={this.props.current_page} set_page={this.getPage.bind(this)} />
         </div>
       );
@@ -259,8 +263,8 @@ const mapDispatchToProps = (dispatch, own_props)=>{
     setSearchPage: (page)=>{
       dispatch(setSearchPage(page));
     },
-    setSearchPageSize: ()=>{
-      //dispatch();
+    setSearchPageSize: (page_size)=>{
+      dispatch(setSearchPageSize(page_size));
     },
     requestDocuments: (args)=>{
       dispatch(requestDocuments(args));

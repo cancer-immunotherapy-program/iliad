@@ -109,6 +109,8 @@ class TableViewer extends React.Component{
       value: '\u21af TSV'
     };
 
+    // Disabling downloads and filtering.
+    return <Pager {...pager_props} />;
     return(
       <Pager {...pager_props}>
 

@@ -57,7 +57,7 @@ export class SearchTable extends React.Component{
 
   renderHeader(){
     return this.props.attribute_names.map((attr_name, index)=>{
-      return <th key={index}>{attr_name}</th>;
+      return <th className='search-table-header' key={index}>{attr_name}</th>;
     });
   }
 

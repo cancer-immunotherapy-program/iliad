@@ -1,11 +1,35 @@
 @import 'globals';
 
-.table-viewer-group{
+#search-group{
+  padding-left: 20px;
+  padding-right: 10px;
+  padding-top: 10px;
+}
+
+.search-table-summary{
+  display: inline-block;
+  color: $med-grey-1;
+}
+
+.search-table-summary span{
+  color: $darkest-color;
+}
+
+.search-table-query-group,
+.search-table-page-group{
+  margin-bottom: 15px;
+  font-family: $main-font;
+  color: $med-grey-1;
+}
+
+.table-viewer-group,
+.search-table{
   font-family: $main-font;
   padding-right: 10px;
 }
 
-.table-viewer-group table{
+.table-viewer-group table,
+.search-table{
   table-layout: fixed;
   width: 100%;
   margin-top: 10px;
@@ -16,26 +40,39 @@
 }
 
 .table-viewer-header,
-.table-viewer-cell{
+.table-viewer-cell,
+.search-table-header,
+.search-table-cell{
   text-align: left;
   padding: 5px;
   border-right: 1px solid $med-grey-2;
   overflow: hidden;
 }
 
-.table-viewer-header{
+.table-viewer-header,
+.search-table-header{
   border-bottom: 1px solid $med-grey-2;
   background: $dark-color;
   color: $white;
 }
 
-.table-viewer-cell .value{
+.table-viewer-cell .value,
+.search-table-cell{
   font-family: $main-font !important;
   border-left: none !important;
   white-space: nowrap;
 }
 
+.table-viewer-cell,
+.search-table-cell{
+  border-bottom: 1px solid $light-grey;
+}
+
 /******************************************************************************/
+
+.pager-group{
+  display: inline-block;
+}
 
 .pager-nav-report,
 .pager-filter-input,
@@ -43,6 +80,7 @@
 .pager-nav-btn{
   display: inline-block;
   vertical-align: top;
+  font-family: $main-font;
 }
 
 .pager-export-btn,
