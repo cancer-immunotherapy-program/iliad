@@ -1,7 +1,8 @@
-import { connect } from 'react-redux';
-import React from 'react';
+// Framework libraries.
+import * as React from 'react';
+import * as ReactRedux from 'react-redux';
 
-import Pager from './pager';
+import Pager from './general/pager';
 import {HelpContainer as Help} from './help';
 import AttributeViewer from './attributes/attribute_viewer';
 
@@ -11,112 +12,184 @@ import {
   selectModelDocuments
 } from '../selectors/magma_selector';
 
-const TableColumn = (template, document) => (att_name) => (
-    <div className='table_data' key={att_name}>
-      <AttributeViewer 
-        template={ template }
-        document={ document }
-        value={ document[ att_name ] }
-        attribute={ template.attributes[att_name] }/>
-    </div>
-);
-
-const TableRow = (template, documents, attribute_names) => (record_name) => (
-  <div key={ record_name } className='table_row'>
-  {
-    attribute_names.map(TableColumn(template, documents[record_name]))
-  }
-  </div>
-);
-
-class TableViewer extends React.Component {
-  renderPager() {
-    let { pages, current_page, setPage, onFilter, model_name, record_names } = this.props;
+const TableCell = (template, document)=>{
+  return (attr_name)=>{
+    let attr_props = {
+      template,
+      document,
+      value: document[attr_name],
+      attribute: template.attributes[attr_name]
+    };
 
     return(
-      <Pager pages={ pages } 
-        current_page={ current_page + 1 }
-        setPage={ setPage } >
-        <div className='search'>&#x2315;</div>
-        <input className='filter' type='text' onChange={ (e) => onFilter(e.target.value) }/>
-        <input className='export' type='button' onClick={ () => requestTSV(model_name, record_names) } value={'\u21af TSV'}/>
-        <Help info='table_viewer'/>
+      <td className='table-viewer-cell' key={attr_name}>
+
+        <AttributeViewer {...attr_props} />
+      </td>
+    );
+  }
+};
+
+const TableRow = (template, documents, attribute_names)=>{
+  return (record_name)=>{
+    return(
+      <tr key={record_name} className='table-viewer-row'>
+
+        {attribute_names.map(TableCell(template, documents[record_name]))}
+      </tr>
+    );
+  };
+};
+
+class TableViewer extends React.Component{
+  renderRecords(){
+    let {
+      template,
+      documents,
+      record_names,
+      attribute_names,
+      page_size,
+      current_page
+    } = this.props;
+
+    if (!record_names.length) null;
+
+    record_names = record_names.slice(
+      page_size * current_page,
+      page_size * (current_page+1)
+    );
+
+    return record_names.map(TableRow(template, documents, attribute_names));
+  }
+
+  renderHeader(){
+    if(!this.props.attribute_names) return null;
+    return(
+      <tr className='table-viewer-row'>
+
+        {this.props.attribute_names.map((attr_name, index)=>{
+          return(
+            <th key={index} className='table-viewer-header'>{attr_name}</th>
+          );
+        })}
+      </tr>
+    )
+  }
+
+  renderPager(){
+    let {
+      pages,
+      current_page,
+      setPage,
+      onFilter,
+      model_name,
+      record_names
+    } = this.props;
+
+    let pager_props = {
+      pages: pages,
+      current_page: current_page + 1,
+      setPage: setPage
+    };
+
+    let filter_props = {
+      className: 'pager-filter-input',
+      type: 'text',
+      onChange: (e)=>{
+        onFilter(e.target.value);
+      }
+    };
+
+    let export_props = {
+      className: 'pager-export-btn',
+      type: 'button',
+      onClick: ()=>{
+        requestTSV(model_name, record_names);
+      },
+      value: '\u21af TSV'
+    };
+
+    return(
+      <Pager {...pager_props}>
+
+        <div className='pager-filter-group'>
+
+          <div className='pager-filter-search-icon'>
+
+            <span className='fas fa-search'></span>
+          </div>
+          <input {...filter_props} />
+        </div>
+        <button {...export_props}>
+
+          <i className='fas fa-download' aria-hidden='true' ></i>
+          &nbsp;{'DOWNLOAD'}
+        </button>
       </Pager>
     );
   }
 
-  renderRecords() {
-    let { template, documents, record_names, attribute_names, page_size, current_page } = this.props;
-
-    if (!record_names.length) return <div>No entries</div>;
-
+  render(){
+    if(!this.props) return null;
     return(
-      record_names.slice(page_size * current_page, page_size * (current_page+1)).map(
-        TableRow(template, documents, attribute_names)
-      )
-    );
-  }
+      <div className='table-viewer-group'>
 
-  renderHeader() {
-    let { attribute_names } = this.props;
+        {this.renderPager()}
+        <table>
+          <thead>
 
-    return(
-      <div className='table_row'>
-      {
-        attribute_names.map((att_name,i) => 
-          <div key={i} className='table_header'>{ att_name }</div>
-        )
-      }
-      </div>
-    );
-  }
+            {this.renderHeader()}
+          </thead>
+          <tbody>
 
-  render() {
-    let { template } = this.props;
-
-    if (!template) return <div/>;
-
-    return(
-      <div className='table'>
-        { this.renderPager() }
-        { this.renderHeader() }
-        { this.renderRecords() }
+            {this.renderRecords()}
+          </tbody>
+        </table>
       </div>
     );
   }
 }
 
-export default connect(
-  function(state, props){
+const mapStateToProps = (state = {}, own_props)=>{
+  let prj_nm = APP_CONFIG.project_name;
+  let template = selectModelTemplate(state, prj_nm, own_props.model_name);
+  let documents = selectModelDocuments(
+    state,
+    prj_nm,
+    own_props.model_name,
+    own_props.record_names
+  );
 
-    let prj_nm = APP_CONFIG.project_name;
-    let template = selectModelTemplate(state, prj_nm, props.model_name);
-    let documents = selectModelDocuments(
-      state,
-      prj_nm,
-      props.model_name,
-      props.record_names
-    );
+  let record_names = Object.keys(documents).sort();
+  let pages = Math.ceil(record_names.length / own_props.page_size);
 
-    let record_names = Object.keys(documents).sort();
-    let pages = Math.ceil(record_names.length / props.page_size);
+  let attribute_names = null;
+  if(template){
+    attribute_names = Object.keys(template.attributes).filter((attr_name)=>{
 
-    let attribute_names = null;
-    if(template){
-      attribute_names = Object.keys(template.attributes).filter((attr_name)=>{
+      let attr = template.attributes[attr_name];
+      return (attr.shown && attr.attribute_class != 'Magma::TableAttribute');
+    });
+  }
 
-        let attr = template.attributes[attr_name];
-        return (attr.shown && attr.attribute_class != 'Magma::TableAttribute');
-      });
+  return {
+    template,
+    documents,
+    record_names,
+    pages,
+    attribute_names
+  };
+};
+
+const mapDispatchToProps = (dispatch, own_props)=>{
+  return {
+    requestTSV: (model_names, record_names)=>{
+      dispatch(requestTSV(model_names, record_names));
     }
+  };
+};
 
-    return {
-      template,
-      documents,
-      record_names,
-      pages,
-      attribute_names
-    };
-  },
-  { requestTSV }
+export const TableViewerContainer = ReactRedux.connect(
+  mapStateToProps,
+  mapDispatchToProps
 )(TableViewer);

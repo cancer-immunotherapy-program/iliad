@@ -16,7 +16,7 @@ import SearchQuery from './search_query';
 import Header from '../general/header';
 import SearchTable from './search_table';
 import SearchQuestion from './search_question';
-import Pager from '../pager';
+import Pager from '../general/pager';
 
 import {selectSearchCache} from '../../selectors/search_cache';
 import {selectModelNames} from '../../selectors/magma_selector';
