@@ -18,6 +18,7 @@ import {MarkdownAttributeContainer as MarkdownAttribute} from './markdown_attrib
 import {LinePlotAttributeContainer as LinePlotAttribute} from './plot_attributes/line_plot_attribute';
 import {BoxPlotAttributeContainer as BoxPlotAttribute} from './plot_attributes/box_plot_attribute';
 import {BarGraphAttributeContainer as BarGraphAttribute} from './plot_attributes/bar_graph_attribute';
+import {TimelineGroupAttributeContainer as TimelineGroupPlotAttribute} from './plot_attributes/timeline_group_plot_attribute';
 // import {BarPlotAttributeContainer as BarPlotAttribute} from './plot_attributes/bar_plot_attribute';
 // import {StackedBarPlotAttributeContainer} from './plot_attributes/stacked_bar_attribute';
 // import {SwarmPlotAttributeContainer as SwarmPlotAttribute} from './plot_attributes/swarm_plot_attribute';
@@ -34,6 +35,8 @@ export default class AttributeViewer extends Component{
         return <BoxPlotAttribute {...this.props} />;
       case 'BarGraphAttribute':
         return <BarGraphAttribute {...this.props} />;
+      case 'TimelineGroupPlotAttribute':
+        return <TimelineGroupPlotAttribute {...this.props} />;
       // case 'BarPlotAttribute':
       //   return <BarPlotAttribute {...this.props} />;
       // case 'StackedBarPlotAttribute':

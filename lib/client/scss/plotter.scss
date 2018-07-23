@@ -326,7 +326,7 @@
   fill: black;
 }
 
-.axis-Bottom text {
+.axis-Bottom text, .axis-timeline-bottom text {
   transform: rotate(-45deg);
   text-anchor: end;
 }
@@ -365,3 +365,4 @@
   display: inline;
   font-size: 12px;
 }
+

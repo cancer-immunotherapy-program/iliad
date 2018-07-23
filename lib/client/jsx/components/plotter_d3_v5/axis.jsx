@@ -18,6 +18,10 @@ export default class Axis extends Component{
       .tickSize(-this.props.tickSize)
       .tickPadding([12]);
 
+    if(this.props.timeformat){
+      axis.tickFormat(d3.timeFormat(this.props.timeformat));
+    }
+
     d3.select(this.axisElement).call(axis);
   }
 
