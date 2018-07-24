@@ -141,7 +141,7 @@ export class Search extends React.Component{
 
     let input_filter_props = {
       type: 'text',
-      className: 'filter',
+      className: 'search-table-filter-input',
       placeholder: 'filter query',
       onChange: (e)=>{
         this.setState({current_filter: e.target.value});
@@ -149,7 +149,7 @@ export class Search extends React.Component{
     };
 
     let search_btn_props = {
-      className: 'button',
+      className: 'pager-filter-btn',
       value: 'Search',
       disabled: !this.state.selected_model,
       onClick: ()=>{
@@ -158,7 +158,7 @@ export class Search extends React.Component{
     };
 
     let dwnld_btn_props = {
-      value: '\u21af TSV',
+      className: 'pager-export-btn',
       disabled: !this.state.selected_model,
       onClick: ()=>{
         this.props.requestTSV(
@@ -173,16 +173,20 @@ export class Search extends React.Component{
 
         <span className='label'>Show table</span>
         <SelectInput {...table_sel_props} />
+        &nbsp;&nbsp;
         <span className='label'>Page size</span>
         <SelectInput {...page_size_props} />
+        &nbsp;&nbsp;
         <input {...input_filter_props} />
         <button {...search_btn_props} >
 
-          {'SEARCH'}
+          <span className='fas fa-search'></span>
+          &nbsp;{'SEARCH'}
         </button>
         <button {...dwnld_btn_props} >
 
-          {'DOWNLOAD'}
+          <span className='fas fa-download'></span>
+          &nbsp;{'DOWNLOAD'}
         </button>
       </div>
     );

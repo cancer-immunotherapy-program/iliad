@@ -39,6 +39,15 @@
   border-collapse: collapse;
 }
 
+.search-table-filter-input{
+  text-indent: 5px;
+  border: none;
+  outline: 1px solid $med-grey-2;
+  font-size: 1em;
+  height: 19px;
+  margin-top: 1px;
+}
+
 .table-viewer-header,
 .table-viewer-cell,
 .search-table-header,
@@ -77,14 +86,16 @@
 .pager-nav-report,
 .pager-filter-input,
 .pager-export-btn,
-.pager-nav-btn{
+.pager-nav-btn,
+.pager-filter-btn{
   display: inline-block;
   vertical-align: top;
   font-family: $main-font;
 }
 
 .pager-export-btn,
-.pager-nav-btn{
+.pager-nav-btn,
+.pager-filter-btn{
   margin-left: 10px;
   cursor: pointer;
   padding:5px;
@@ -95,14 +106,16 @@
 }
 
 .pager-export-btn:hover:enabled,
-.pager-nav-btn:hover:enabled{
+.pager-nav-btn:hover:enabled,
+.pager-filter-btn:hover:enabled{
   color: #fff;
   background: #22a778;
   border: 1px solid #22a778;
 }
 
 .pager-export-btn:disabled,
-.pager-nav-btn:disabled{
+.pager-nav-btn:disabled,
+.pager-filter-btn:disabled{
   cursor: default;
   border: 1px solid #ccc;
 }

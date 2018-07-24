@@ -140,6 +140,43 @@ a:hover{
   animation: loader-graphic 1.5s linear infinite;
 }
 
+.general-select{
+  background: $light-grey;
+  font-family: $main-font;
+  font-size: 0.8em;
+  border: 1px solid $med-grey-2;
+  display: inline-block;
+  vertical-align: top;
+  padding: 3px;
+  margin-left: 10px;
+  color: $black;
+  -webkit-appearance: none;
+  -webkit-border-radius: 0px;
+  outline: none;
+  height: 23px;
+}
+
+.general-select:focus{
+  outline-offset: 0px;
+}
+
+.general-select:disabled{
+  border: 1px solid $white;
+  background: $white;
+  outline: none;
+  box-shadow: none;
+  -webkit-text-fill-color: $black;
+  -webkit-opacity:1;
+  color: $black;
+  background: $white;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+}
+
+.general-select option{
+  padding: 3px;
+}
+
 /* OLD GLOBALS ****************************************************************/
 
 $body_font: 'Oxygen', sans-serif;
