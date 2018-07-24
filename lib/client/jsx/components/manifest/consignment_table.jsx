@@ -23,7 +23,10 @@ class ConsignmentTable extends React.Component{
 
           {row.map((data, j)=>{
             return(
-              <td className='consignment-cell' key={j}>{data}</td>
+              <td className='consignment-cell' key={j}>
+
+                {String(data)}
+              </td>
             );
           })}
         </tr>
