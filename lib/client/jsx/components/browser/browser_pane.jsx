@@ -9,28 +9,30 @@ export default class BrowserPane extends React.Component{
     super(props);
   }
 
+/*
   renderTitle(){
     let {title, name} = this.props.pane;
     if(title) return <div className='title' title={name}>{title}</div>;
     return null;
   }
+*/
 
-  interleaveAttribute(attribute, templates){
+  renderTitle(){
+    let {title, name} = this.props.pane;
 
-    if(templates.attributes[attribute.name] == undefined) return attribute;
-    let template = templates.attributes[attribute.name];
+    if(title){
+      return(
+        <div className='title' title={name}>
 
-    for(let prop in template){
-      if(
-        !(prop in attribute) ||
-        attribute[prop] == null ||
-        attribute[prop] == ''
-      ){
-        attribute[prop] = template[prop];
-      }
+          <div className='title-group'>
+
+            {title}
+          </div>
+        </div>
+      );
     }
 
-    return attribute;
+    return null;
   }
 
   renderAttributes(){
@@ -42,8 +44,8 @@ export default class BrowserPane extends React.Component{
 
       if (mode == 'edit' && !pane.attributes[attr_name].editable) return null;
 
-      // The Timur view attribute.
-      let attr = this.interleaveAttribute(pane.attributes[attr_name], template);
+      // The App view attribute.
+      let attr = pane.attributes[attr_name];
 
       // The data of the attribute
       let value = doc[attr_name];
@@ -59,7 +61,7 @@ export default class BrowserPane extends React.Component{
         template,
         value,
         mode,
-        attribute: attr,
+        attribute: pane.attributes[attr_name],
         document: doc,
         revision: revised_value
       };

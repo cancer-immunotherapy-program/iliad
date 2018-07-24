@@ -6,19 +6,12 @@ import * as ReactRedux from 'react-redux';
 import ClinicalInput from '../inputs/clinical_input';
 
 // Module imports.
-import {
-  requestDictionaries,
-  sendRevisions,
-  //reviseDocument
-} from '../../actions/magma_actions';
+import {sendRevisions} from '../../actions/magma_actions';
 
 import {
-  selectModelDocuments
+  selectModelDocuments,
+  selectDictionaryByModel
 } from '../../selectors/magma_selector';
-
-import {
-  selectDictionary
-} from '../../selectors/dictionary_selector';
 
 import {
   nestDataset,
@@ -31,26 +24,10 @@ export class ClinicalAttribute extends React.Component{
     super(props);
 
     this.state = {
-      dictionary_requested: false,
       records: {},
       dictionary: {},
       nested_uids: {}
     };
-  }
-
-  componentDidUpdate(){
-
-    let {dictionary, requestDictionaries} = this.props;
-
-    // Check for a dictionary to fetch that corresponds to a model/component.
-    if(
-      this.state.dictionary_requested ||
-      !('name' in dictionary) ||
-      dictionary.name == undefined
-    ) return;
-
-    requestDictionaries({dictionary_name: dictionary.name}, dictionary.project);
-    this.setState({dictionary_requested: true});
   }
 
   static getDerivedStateFromProps(next_props, prev_state){
@@ -101,6 +78,11 @@ export class ClinicalAttribute extends React.Component{
 
     uids.forEach((uid)=>{
       let def = this.state.dictionary.definitions[uid];
+
+      if(def == undefined){
+        debugger;
+      }
+
       if(!(def.name in definitions)){
         definitions[def.name] = Object.assign({}, def);
         definitions[def.name].value = definitions[def.name].name;
@@ -398,7 +380,6 @@ export class ClinicalAttribute extends React.Component{
   }
 
   renderRecord(uid_set, is_parent){
-
     let child_elements = [];
     for(let uid in uid_set.children){
       child_elements.push(this.renderRecord(uid_set.children[uid], false));
@@ -461,7 +442,7 @@ export class ClinicalAttribute extends React.Component{
       Object.keys(records).length <= 0 ||
       Object.keys(dictionary).length <= 0 ||
       Object.keys(dictionary.definitions).length <= 0
-    ) return null;
+    ) return <div>{'No records.'}</div>;
 
     // Loop the records and render them by group.
     let elements = [];
@@ -530,17 +511,23 @@ const mapStateToProps = (state, own_props)=>{
    * 1. Attach the basic defintions to the documents.
    * 2. Nest the documents in their proper hierarchy.
    */
+  let args = [
+   state,
+   APP_CONFIG.project_name,
+   own_props.attribute.model_name,
+   'all'
+  ];
 
-  let dictionary = selectDictionary(state, own_props.attribute.model_name);
-  let records = selectModelDocuments(state, own_props.attribute.model_name);
+  let dictionary = selectDictionaryByModel(...args);
+  let records = selectModelDocuments(...args);
 
   /*
    * Trim out 'identifier serch' items. We need fix the identifier search to not
    * use these.
    */
-  for(let uid in records){
-    if(!('name' in records[uid])) delete records[uid];
-  }
+  //for(let uid in records){
+  //  if(!('name' in records[uid])) delete records[uid];
+  //}
 
   let uid_set = setDefinitionUids(records, dictionary , {});
   uid_set = setSiblingUids(records, dictionary, uid_set);
@@ -555,10 +542,6 @@ const mapStateToProps = (state, own_props)=>{
 
 const mapDispatchToProps = (dispatch, own_props)=>{
   return {
-    requestDictionaries: (args, project_name)=>{
-      dispatch(requestDictionaries(args, project_name));
-    },
-
     sendRevisions: (args)=>{
       dispatch(sendRevisions(args));
     }

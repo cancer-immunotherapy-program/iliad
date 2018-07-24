@@ -3,21 +3,13 @@ import * as ReactRedux from 'react-redux';
 
 // Module imports.
 import {
-  addTokenUser
-} from '../actions/timur_actions';
-
-import {
   selectUserPermissions
-} from '../selectors/timur_selector';
+} from '../selectors/app_selector';
 
 export class HomePage extends React.Component{
   constructor(props){
     super(props);
     this.state = {};
-  }
-
-  componentDidMount(){
-    this.props.addTokenUser();
   }
 
   renderProjects(){
@@ -62,15 +54,11 @@ export class HomePage extends React.Component{
 const mapStateToProps = (state = {}, own_props)=>{
   return {
     permissions: selectUserPermissions(state)
-  }
+  };
 };
 
 const mapDispatchToProps = (dispatch, own_props)=>{
-  return {
-    addTokenUser: ()=>{
-      dispatch(addTokenUser());
-    } 
-  };
+  return {};
 };
 
 export const HomePageContainer = ReactRedux.connect(

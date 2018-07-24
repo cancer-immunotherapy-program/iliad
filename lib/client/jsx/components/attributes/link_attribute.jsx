@@ -2,11 +2,11 @@
 import * as React from 'react';
 import * as ReactRedux from 'react-redux';
 
-import * as MagmaActions from '../../actions/magma_actions';
 import SlowTextInput from '../inputs/slow_text_input';
 import MagmaLink from '../magma_link';
+import {reviseDocument} from '../../actions/magma_actions';
 
-export default class LinkAttribute extends React.Component{
+export class LinkAttribute extends React.Component{
   renderEdit(){
     let {document, template, attribute, reviseDocument} = this.props;
     let link_props = {
@@ -80,7 +80,7 @@ const mapStateToProps = (dispatch, own_props)=>{
 const mapDispatchToProps = (dispatch, own_props)=>{
   return {
     reviseDocument: (args)=>{
-      dispatch(MagmaActions.reviseDocument(args));
+      dispatch(reviseDocument(args));
     }
   };
 };

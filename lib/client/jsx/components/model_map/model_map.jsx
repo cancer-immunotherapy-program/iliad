@@ -16,12 +16,15 @@ import {
 } from '../../selectors/magma_selector';
 
 class ModelLink extends React.Component{
-  render() {
-    let { center, parent, size } = this.props
-    if (!parent || !center) return null
-    return <g className="model_link">
-      <line x1={center[0]} y1={center[1]} x2={parent[0]} y2={parent[1]}/>
-    </g>
+  render(){
+    let {center, parent, size} = this.props;
+    if(!parent || !center) return null;
+    return(
+      <g className='model_link'>
+
+        <line x1={center[0]} y1={center[1]} x2={parent[0]} y2={parent[1]}/>
+      </g>
+    );
   }
 }
 
@@ -32,7 +35,7 @@ class ModelNode extends React.Component{
     let [ x, y ] = center
     return <g className="model_node">
         <g transform={ `translate(${x},${y})` } onClick={ () => this.props.handler(this.props.model_name) }>
-        <circle 
+        <circle
           r={ size }
           cx={0}
           cy={0}/>
@@ -93,7 +96,7 @@ class LayoutNode{
     this.size = 40 / depth
     this.parent_name = parent_name
 
-    if (depth == 1) 
+    if (depth == 1)
       this.center = [ this.layout.width/2, this.layout.height/2 ]
     else {
       let th = (arc[1] + arc[0])/2
@@ -183,7 +186,7 @@ class ModelAnimation extends React.Component{
 class ModelMap extends React.Component{
   constructor(){
     super();
-    this.state = {current_model: `${TIMUR_CONFIG.project_name}_project`};
+    this.state = {current_model: `${APP_CONFIG.project_name}_project`};
   }
 
   componentDidMount(){
@@ -259,12 +262,15 @@ class ModelMap extends React.Component{
     let layout2;
     if (new_model) layout2 = new Layout(new_model, templates, width, height);
 
+    let links = this.renderLinks(model_names, layout, layout2);
+    let models = this.renderModels(new_model, model_names, layout, layout2);
+
     return(
       <div id='map'>
         <svg width={width} height={height}>
 
-          {this.renderLinks(model_names, layout, layout2)}
-          {this.renderModels(new_model, model_names, layout, layout2)}
+          {links}
+          {models}
         </svg>
         <ModelReport model_name={current_model} />
       </div>
@@ -274,8 +280,8 @@ class ModelMap extends React.Component{
 
 const mapStateToProps = (state, own_props)=>{
   return {
-    model_names: selectModelNames(state),
-    templates: selectModelTemplates(state)
+    model_names: selectModelNames(state, APP_CONFIG.project_name),
+    templates: selectModelTemplates(state, APP_CONFIG.project_name)
   };
 };
 

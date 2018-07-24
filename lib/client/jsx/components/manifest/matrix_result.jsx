@@ -1,96 +1,69 @@
 // Framework libraries.
 import * as React from 'react';
-import {downloadTSV} from '../../utils/tsv';
+import * as TSV from '../../utils/tsv';
+import ConsignmentTable from './consignment_table';
 
-export default class MatrixResult extends React.Component{
-  componentWillMount(){
-    this.setState({hidden: true});
+class MatrixResult extends React.Component{
+  constructor(props){
+    super(props);
+    this.state = { hidden: true };
   }
 
   toggle(){
     this.setState({hidden: !this.state.hidden});
   }
 
-  display(){
-    return this.state.hidden ? 'none' : 'initial';
-  }
-
-  header(){
-    let header_cells = this.props.matrix.col_names.map((col_name, index)=>{
-      return <th key={index}>{col_name}</th>
-    });
-
-    return(
-      <tr>
-        <th>{'Row Names'}</th>
-        {header_cells}
-      </tr>
-    );
-  }
-
-  tableRows(){
-    let rows = this.props.matrix.map('row', (row, index, row_name)=>{
-      return(
-        <tr key={index}>
-
-          <td>{row_name}</td>
-          {row.map((data, index)=>(<td key={index}>{String(data)}</td>))}
-        </tr>
-      );
-    });
-
-    return rows;
-  }
-
   downloadMatrix(){
     let {name, matrix} = this.props;
     let matrix_map = matrix.map('row', (row, _, row_name)=>{
       return matrix.col_names.reduce(
-        (row_obj, col_name, index)=>{
-          return {...row_obj, [col_name]: row[index]};
+        (row_obj, col_name, i)=>{
+          return {...row_obj, [col_name]: row[i]};
         },
         {row_names: row_name}
       );
     });
 
-    downloadTSV(
+    TSV.downloadTSV(
       matrix_map,
       ['row_names'].concat(matrix.col_names),
       name
     );
   }
 
+  table(){
+    let { matrix } = this.props;
+    let headers = [ 'Row Names', ...matrix.col_names ];
+    let rows = matrix.map('row', (row, index, row_name)=>[ row_name, ...row ]);
+
+    return <ConsignmentTable headers={ headers } rows={ rows }/>
+  }
+
   render(){
     let {matrix} = this.props;
+    let {hidden} = this.state;
     return(
-      <div className='consignment-matrix'>
+      <div className='consignment-matrix-group'>
 
-        {`Table Data: ${matrix.num_rows} rows x ${matrix.num_cols} cols`}
+        <div className='consignment-table-size'>
+
+          <i className='fas fa-table'/>
+          &nbsp;&nbsp;{`${matrix.num_rows} rows x ${matrix.num_cols} cols`}
+        </div>
         <button className='consignment-btn' onClick={this.downloadMatrix.bind(this)}>
-          
-          <i className='fa fa-download' aria-hidden='true' ></i>
-          {' DOWNLOAD'}
+
+          <i className='fas fa-download' aria-hidden='true' ></i>
+          &nbsp;{'DOWNLOAD'}
         </button>
         <button className='consignment-btn' onClick={this.toggle.bind(this)}>
 
-          <i className='fa fa-table' aria-hidden='true'></i>
-          {this.state.hidden ? ' SHOW' : ' HIDE'}
+          <i className='fas fa-table' aria-hidden='true'></i>
+          &nbsp;{ hidden ? 'SHOW' : 'HIDE'}
         </button>
-        <div style={{display : this.display()}}>
-
-          <table className='consignment-table'>
-
-            <thead>
-
-              {this.header()}
-            </thead>
-            <tbody>
-
-              {this.tableRows()}
-            </tbody>
-          </table>
-        </div>
+        {!hidden && this.table()}
       </div>
     );
   }
 }
+
+export default MatrixResult;

@@ -3,7 +3,7 @@ import * as React from 'react';
 import * as ReactRedux from 'react-redux';
 
 // Class imports.
-import ButtonBar from '../button_bar';
+import ButtonBar from '../general/button_bar';
 import {ScatterPlotContainer as ScatterPlot} from './plots/scatter_plot';
 import HeatMapPlot from './plots/heat_map_plot';
 import {GenericPlotForm} from './forms/generic_plot_form';
@@ -269,12 +269,12 @@ export class PlotView extends React.Component{
             this.props.handleDelete(selected_plot);
           }
         },
-        icon: 'trash-o',
+        icon: 'far fa-trash-alt',
         label: ' DELETE'
       },
       {
         click: this.toggleEdit.bind(this),
-        icon: 'pencil-square-o',
+        icon: 'far fa-edit',
         label: ' EDIT'
       }
     ].filter(button=>button);
@@ -284,12 +284,12 @@ export class PlotView extends React.Component{
     return [
       {
         click: this.savePlot.bind(this),
-        icon: 'floppy-o',
+        icon: 'far fa-save',
         label: ' SAVE'
       },
       {
         click: this.cancelEdit.bind(this),
-        icon: 'ban',
+        icon: 'fas fa-ban',
         label: ' CANCEL'
       }
     ].filter(button=>button);
@@ -505,7 +505,7 @@ const mapStateToProps = (state = {}, own_props)=>{
   if(selected_manifest){
     selected_consignment = ConsignmentSelector.selectConsignment(
       state,
-      selected_manifest.md5sum_data
+      selected_manifest.md5sum
     );
   }
 

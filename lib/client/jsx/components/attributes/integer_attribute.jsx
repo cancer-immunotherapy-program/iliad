@@ -3,10 +3,10 @@ import * as React from 'react';
 import * as ReactRedux from 'react-redux';
 
 // Module imports.
-import * as MagmaActions from '../../actions/magma_actions';
+import {reviseDocument} from '../../actions/magma_actions';
 import {IntegerInput} from '../inputs/numeric_input';
 
-export default class IntegerAttribute extends React.Component{
+export class IntegerAttribute extends React.Component{
   renderInput(){
     let {revision, attribute, NumericInput, reviseDocument} = this.props;
     let input_props = {
@@ -43,7 +43,7 @@ const mapStateToProps = (dispatch, own_props)=>{
 const mapDispatchToProps = (dispatch, own_props)=>{
   return {
     reviseDocument: (args)=>{
-      dispatch(MagmaActions.reviseDocument(args));
+      dispatch(reviseDocument(args));
     }
   };
 };

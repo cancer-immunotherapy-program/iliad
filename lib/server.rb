@@ -1,67 +1,56 @@
-require_relative './server/controllers/timur_controller'
+require_relative './server/controllers/app_controller'
 require_relative './server/controllers/archimedes_controller'
 require_relative './server/controllers/browse_controller'
 require_relative './server/controllers/manifests_controller'
 require_relative './server/controllers/plots_controller'
 require_relative './server/controllers/view_controller'
 
-class Timur
+class App
   class Server < Etna::Server
     # Root path.
     get '/' do
-      erb_view(:welcome)
+      erb_view(:index)
     end
 
     get 'no_auth' do
       erb_view(:no_auth)
     end
 
-    with auth: {user: {can_view?: :project_name}} do
+    with(auth: {user: {can_view?: :project_name}}) do
 
 # PAGES. Delivers the base HTML and UI.
 
       # Browse page.
       get ':project_name/browse/:model_name/*record_name', as: :browse_model do
-        erb_view(:model)
+        erb_view(:index)
       end
 
       # Search page.
       get ':project_name/search', as: :search do
-        erb_view(:search)
+        erb_view(:index)
       end
 
       # Map page.
       get ':project_name/map', as: :map do
-        erb_view(:map)
+        erb_view(:index)
       end
 
       # Settings page.
       get ':project_name/settings/:settings_page', as: :settings do
-        erb_view(:settings)
+        erb_view(:index)
       end
 
       # Manifest page.
       get ':project_name/manifests', as: :manifests do
-        erb_view(:manifests)
+        erb_view(:index)
       end
 
       # Plots page.
       get ':project_name/plots', as: :plots do
-        erb_view(:plots)
+        erb_view(:index)
       end
 
 # CONTROLLER ACTIONS. Supports the API and backend calls.
-
-      # view_controller.rb
-      get ':project_name/view/:model_name',
-        action: 'view#view_json',
-        as: :view_json
-      post ':project_name/view/update_view_json',
-        action: 'view#update_view_json',
-        as: :update_view_json
-      post ':project_name/view/delete_view_json',
-        action: 'view#delete_view_json',
-        as: :delete_view_json
 
       # browse_controller.rb
       get ':project_name', action: 'browse#index', as: :project
@@ -84,6 +73,19 @@ class Timur
       post ':project_name/manifests/create', action: 'manifests#create'
       post ':project_name/manifests/update/:id', action: 'manifests#update'
       delete ':project_name/manifests/destroy/:id', action: 'manifests#destroy'
+    end
+
+    with(auth: {user: {is_admin?: :project_name}}) do
+      # view_controller.rb
+      get ':project_name/view/:model_name',
+        action: 'view#retrieve_view',
+        as: :retrieve_view
+      post ':project_name/view/update',
+        action: 'view#update_view',
+        as: :update_view
+      post ':project_name/view/delete',
+        action: 'view#delete_view',
+        as: :delete_view
     end
 
     def initialize(config)

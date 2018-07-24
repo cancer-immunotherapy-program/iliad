@@ -19,3 +19,13 @@ export class Settings extends React.Component{
     }
   }
 }
+
+const mapStateToProps = (state = {}, own_props)=>{
+  if(state.app.path === undefined) return {};
+  return {settings_page: state.app.path.model};
+};
+
+export const SettingsContainer = ReactRedux.connect(
+  mapStateToProps,
+  {}
+)(Settings);

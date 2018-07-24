@@ -14,15 +14,16 @@ import * as ConsignmentSelector from '../../../selectors/consignment_selector';
 
 export class BarPlotAttribute extends GenericPlotAttribute{
   render(){
-    if(this.props.selected_plot == undefined) return null;
+    let { selected_plot, template, bars } = this.props;
+    if (!selected_plot) return null;
 
-    let {selected_plot, bars} = this.props;
     let bar_plot_props = {
       ymin: 0,
       ymax: 1,
       legend: selected_plot.legend,
       plot: selected_plot.layout,
-      bars: bars
+      model_name: template ? template.name : null,
+      bars
     };
 
     return(
@@ -46,7 +47,7 @@ const mapStateToProps = (state = {}, own_props)=>{
   if(selected_manifest != undefined){
     selected_consignment = ConsignmentSelector.selectConsignment(
       state,
-      selected_manifest.md5sum_data
+      selected_manifest.md5sum
     );
   }
 

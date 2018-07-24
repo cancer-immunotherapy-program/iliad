@@ -3,15 +3,15 @@ import * as React from 'react';
 import * as ReactRedux from 'react-redux';
 
 // Class imports.
-import ListMenu from '../list_menu';
-import ButtonBar from '../button_bar';
+import ListMenu from '../general/list_menu';
+import ButtonBar from '../general/button_bar';
 
 // Module imports.
 import {
   requestViewSettings,
   updateViewSettings,
   deleteViewSettings
-} from '../../actions/timur_actions';
+} from '../../actions/app_actions';
 
 export class SettingsView extends React.Component{
   constructor(props){
@@ -28,7 +28,7 @@ export class SettingsView extends React.Component{
       view_settings_string: '',
     };
   }
-  
+
   componentDidMount(){
     this.props.requestViewSettings();
   }
@@ -104,12 +104,12 @@ export class SettingsView extends React.Component{
     return [
       {
         click: this.deleteView.bind(this),
-        icon: 'trash-o',
+        icon: 'far fa-trash-alt',
         label: ' DELETE'
       },
       {
         click: this.toggleEdit.bind(this),
-        icon: 'pencil-square-o',
+        icon: 'fas fa-pencil-alt',
         label: ' EDIT'
       }
     ].filter(button=>button);
@@ -119,13 +119,13 @@ export class SettingsView extends React.Component{
     return [
       {
         click: this.saveEdit.bind(this),
-        icon: 'floppy-o',
+        icon: 'far fa-save',
         label: ' SAVE',
         disabled: this.state.parse_error_message ? 'disabled' : ''
       },
       {
         click: this.cancelEdit.bind(this),
-        icon: 'ban',
+        icon: 'fas fa-ban',
         label: ' CANCEL'
       }
     ].filter(button=>button);
@@ -194,7 +194,7 @@ export class SettingsView extends React.Component{
     };
     return(
       <div className='settings-view-inspector-group'>
-        
+
         <textarea {...tabs_attributes}></textarea>
       </div>
     );
@@ -205,7 +205,7 @@ export class SettingsView extends React.Component{
 
     let {
       view_settings_object,
-      is_editing, 
+      is_editing,
       page_status,
       parse_error_message
     } = this.state;
@@ -233,7 +233,7 @@ export class SettingsView extends React.Component{
     else{
       buttons = this.editableButtons();
     }
-    
+
     return(
       <div className='settings-view-elements'>
         <div className='settings-view-form-header'>
@@ -243,7 +243,7 @@ export class SettingsView extends React.Component{
             {'NAME: '}
             <input {...input_props} />
             <ButtonBar className='settings-view-action-btn-group' buttons={buttons} />
-          
+
             <span style={{float: 'right'}}>
 
               {page_status}
@@ -265,7 +265,7 @@ export class SettingsView extends React.Component{
   createNewView(){
     let view_settings_object = {
       model_name: '',
-      project_name: PROJECT_NAME,
+      project_name: APP_CONFIG.project_name,
       tabs:{
         default:{
           description: '',
@@ -322,8 +322,8 @@ export class SettingsView extends React.Component{
 }
 
 const mapStateToProps = (state = {}, own_props)=>{
-  if(state.timur.views === undefined) return {};
-  return {views: state.timur.views};
+  if(state.app.views === undefined) return {};
+  return {views: state.app.views};
 };
 
 const mapDispatchToProps = (dispatch, own_props)=>{
@@ -331,7 +331,7 @@ const mapDispatchToProps = (dispatch, own_props)=>{
     requestViewSettings: ()=>{
       dispatch(requestViewSettings());
     },
-    
+
     updateViewSettings: (model_obj)=>{
       dispatch(updateViewSettings(model_obj));
     },

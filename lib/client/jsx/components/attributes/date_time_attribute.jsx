@@ -2,11 +2,11 @@
 import * as React from 'react';
 import * as ReactRedux from 'react-redux';
 
-import * as MagmaActions from '../../actions/magma_actions';
-import * as DateUtils from '../../utils/dates';
+import {reviseDocument} from '../../actions/magma_actions';
+import {formatDate} from '../../utils/dates';
 import DateTimeInput from '../inputs/date_time_input';
 
-export default class DateTimeAttribute extends React.Component{
+export class DateTimeAttribute extends React.Component{
   renderEdit(){
     let {document, template, attribute, reviseDocument} = this.props;
     let input_props = {
@@ -25,7 +25,7 @@ export default class DateTimeAttribute extends React.Component{
   }
 
   renderValue(value){
-    return <div className='value'>{DateUtils.formatDate(value)}</div>;
+    return <div className='value'>{formatDate(value)}</div>;
   }
 
   render(){
@@ -46,7 +46,7 @@ const mapStateToProps = (dispatch, own_props)=>{
 const mapDispatchToProps = (dispatch, own_props)=>{
   return {
     reviseDocument: (args)=>{
-      dispatch(MagmaActions.reviseDocument(args));
+      dispatch(reviseDocument(args));
     }
   };
 };

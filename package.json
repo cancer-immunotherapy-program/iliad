@@ -1,13 +1,14 @@
 {
-  "name": "Timur",
+  "name": "Iliad",
   "version": "1.0.0",
   "description": "Front end to the Mt. Etna system.",
   "repository": {
     "type": "git",
-    "url": "https://github.com/mountetna/timur.git"
+    "url": "https://github.com/cancer-immunotherapy-program/iliad.git"
   },
   "dependencies": {
     "babel-core": "^6.26.0",
+    "codemirror": "^5.39.0",
     "css-loader": "^0.28.10",
     "d3": "^5.5.0",
     "d3-ease": "^1.0.3",
@@ -16,10 +17,11 @@
     "js-cookie": "^2.2.0",
     "json2csv": "^4.0.1",
     "marked": "^0.3.17",
+    "md5": "^2.2.1",
     "plotly.js": "^1.35.0",
-    "prismjs": "^1.12.0",
-    "react": "^16.2.0",
-    "react-dom": "^16.2.0",
+    "react": "^16.4.1",
+    "react-dom": "^16.4.1",
+    "react-codemirror2": "^5.1.0",
     "react-move": "^2.7.0",
     "react-plotlyjs": "^0.4.4",
     "react-redux": "^5.0.7",
@@ -35,6 +37,8 @@
     "babel-plugin-transform-object-rest-spread": "^6.26.0",
     "babel-preset-env": "^1.6.1",
     "babel-preset-react": "^6.24.1",
+    "enzyme": "^3.3.0",
+    "enzyme-adapter-react-16": "^1.1.1",
     "eslint": "^3.15.0",
     "eslint-plugin-react": "^6.9.0",
     "extract-text-webpack-plugin": "^3.0.2",
@@ -53,12 +57,13 @@
       "**/test/javascript/**/?(*.)(spec|test).js?(x)"
     ],
     "collectCoverageFrom": [
-      "app/assets/javascripts/**/*.js?(x)"
-    ]
+      "lib/client/jsx/**/*.js?(x)"
+    ],
+    "setupTestFrameworkScriptFile": "./test/setup.js"
   },
   "scripts": {
-    "lint": "$(npm bin)/eslint --ext .jsx,.js.jsx,.js ./app/assets/javascripts/** ",
+    "lint": "$(npm bin)/eslint --ext .jsx,.js.jsx,.js ./lib/client/jsx/** ",
     "lintfile": "$(npm bin)/eslint --ext .jsx,.js.jsx,.js ",
-    "test": "jest --coverage"
+    "test": "jest"
   }
 }

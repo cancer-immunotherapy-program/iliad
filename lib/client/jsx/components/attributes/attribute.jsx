@@ -2,10 +2,10 @@
 import * as React from 'react';
 import * as ReactRedux from 'react-redux';
 
-import * as MagmaActions from '../../actions/magma_actions';
+import {reviseDocument} from '../../actions/magma_actions';
 import SlowTextInput from '../inputs/slow_text_input';
 
-export default class Attribute extends React.Component{
+export class Attribute extends React.Component{
   renderEdit(){
     let {document, template, attribute, revision, reviseDocument} = this.props;
     let input_props = {
@@ -15,7 +15,7 @@ export default class Attribute extends React.Component{
         reviseDocument({
           document,
           template,
-          attribute, 
+          attribute,
           revised_value: value
         });
       },
@@ -42,7 +42,7 @@ const mapStateToProps = (dispatch, own_props)=>{
 const mapDispatchToProps = (dispatch, own_props)=>{
   return {
     reviseDocument: (args)=>{
-      dispatch(MagmaActions.reviseDocument(args));
+      dispatch(reviseDocument(args));
     }
   };
 };

@@ -3,7 +3,8 @@ import * as React from 'react';
 import * as ReactRedux from 'react-redux';
 
 import MagmaLink from './magma_link';
-import * as MagmaActions from '../actions/magma_actions';
+import {requestIdentifiers} from '../actions/magma_actions';
+import {selectModels} from '../selectors/magma_selector';
 
 export class IdentifierSearch extends React.Component{
   constructor(props){
@@ -11,7 +12,7 @@ export class IdentifierSearch extends React.Component{
 
     this.state = {
       match_string: '',
-      has_focus: false 
+      has_focus: false
     };
   }
 
@@ -141,7 +142,7 @@ export class IdentifierSearch extends React.Component{
 
         <div className='search'>
 
-          <span className='fa fa-search' />
+          <span className='fas fa-search' />
           <input {...inputProps} />
         </div>
         {this.renderMatchingIdentifiers()}
@@ -151,30 +152,30 @@ export class IdentifierSearch extends React.Component{
 }
 
 const mapStateToProps = (state = {}, own_props)=>{
-  let identifiers = {};
-  let models = state.magma.models;
+  let idents = {};
+  let models = selectModels(state, APP_CONFIG.project_name);
 
   Object.keys(models).forEach(function(model_name){
 
     /*
-     * There are two kinds of models in the magma data store. Regular data 
+     * There are two kinds of models in the magma data store. Regular data
      * models and dictionarires. Dictionaries do not have a document object. So,
      * we filter for it here.
      */
     if('documents' in models[model_name]){
-      identifiers[model_name] = Object.keys(models[model_name].documents);
+      idents[model_name] = Object.keys(models[model_name].documents);
     }
   });
 
   return {
-    identifiers: Object.keys(identifiers).length ? identifiers : null
+    identifiers: Object.keys(idents).length ? idents : null
   };
 };
 
 const mapDispatchToProps = (dispatch, own_props)=>{
   return {
     requestIdentifiers: ()=>{
-      dispatch(MagmaActions.requestIdentifiers());
+      dispatch(requestIdentifiers());
     }
   };
 };

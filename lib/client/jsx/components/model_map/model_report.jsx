@@ -35,7 +35,7 @@ class ModelReport extends React.Component{
       <span className="description">{template.description}</span>
       {
         Object.keys(template.attributes).map((att_name,i) =>
-          template.attributes[att_name].shown ? 
+          template.attributes[att_name].shown ?
           <ModelAttribute key={i} att_name={att_name} template={template}/>
           : null
         )
@@ -50,11 +50,7 @@ const mapStateToProps = (state, own_props)=>{
   };
 };
 
-const mapDispatchToProps = (dispatch, own_props)=>{
-  return {};
-};
-
 export const ModelReportContainer = ReactRedux.connect(
   mapStateToProps,
-  mapDispatchToProps
+  {}
 )(ModelReport);
