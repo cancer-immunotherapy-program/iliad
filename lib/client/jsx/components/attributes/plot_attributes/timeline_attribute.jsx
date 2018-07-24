@@ -24,17 +24,17 @@ export class TimelineAttribute extends GenericPlotAttribute{
   static getDerivedStateFromProps(next_props, prev_state){
 
     if(
-        Object.keys(next_props).length <= 0 || 
+        Object.keys(next_props).length <= 0 ||
         next_props.selected_consignment === null
     ) return null;
-    
+
 
     return {
       records: next_props.records
     };
   }
 
-  render(){ 
+  render(){
     let plot_props = {
       all_events: this.state.records,
       color:'#29892a'
@@ -50,7 +50,7 @@ export class TimelineAttribute extends GenericPlotAttribute{
   }
 }
 
-/* 
+/*
  * This is a temporary shim. Key for date should be normalized in the
  * database.
  */
@@ -66,7 +66,7 @@ let normalizeDateName = (name) => {
       return 'end';
     default:
       return name;
-  } 
+  }
 }
 
 let hashPatientData = (hashed_obj, array) => {
@@ -105,7 +105,7 @@ let flatten = (nested_obj, array, level) => {
       value: nested_obj[obj].value,
     });
     if(
-      typeof nested_obj[obj].children === "object" && 
+      typeof nested_obj[obj].children === "object" &&
       Object.keys(nested_obj[obj].children).length !== 0
     ) {
       let next_level = level + 1;
@@ -121,7 +121,7 @@ let normalizePatientDataD3 = (records) => {
     let d3_record = {};
     d3_record.data = [];
     d3_record.name = records[record].name;
-    d3_record.label = records[record].name.replace(/[_-]/g, " "); 
+    d3_record.label = records[record].name.replace(/[_-]/g, " ");
 
     if(records[record].name === 'diagnosis_date') {
       let time_str = new Date(records[record].value).toUTCString();
@@ -135,7 +135,7 @@ let normalizePatientDataD3 = (records) => {
 
       if(name === 'start' || name === 'end'){
         d3_record[name]=records[record].children[child].value;
-      } 
+      }
       else {
 
         d3_record.data.push({
@@ -149,11 +149,11 @@ let normalizePatientDataD3 = (records) => {
           d3_record.data = [...d3_record.data, ...array];
         }
       }
-    
+
     }
     d3_records.push(d3_record);
   }
-  // Group patient data by type 
+  // Group patient data by type
   let prior_treatment_arr = [];
   let treatment_arr = [];
   let diagnostic_arr = [];
@@ -184,14 +184,14 @@ let normalizePatientDataD3 = (records) => {
 let normalizeAEPatientDataD3 = (hashed_obj, array) => {
   let adverse_events_arr = [];
   let prior_adverse_events_arr = [];
-    
+
   // create hashed objects for adverse events data.
   for(let category of array){
     if(category) {
       for(let index = 0; index < category.rows.length; ++index){
         let meddra_code = category.rows[index][0];
         let utc_start_str;
-        let utc_end_str; 
+        let utc_end_str;
 
         if(category.rows[index][2]){
           let start = category.rows[index][2].toString().split(' ');
@@ -236,7 +236,7 @@ const mapStateToProps = (state = {}, own_props)=>{
   let records;
   let ae_records;
   let hashed_obj = {};
-  
+
   // selected_plot = state.plots.plotsMap[own_props.attribute.plot_id];
   // if(selected_plot != undefined){
   //   selected_manifest = state.manifests[selected_plot.manifest_id];
@@ -250,10 +250,10 @@ const mapStateToProps = (state = {}, own_props)=>{
       selected_manifest.md5sum_data
     );
   }
-  
+
   if(selected_consignment) {
     let {
-      diagnostic_data, 
+      diagnostic_data,
       treatment_data,
       prior_treatment_data,
       adverse_events,
@@ -261,7 +261,7 @@ const mapStateToProps = (state = {}, own_props)=>{
     } = selected_consignment;
 
     let patient_data = [
-      diagnostic_data, 
+      diagnostic_data,
       treatment_data,
       prior_treatment_data,
     ];
@@ -270,7 +270,7 @@ const mapStateToProps = (state = {}, own_props)=>{
       adverse_events,
       prior_adverse_events
     ];
- 
+
     hashPatientData(hashed_obj, patient_data);
     hashed_obj = nestDataset(hashed_obj, 'uid', 'parent_uid');
     records = normalizePatientDataD3(hashed_obj);
@@ -281,7 +281,7 @@ const mapStateToProps = (state = {}, own_props)=>{
     adverse_events.rows.map(row => {row.push('adverse_events');});
     ae_records = normalizeAEPatientDataD3(hashed_obj, ae_patient_data);
 
-    records = [...ae_records, ...records];  
+    records = [...ae_records, ...records];
   }
 
   return {
