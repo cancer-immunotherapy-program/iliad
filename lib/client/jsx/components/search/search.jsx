@@ -1,4 +1,3 @@
-
 /*
  * TODO! The <Header /> component has been disabled here. The <Header />
  * component is used to render the bulk edit buttons and events. Editing is
@@ -13,10 +12,8 @@
  import * as ReactRedux from 'react-redux';
 
 import SelectInput from '../inputs/select_input';
-import SearchQuery from './search_query';
 import Header from '../general/header';
 import {SearchTableContainer as SearchTable} from './search_table';
-import SearchQuestion from './search_question';
 import Pager from '../general/pager';
 
 import {selectSearchCache} from '../../selectors/search_cache';
@@ -81,43 +78,6 @@ export class Search extends React.Component{
       page == 1
     );
   }
-
-/*
-  renderQuery() {
-
-    return null;
-
-    return <div className='query'>
-      <span className='label'>Show table</span>
-      <SelectInput name='model'
-        values={ this.props.model_names }
-        onChange={ (model_name) => this.setState({ selected_model: model_name }) }
-        showNone='enabled'/>
-
-      <span className='label'>Page size</span>
-      <SelectInput
-        values={ [ 10, 25, 50, 200 ] }
-        defaultValue={ this.state.page_size }
-        onChange={ (page_size) => this.setState({ page_size }) }
-        showNone='disabled'/>
-      <input type='text' className='filter'
-        placeholder='filter query'
-        onChange={ (e) => this.setState({ current_filter: e.target.value }) }/>
-
-      <input type='button' className='button' value='Search'
-        disabled={ !this.state.selected_model }
-        onClick={
-          () => this.getPage(1, true)
-        } />
-      <input className='button'
-        type='button'
-        value={'\u21af TSV'}
-        disabled={ !this.state.selected_model }
-        onClick={ () => this.props.requestTSV(this.state.selected_model,
-          this.state.current_filter) }/>
-    </div>
-  }
-*/
 
   renderQuery(){
 
@@ -212,12 +172,12 @@ export class Search extends React.Component{
             <span> {this.props.model_name} </span>
           </div>
           &nbsp;&nbsp;
-          <Pager pages={pages} current_page={this.props.current_page} set_page={this.getPage.bind(this)} />
+          <Pager pages={pages} current_page={this.props.current_page} setPage={this.getPage.bind(this)} />
         </div>
       );
 
       table_docs = (
-        <div className='documents'>
+        <div className='search-table-container'>
 
           <SearchTable mode={this.state.mode} model_name={this.props.model_name} record_names={this.props.record_names } />
         </div>
@@ -264,17 +224,21 @@ const mapDispatchToProps = (dispatch, own_props)=>{
         page_number
       ));
     },
+
     setSearchPage: (page)=>{
       dispatch(setSearchPage(page));
     },
+
     setSearchPageSize: (page_size)=>{
       dispatch(setSearchPageSize(page_size));
     },
+
     requestDocuments: (args)=>{
       dispatch(requestDocuments(args));
     },
-    requestTSV: ()=>{
-      //dispatch();
+
+    requestTSV: (model_names, record_names)=>{
+      dispatch(requestTSV(model_names, record_names));
     }
   };
 };

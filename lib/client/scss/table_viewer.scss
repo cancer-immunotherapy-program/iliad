@@ -6,6 +6,15 @@
   padding-top: 10px;
 }
 
+.search-table-container{
+  overflow: auto;
+  position: absolute;
+  top: 185px;
+  left: 20px;
+  bottom: 10px;
+  right: 10px;
+}
+
 .search-table-summary{
   display: inline-block;
   color: $med-grey-1;
@@ -28,8 +37,15 @@
   padding-right: 10px;
 }
 
-.table-viewer-group table,
 .search-table{
+  table-layout: fixed;
+  margin-bottom: 20px;
+  padding: 5px;
+  border: 1px solid $dark-color;
+  border-collapse: collapse;
+}
+
+.table-viewer-group table{
   table-layout: fixed;
   width: 100%;
   margin-top: 10px;
