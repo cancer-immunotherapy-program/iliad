@@ -1,8 +1,8 @@
 // Framework libraries.
 import * as React from 'react';
+import * as ReactRedux from 'react-redux';
 
-import { connect } from 'react-redux';
-import { reviseDocument } from '../../actions/magma_actions';
+import {reviseDocument} from '../../actions/magma_actions';
 
 class DocumentAttribute extends React.Component{
   revise(e) {
@@ -16,42 +16,67 @@ class DocumentAttribute extends React.Component{
     )
   }
   renderEdit(){
+    let {document, template, attribute, reviseDocument} = this.props;
     let input_props = {
-      onChange: this.revise.bind(this),
-      type:"file"
+      onChange: function(event){
+        reviseDocument({
+          document,
+          template,
+          attribute,
+          revised_value: event.target.files[0]
+        });
+      },
+      type: 'file'
     };
 
     return(
       <div className="value">
+
         <input {...input_props}/>
       </div>
-    )
+    );
   }
 
   render(){
-    let { mode, value } = this.props;
+    if(this.props.mode == 'edit') return this.renderEdit();
 
-    if (mode == "edit") return this.renderEdit();
-
-    if (value){
+    if(this.props.value){
       return(
-        <div className="value">
-          <a href={ value.url } > { value.path } </a>
+        <div className='value'>
+
+          <a href={this.props.value.url}>
+
+            {this.props.value.path}
+          </a>
         </div>
       );
     }
 
     return(
-      <div className="value">
-        <div className="document_empty">
-          No file.
+      <div className='value'>
+
+        <div className='document_empty'>
+
+          {'No file.'}
         </div>
       </div>
     );
   }
 }
 
-export default connect(
-  null,
-  { reviseDocument }
+const mapStateToProps = (dispatch, own_props)=>{
+  return {};
+};
+
+const mapDispatchToProps = (dispatch, own_props)=>{
+  return {
+    reviseDocument: (args)=>{
+      dispatch(MagmaActions.reviseDocument(args));
+    }
+  };
+};
+
+export default ReactRedux.connect(
+  mapStateToProps,
+  mapDispatchToProps
 )(DocumentAttribute);
