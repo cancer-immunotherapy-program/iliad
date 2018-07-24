@@ -22,7 +22,7 @@ class Pager extends React.Component{
   enterPage(){
     let page_edit = parseInt(this.refs.page_edit.value);
     if(page_edit == this.refs.page_edit.value){
-      this.props.set_page(
+      this.props.setPage(
         Math.max(1, Math.min(this.props.pages, page_edit))
       );
     }
@@ -36,7 +36,12 @@ class Pager extends React.Component{
       type: 'text',
       defaultValue: this.props.current_page,
       onBlur: this.enterPage.bind(this),
-      onEnter: this.enterPage.bind(this)
+      onKeyUp: (event)=>{
+        event.preventDefault();
+        if(event.keyCode === 13){
+          this.enterPage();
+        }
+      }
     };
     let input = <input {...input_props} />
     let report = `${this.props.current_page} of ${this.props.pages}`;

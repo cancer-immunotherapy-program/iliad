@@ -6,6 +6,15 @@
   padding-top: 10px;
 }
 
+.search-table-container{
+  overflow: auto;
+  position: absolute;
+  top: 185px;
+  left: 20px;
+  bottom: 10px;
+  right: 10px;
+}
+
 .search-table-summary{
   display: inline-block;
   color: $med-grey-1;
@@ -28,8 +37,15 @@
   padding-right: 10px;
 }
 
-.table-viewer-group table,
 .search-table{
+  table-layout: fixed;
+  margin-bottom: 20px;
+  padding: 5px;
+  border: 1px solid $dark-color;
+  border-collapse: collapse;
+}
+
+.table-viewer-group table{
   table-layout: fixed;
   width: 100%;
   margin-top: 10px;
@@ -37,6 +53,15 @@
   padding: 5px;
   border: 1px solid $dark-color;
   border-collapse: collapse;
+}
+
+.search-table-filter-input{
+  text-indent: 5px;
+  border: none;
+  outline: 1px solid $med-grey-2;
+  font-size: 1em;
+  height: 19px;
+  margin-top: 1px;
 }
 
 .table-viewer-header,
@@ -77,14 +102,16 @@
 .pager-nav-report,
 .pager-filter-input,
 .pager-export-btn,
-.pager-nav-btn{
+.pager-nav-btn,
+.pager-filter-btn{
   display: inline-block;
   vertical-align: top;
   font-family: $main-font;
 }
 
 .pager-export-btn,
-.pager-nav-btn{
+.pager-nav-btn,
+.pager-filter-btn{
   margin-left: 10px;
   cursor: pointer;
   padding:5px;
@@ -95,14 +122,16 @@
 }
 
 .pager-export-btn:hover:enabled,
-.pager-nav-btn:hover:enabled{
+.pager-nav-btn:hover:enabled,
+.pager-filter-btn:hover:enabled{
   color: #fff;
   background: #22a778;
   border: 1px solid #22a778;
 }
 
 .pager-export-btn:disabled,
-.pager-nav-btn:disabled{
+.pager-nav-btn:disabled,
+.pager-filter-btn:disabled{
   cursor: default;
   border: 1px solid #ccc;
 }

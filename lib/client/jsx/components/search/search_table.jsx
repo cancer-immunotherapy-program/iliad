@@ -2,13 +2,14 @@
 import * as React from 'react';
 import * as ReactRedux from 'react-redux';
 
+import SearchTableCell from './search_table_cell';
+
 import {
   selectModelDocuments,
   selectModelTemplate
 } from '../../selectors/magma_selector';
 
-// exclude things not shown and tables
-
+// Exclude things not shown and tables.
 const displayedAttributes = (template)=>{
   return Object.keys(template.attributes).filter((attribute_name)=>{
     return(
@@ -24,23 +25,25 @@ export class SearchTable extends React.Component{
     this.state = {};
   }
 
-/*
-  focusCell(row, column) {
-    if (column == null) return (row == this.state.focus_row)
-    if (row == null) return (column == this.state.focus_col)
-    this.setState({ focus_row: row, focus_col: column })
+  focusCell(row, column){
+    if(column == null) return (row == this.state.focus_row);
+    if(row == null) return (column == this.state.focus_col);
+    //this.setState({focus_row: row, focus_col: column});
   }
-*/
 
-  renderCells(document){
-    var props = this.props;
-    return props.attribute_names.map((attr_name, index)=>{
-      return(
-        <td className='search-table-cell' key={index}>
+  renderCells(document, record_name){
+    return this.props.attribute_names.map((attr_name, index)=>{
 
-          {document[attr_name]}
-        </td>
-      );
+      let table_cell_props = {
+        key: attr_name,
+        attr_name,
+        document,
+        template: this.props.template,
+        record_name,
+        mode: this.props.mode
+      };
+
+      return <SearchTableCell {...table_cell_props} />;
     });
   }
 
@@ -49,7 +52,10 @@ export class SearchTable extends React.Component{
       return(
         <tr className='search-table-row' key={index}>
 
-          {this.renderCells(this.props.documents[record_name])}
+          {this.renderCells(
+            this.props.documents[record_name],
+            record_name
+          )}
         </tr>
       );
     });
