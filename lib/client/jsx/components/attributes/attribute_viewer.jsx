@@ -11,7 +11,7 @@ import {AdverseEventAttributeContainer as AdverseEventAttribute} from './adverse
 import {ClinicalAttributeContainer as ClinicalAttribute} from './clinical_attribute';
 import {CollectionAttributeContainer as CollectionAttribute} from './collection_attribute';
 import {DateTimeAttributeContainer as DateTimeAttribute} from './date_time_attribute';
-import {DocumentAttributeContainer as DocumentAttribute} from './document_attribute';
+import DocumentAttribute from './document_attribute';
 import {FloatAttributeContainer as FloatAttribute} from './float_attribute';
 import {ImageAttributeContainer as ImageAttribute} from './image_attribute';
 import {IntegerAttributeContainer as IntegerAttribute} from './integer_attribute';
@@ -21,21 +21,14 @@ import {SelectAttributeContainer as SelectAttribute} from './select_attribute';
 import {TextAttributeContainer as TextAttribute} from './text_attribute';
 
 // The plots.
-<<<<<<< HEAD
-// import {LinePlotAttributeContainer as LinePlotAttribute} from './plot_attributes/line_plot_attribute';
-// import {BoxPlotAttributeContainer as BoxPlotAttribute} from './plot_attributes/box_plot_attribute';
-// import {BarGraphAttributeContainer as BarGraphAttribute} from './plot_attributes/bar_graph_attribute';
-=======
 import {LinePlotAttributeContainer as LinePlotAttribute} from './plot_attributes/line_plot_attribute';
 import {BoxPlotAttributeContainer as BoxPlotAttribute} from './plot_attributes/box_plot_attribute';
 import {BarGraphAttributeContainer as BarGraphAttribute} from './plot_attributes/bar_graph_attribute';
 import {TimelineGroupAttributeContainer as TimelineGroupPlotAttribute} from './plot_attributes/timeline_group_plot_attribute';
->>>>>>> jc-d3-v5
 // import {BarPlotAttributeContainer as BarPlotAttribute} from './plot_attributes/bar_plot_attribute';
 // import {StackedBarPlotAttributeContainer} from './plot_attributes/stacked_bar_attribute';
 // import {SwarmPlotAttributeContainer as SwarmPlotAttribute} from './plot_attributes/swarm_plot_attribute';
 // import {HistogramAttributeContainer as HistogramAttribute} from './plot_attributes/histogram_attribute';
-import {TimelinePlotAttributeContainer as TimelinePlotAttribute} from './plot_attributes/timeline_plot_attribute';
 
 export default class AttributeViewer extends React.Component{
   render(){

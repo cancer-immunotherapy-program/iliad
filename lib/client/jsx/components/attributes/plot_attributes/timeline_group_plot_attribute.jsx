@@ -20,7 +20,7 @@ import {
 export class TimelineGroupPlotAttribute extends GenericPlotAttribute{
   constructor(props){
     super(props);
-    this.state = {records: null};
+    this.state = {records: []};
   }
 
   static getDerivedStateFromProps(next_props, prev_state){
@@ -35,9 +35,11 @@ export class TimelineGroupPlotAttribute extends GenericPlotAttribute{
   }
 
   render(){
+    if(this.state.records.length < 2) return null;
+
     let plot_props = {
       all_events: this.state.records,
-      color:'#29892a'
+      color:'#24a684'
     };
 
     return(
@@ -144,6 +146,24 @@ const mapStateToProps = (state = {}, own_props)=>{
 
             record_array.push(processed_data[key][uid]);
           }
+          break;
+        case 'adverse_events':
+          selected_consignment[key].rows.forEach((row)=>{
+            let ae_obj = {
+              name: key,
+              label: `AE (${row[4]})`,
+              group: row[4],
+              patient_id: row[4],
+              start: new Date(row[2]).toUTCString(),
+              meddra_code: row[0]
+            };
+
+            if(row[3] != null){
+              ae_obj['end'] = new Date(row[3]).toUTCString();
+            }
+
+            record_array.push(ae_obj);
+          });
           break;
         default:
           break;
