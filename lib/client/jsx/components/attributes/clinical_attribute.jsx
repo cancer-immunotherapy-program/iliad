@@ -78,6 +78,11 @@ export class ClinicalAttribute extends React.Component{
 
     uids.forEach((uid)=>{
       let def = this.state.dictionary.definitions[uid];
+
+      if(def == undefined){
+        debugger;
+      }
+
       if(!(def.name in definitions)){
         definitions[def.name] = Object.assign({}, def);
         definitions[def.name].value = definitions[def.name].name;
@@ -375,7 +380,6 @@ export class ClinicalAttribute extends React.Component{
   }
 
   renderRecord(uid_set, is_parent){
-
     let child_elements = [];
     for(let uid in uid_set.children){
       child_elements.push(this.renderRecord(uid_set.children[uid], false));
@@ -438,7 +442,7 @@ export class ClinicalAttribute extends React.Component{
       Object.keys(records).length <= 0 ||
       Object.keys(dictionary).length <= 0 ||
       Object.keys(dictionary.definitions).length <= 0
-    ) return <div>{'sup'}</div>;
+    ) return <div>{'No records.'}</div>;
 
     // Loop the records and render them by group.
     let elements = [];
