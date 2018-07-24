@@ -315,3 +315,31 @@
   }
 }
 */
+
+.Axis path,
+.Axis line {
+  stroke: #E0E0E0;
+}
+
+.Axis text {
+  font-size: 11px;
+  fill: black;
+}
+
+.Axis-timeline-bottom text {
+  transform: rotate(-45deg);
+  text-anchor: end;
+}
+
+.tooltip-bg{
+  fill: #ccc;
+  pointer-events: none;
+  // opacity: 0.90;
+}
+
+.tooltip-text{
+  display: inline;
+  font-family: "Open Sans", arial, x-locale-body, sans-serif;
+  font-size: 11px;
+  fill: black;
+}

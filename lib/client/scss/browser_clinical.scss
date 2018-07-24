@@ -1,0 +1,190 @@
+@import "globals";
+@import "attribute";
+
+.clinical-group{
+  margin-left: 10px;
+  min-width: 600px;
+}
+
+.clinical-group > .clinical-record-group{
+  padding-top: 10px;
+  padding-bottom: 10px;
+  padding-right: 10px;
+  border-top: 1px solid #333;
+  font-size: 0.9em;
+}
+
+.clinical-record-revised{
+  background: #ffaaaa;
+}
+
+.clinical-record-input,
+.clinical-record-selector,
+.clinical-record-date,
+.clinical-record-checkbox{
+  font-family: $body_font;
+  font-size: 1em;
+  border: none;
+  outline: 1px solid #fff;
+  display: inline-block;
+  vertical-align: top;
+  width: 225px;
+  padding: 3px;
+  margin-left: 10px;
+  color: #000;
+  -webkit-appearance: none;
+  -webkit-border-radius: 0px;
+}
+
+.clinical-record-date,
+.clinical-record-input{
+  outline: 1px solid #666;
+  box-shadow: 1px 1px 1px 1px #999;
+}
+
+.clinical-record-date:disabled,
+.clinical-record-selector:disabled,
+.clinical-record-input:disabled{
+  border: none;
+  background: #fff;
+  outline: 1px solid #fff;
+  box-shadow: none;
+  -webkit-text-fill-color: #000;
+  -webkit-opacity:1;
+  color: #000;
+}
+
+.clinical-record-selector:disabled{
+  background: #fff;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+}
+
+.clinical-record-selector:focus{
+  outline-offset: 0px;
+}
+
+.clinical-record-date,
+.clinical-record-input{
+  height: 18px;
+}
+
+.clinical-record-selector{
+  outline: 1px solid #999;
+  height: 24px;
+  width: 233px;
+}
+
+.clinical-record-group .clinical-record-group{
+  margin-top: 10px;
+}
+
+.clinical-record-checkbox-grouping{
+  /*border: 1px solid #0000ff;*/
+  width: 223px;
+  white-space: nowrap;
+  overflow: hidden;
+  margin-bottom: 3px;
+}
+
+.clinical-record-edit-group{
+  padding: 10px;
+  height: 23px;
+  background: #24a684;
+}
+
+.clinical-record-rm-btn,
+.clinical-record-btn{
+  display: none;
+  float: right;
+  cursor: pointer;
+  font-size: 0.8em;
+  line-height: 22px;
+  border: none;
+}
+
+.clinical-record-rm-btn{
+  background: #24a684;
+  color: #fff;
+}
+
+.clinical-record-btn{
+  display: inline-block;
+  margin-left: 10px;
+  outline: 1px solid #666;
+}
+
+.clinical-record-group:hover .clinical-record-rm-btn{
+  display: inline-block
+}
+
+.clinical-record-rm-btn i{
+  font-size: 1.1em;
+}
+
+/******************************************************************************/
+
+.search-dropdown-group{
+  font-family: $body_font;
+  font-size: 1em;
+  border: none;
+  outline: 1px solid #fff;
+  display: inline-block;
+  vertical-align: top;
+  width: 231px;
+  height: 24px;
+  margin-left: 10px;
+  color: #000;
+  background: #fff;
+}
+
+.search-dropdown-group{
+  outline: 1px solid #666;
+  box-shadow: 1px 1px 1px 1px #999;
+}
+
+.search-dropdown-group-disabled{
+  border: none;
+  background: #fff;
+  outline: 1px solid #fff;
+  box-shadow: none;
+  -webkit-text-fill-color: #000;
+  -webkit-opacity:1;
+  color: #000;
+}
+
+.search-dropdown-btn{
+  display: inline-block;
+  background: #fff;
+  border: none;
+  float: right;
+  margin-right: 3px;
+  margin-top: 3px;
+  width: 18px;
+  height: 18px;
+  cursor: pointer;
+}
+
+.search-dropdown-input{
+  border: none;
+  display: inline-block;
+  margin-left: 3px;
+  width: 190px;
+  height: 20px;
+  font-size: 1em;
+  color: #000;
+  outline: none;
+}
+
+.search-dropdown-input:disabled{
+  border: none;
+  background: none;
+  font-size: 1em;
+  color: #000;
+}
+
+/*
+.search-dropdown-group input::-webkit-calendar-picker-indicator {
+  display: none;
+}
+*/
