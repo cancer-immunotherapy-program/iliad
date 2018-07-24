@@ -30,7 +30,7 @@ import {HomePageContainer as HomePage} from './components/home_page';
 import {SettingsContainer as Settings} from './components/settings/settings';
 import {SearchContainer as Search} from './components/search/search';
 
-import ModelMap from './components/model_map/model_map';
+import ModelMap from './components/model_map';
 import Activity from './components/activity';
 import Noauth from './components/noauth';
 
@@ -129,28 +129,26 @@ class IliadApplication{
     // Extract the component portion of the path out of the store.
     let state = this.store.getState();
     let component = (state.app.path) ? state.app.path.component : '';
-    let props = {};
-    //return <HomePage {...props} />;
 
     switch(component){
       case '':
-        return <HomePage {...props} />;
+        return <HomePage />;
       case 'manifests':
-        return <Manifests {...props} />;
+        return <Manifests />;
       case 'browse':
-        return <Browser {...props} />;
+        return <Browser />;
       case 'map':
         return <ModelMap />;
       case 'plots':
-        return <Plotter {...props}/>;
+        return <Plotter />;
       case 'search':
-        return <Search  {...props} />;
+        return <Search />;
       case 'settings':
-        return <Settings {...props} />;
+        return <Settings />;
       case 'activity':
-        return <Activity {...props} />;
+        return <Activity />;
       case 'noauth':
-        return <Noauth {...props} />;
+        return <Noauth />;
       default:
         return null;
     }

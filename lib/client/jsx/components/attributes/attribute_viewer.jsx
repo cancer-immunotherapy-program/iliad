@@ -7,7 +7,7 @@ import TableAttribute from './table_attribute';
 // Standard attributes.
 import {AttributeContainer as Attribute} from './attribute';
 import {CheckboxAttributeContainer as CheckboxAttribute} from './checkbox_attribute';
-import {AdverseEventAttributeContainer as AdverseEventAttribute} from './adverse_event_attribute';
+//.import {AdverseEventAttributeContainer as AdverseEventAttribute} from './adverse_event_attribute';
 import {ClinicalAttributeContainer as ClinicalAttribute} from './clinical_attribute';
 import {CollectionAttributeContainer as CollectionAttribute} from './collection_attribute';
 import {DateTimeAttributeContainer as DateTimeAttribute} from './date_time_attribute';
