@@ -187,7 +187,7 @@
     }
   }
   .variables {
-    .header { 
+    .header {
       padding: 3px;
       border-bottom: 1px solid forestgreen;
       background-color: rgba(midnightblue,0.2);
@@ -316,30 +316,52 @@
 }
 */
 
-.Axis path,
-.Axis line {
+.axis path,
+.axis line {
   stroke: #E0E0E0;
 }
 
-.Axis text {
+.axis text {
   font-size: 11px;
   fill: black;
 }
 
-.Axis-timeline-bottom text {
+.axis-Bottom text, .axis-timeline-bottom text {
   transform: rotate(-45deg);
   text-anchor: end;
 }
 
-.tooltip-bg{
-  fill: #ccc;
-  pointer-events: none;
-  // opacity: 0.90;
+.box-group text {
+  visibility: hidden;
 }
 
-.tooltip-text{
+.box-group:hover text {
+  visibility: visible;
+  font-size: 8px;
+  alignment-baseline: middle;
+}
+
+.legend-container {
+  width: 75%;
+  margin-top: 25px;
+  margin-left: auto;
+}
+
+.category-group {
+  display: inline-block;
+  margin-right: 24px;
+  vertical-align: middle
+}
+
+.label-rect {
+  display: inline-block;
+  margin-right: 8px;
+  width: 16px;
+  height: 8px;
+  vertical-align: middle;
+}
+
+.label-text {
   display: inline;
-  font-family: "Open Sans", arial, x-locale-body, sans-serif;
-  font-size: 11px;
-  fill: black;
+  font-size: 12px;
 }
