@@ -23,7 +23,10 @@ class ConsignmentTable extends React.Component{
 
           {row.map((data, j)=>{
             return(
-              <td className='consignment-cell' key={j}>{data}</td>
+              <td className='consignment-cell' key={j}>
+
+                {String(data)}
+              </td>
             );
           })}
         </tr>
@@ -37,8 +40,14 @@ class ConsignmentTable extends React.Component{
 
         <table className='consignment-table'>
 
-          {this.tableHeader()}
-          {this.tableRows()}
+          <thead>
+
+            {this.tableHeader()}
+          </thead>
+          <tbody>
+
+            {this.tableRows()}
+          </tbody>
         </table>
       </div>
     );

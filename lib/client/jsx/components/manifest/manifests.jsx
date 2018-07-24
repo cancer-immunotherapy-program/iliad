@@ -6,7 +6,7 @@ import md5 from 'md5';
 
 // Class imports.
 import ListMenu from '../general/list_menu';
-import ManifestView from './manifest_view';
+import {ManifestViewContainer as ManifestView}  from './manifest_view';
 
 // Module imports.
 import {addTokenUser} from '../../actions/app_actions';
