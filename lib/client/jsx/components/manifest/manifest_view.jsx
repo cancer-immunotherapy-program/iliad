@@ -111,7 +111,7 @@ export class ManifestView extends React.Component{
   }
 
   render(){
-    let { consignment, manifest, update } = this.props;
+    let {consignment, manifest, update} = this.props;
 
     if (manifest == null) return null;
 
@@ -183,10 +183,15 @@ export class ManifestView extends React.Component{
                 {updated_at}
               </div>
               <div className='manifest-form-detail'>
+
                 <span>{'ACCESS:'}&nbsp;&nbsp;</span>
                 <input {...priv_props} />{'PRIVATE'}
                 &nbsp;
                 <input {...pub_props} />{'PUBLIC'}
+              </div>
+              <div className='manifest-form-detail'>
+
+                {`(${manifest.id})`}
               </div>
               <br />
               <div className='manifest-form-detail'>

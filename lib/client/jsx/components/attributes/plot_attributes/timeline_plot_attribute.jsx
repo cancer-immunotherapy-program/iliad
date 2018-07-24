@@ -12,7 +12,7 @@ import * as ManifestActions from '../../../actions/manifest_actions';
 import * as ConsignmentSelector from '../../../selectors/consignment_selector';
 import {nestDataset} from '../../../selectors/selector_utils.js';
 
-export class TimelineAttribute extends GenericPlotAttribute{
+export class TimelinePlotAttribute extends GenericPlotAttribute{
   constructor(props) {
     super(props);
 
@@ -43,7 +43,7 @@ export class TimelineAttribute extends GenericPlotAttribute{
     return(
       <div id='timeline_charts' className='value-timeline'>
         {this.state.records && <Resize render={(width) => (
-          <TimelinePlot {...plot_props} parent_width={width} />
+          <TimelinePlot {...plot_props} parent_width={800} />
         )}/>}
       </div>
     )
@@ -242,12 +242,12 @@ const mapStateToProps = (state = {}, own_props)=>{
   //   selected_manifest = state.manifests[selected_plot.manifest_id];
   // }
 
-  selected_manifest = state.manifests['179'];
+  selected_manifest = state.manifests[own_props.attribute.manifest_id];
 
   if(selected_manifest != undefined){
     selected_consignment = ConsignmentSelector.selectConsignment(
       state,
-      selected_manifest.md5sum_data
+      selected_manifest.md5sum
     );
   }
 
@@ -303,7 +303,7 @@ const mapDispatchToProps = (dispatch, own_props)=>{
   };
 };
 
-export const TimelineAttributeContainer = ReactRedux.connect(
+export const TimelinePlotAttributeContainer = ReactRedux.connect(
   mapStateToProps,
   mapDispatchToProps
-)(TimelineAttribute);
+)(TimelinePlotAttribute);

@@ -28,7 +28,7 @@ import {TextAttributeContainer as TextAttribute} from './text_attribute';
 // import {StackedBarPlotAttributeContainer} from './plot_attributes/stacked_bar_attribute';
 // import {SwarmPlotAttributeContainer as SwarmPlotAttribute} from './plot_attributes/swarm_plot_attribute';
 // import {HistogramAttributeContainer as HistogramAttribute} from './plot_attributes/histogram_attribute';
-import {TimelineAttributeContainer as TimelineAttribute} from './plot_attributes/timeline_attribute';
+import {TimelinePlotAttributeContainer as TimelinePlotAttribute} from './plot_attributes/timeline_plot_attribute';
 
 export default class AttributeViewer extends React.Component{
   render(){
@@ -60,7 +60,7 @@ export default class AttributeViewer extends React.Component{
       //  return <AdverseEventAttribute {...this.props} />;
 
       case 'TimelinePlotAttribute':
-        return <TimelineAttribute {...this.props} />;
+        return <TimelinePlotAttribute {...this.props} />;
 
       case 'BoxPlotAttribute':
         return <BoxPlotAttribute {...this.props} />;
