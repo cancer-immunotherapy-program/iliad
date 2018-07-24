@@ -21,22 +21,22 @@ class TimelineGraph extends Component {
 
   static getDerivedStateFromProps(next_props, prev_state){
     if(next_props.all_events.length <= 0 ) return null;
-    
+
     // Set start and end date for timeline axis.
-    let min =  next_props.all_events[0].start ? 
+    let min =  next_props.all_events[0].start ?
       new Date(next_props.all_events[0].start) : null;
 
-    let max =  next_props.all_events[0].end ? 
+    let max =  next_props.all_events[0].end ?
       new Date(next_props.all_events[0].end) : min;
 
     for(let i = 1; i < next_props.all_events.length; i++) {
-      let start_time = next_props.all_events[i].start ? 
+      let start_time = next_props.all_events[i].start ?
         new Date (next_props.all_events[i].start) : null;
 
-      let end_time = next_props.all_events[i].end ? 
+      let end_time = next_props.all_events[i].end ?
         new Date(next_props.all_events[i].end) : start_time;
 
-      if(start_time < min){min = start_time;} 
+      if(start_time < min) min = start_time;
       if(end_time > max){max = end_time;}
     }
 
@@ -54,10 +54,10 @@ class TimelineGraph extends Component {
   showToolTip(event) {
     let {target} = event;
 
-    let rec_x = parseFloat(target.getAttribute('width')) / 2 + 
+    let rec_x = parseFloat(target.getAttribute('width')) / 2 +
       parseFloat(target.getAttribute('x'));
 
-    let rec_y = parseFloat(target.getAttribute('y')) + 
+    let rec_y = parseFloat(target.getAttribute('y')) +
       parseFloat(target.getAttribute('height')) / 2;
 
     let cir_x = parseFloat(target.getAttribute('cx'));
@@ -72,17 +72,17 @@ class TimelineGraph extends Component {
           end: target.getAttribute('data-end'),
           value: target.getAttribute('data-value') || null
         },
-        location:{ 
+        location:{
           x: target.getAttribute('x') ? rec_x : cir_x,
           y: target.getAttribute('y') ? rec_y : cir_y
-        } 
+        }
       }
     });
   }
 
   hideToolTip() {
     this.setState({
-      tooltip:{ 
+      tooltip:{
         display:false,
         data:{
           type:'',value:''
@@ -95,7 +95,7 @@ class TimelineGraph extends Component {
     if(this.state.timeDomain.length < 1) return null;
     let {timeDomain, data} = this.state;
     let margins = { top: 41, right: 145, bottom: 440, left: 145 };
-    let svg_dimensions = { 
+    let svg_dimensions = {
       width: Math.max(this.props.parent_width, 500),
       height: data.length * 24 + 481
     };
@@ -104,13 +104,13 @@ class TimelineGraph extends Component {
       width: svg_dimensions.width,
       height: svg_dimensions.height
     };
-    
+
     //Create time scale.
     let xScale = this.timeScale
       .domain(timeDomain)
       .range([margins.left, svg_dimensions.width - margins.right])
       .nice();
-    
+
     let yScale = this.bandScale
       .padding(0.5)
       .domain(data.map(datum => datum.label))
@@ -123,7 +123,7 @@ class TimelineGraph extends Component {
       tickSize: svg_dimensions.height - margins.top - margins.bottom,
       timeformat: "%b '%y"
     };
-    
+
     let yProps = {
       orient: 'Left',
       scale: yScale,
@@ -142,10 +142,10 @@ class TimelineGraph extends Component {
     };
 
     let tooltip_props = {
-      tooltip: this.state.tooltip, 
+      tooltip: this.state.tooltip,
       text_style: 'tooltip-text',
       bg_style: 'tooltip-bg',
-      x_value: 'Type', 
+      x_value: 'Type',
       y_value: 'Value'
     };
 

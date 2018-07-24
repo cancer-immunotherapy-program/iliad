@@ -1,18 +1,24 @@
-import React, { Component } from 'react';
+// Framework libraries.
+import * as React from 'react';
 
-import Attribute from './attribute';
-import SelectAttribute from './select_attribute';
-import ImageAttribute from './image_attribute';
-import DocumentAttribute from './document_attribute';
-import CheckboxAttribute from './checkbox_attribute';
-import DateTimeAttribute from './date_time_attribute';
-import TableAttribute from './table_attribute';
-import LinkAttribute from './link_attribute';
-import { IntegerAttribute, FloatAttribute } from './numeric_attribute';
-import CollectionAttribute from './collection_attribute';
-import TextAttribute from './text_attribute';
 import {MetricsAttributeContainer as MetricsAttribute} from './metrics_attribute';
+import TableAttribute from './table_attribute';
+
+// Standard attributes.
+import {AttributeContainer as Attribute} from './attribute';
+import {CheckboxAttributeContainer as CheckboxAttribute} from './checkbox_attribute';
+import {AdverseEventAttributeContainer as AdverseEventAttribute} from './adverse_event_attribute';
+import {ClinicalAttributeContainer as ClinicalAttribute} from './clinical_attribute';
+import {CollectionAttributeContainer as CollectionAttribute} from './collection_attribute';
+import {DateTimeAttributeContainer as DateTimeAttribute} from './date_time_attribute';
+import {DocumentAttributeContainer as DocumentAttribute} from './document_attribute';
+import {FloatAttributeContainer as FloatAttribute} from './float_attribute';
+import {ImageAttributeContainer as ImageAttribute} from './image_attribute';
+import {IntegerAttributeContainer as IntegerAttribute} from './integer_attribute';
+import {LinkAttributeContainer as LinkAttribute} from './link_attribute';
 import {MarkdownAttributeContainer as MarkdownAttribute} from './markdown_attribute';
+import {SelectAttributeContainer as SelectAttribute} from './select_attribute';
+import {TextAttributeContainer as TextAttribute} from './text_attribute';
 
 // The plots.
 import {LinePlotAttributeContainer as LinePlotAttribute} from './plot_attributes/line_plot_attribute';
@@ -24,8 +30,9 @@ import {TimelineGroupAttributeContainer as TimelineGroupPlotAttribute} from './p
 // import {SwarmPlotAttributeContainer as SwarmPlotAttribute} from './plot_attributes/swarm_plot_attribute';
 // import {HistogramAttributeContainer as HistogramAttribute} from './plot_attributes/histogram_attribute';
 
-export default class AttributeViewer extends Component{
+export default class AttributeViewer extends React.Component{
   render(){
+
     let {attribute} = this.props;
 
     switch(attribute.attribute_class){
@@ -46,16 +53,24 @@ export default class AttributeViewer extends Component{
       // case 'HistogramAttribute':
       //   return <HistogramAttribute {...this.props} />;
 
-      // case 'BoxPlotAttribute':
-      //   return <BoxPlotAttribute {...this.props} />;
+      case 'DemographicAttribute':
+      case 'DiagnosticAttribute':
+      case 'TreatmentAttribute':
+        return <ClinicalAttribute {...this.props} />;
+      case 'AdverseEventAttribute':
+        return <TableAttribute {...this.props} />;
+      //  return <AdverseEventAttribute {...this.props} />;
+
       case 'TextAttribute':
         return <TextAttribute {...this.props} />;
       case 'MarkdownAttribute':
         return <MarkdownAttribute {...this.props} />;
       case 'MetricsAttribute':
         return <MetricsAttribute {...this.props} />;
+
       case 'Magma::CollectionAttribute':
         return <CollectionAttribute {...this.props} />;
+
       case 'Magma::ForeignKeyAttribute':
       case 'Magma::ChildAttribute':
         return <LinkAttribute {...this.props} />;
@@ -65,6 +80,7 @@ export default class AttributeViewer extends Component{
         return <DocumentAttribute {...this.props} />;
       case 'Magma::ImageAttribute':
         return <ImageAttribute {...this.props} />;
+
       case 'Magma::Attribute':
         if(attribute.options) return <SelectAttribute {...this.props} />;
         switch(attribute.type){
@@ -81,7 +97,7 @@ export default class AttributeViewer extends Component{
         }
 
       default:
-        var msg = 'Could not match attribute '+attribute.name;
+        let msg = 'Could not match attribute '+attribute.name;
         msg += ' with class '+attribute.attribute_class+' to a display class!';
         console.log(msg);
         return null;

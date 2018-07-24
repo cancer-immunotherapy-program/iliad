@@ -1,28 +1,52 @@
-import { connect } from 'react-redux';
+// Framework libraries.
+import * as React from 'react';
+import * as ReactRedux from 'react-redux';
 
-import { reviseDocument } from '../../actions/magma_actions'
-import React, { Component } from 'react';
+import * as MagmaActions from '../../actions/magma_actions';
 import TextAreaInput from '../inputs/text_area_input';
 
-class TextAttribute extends Component {
-  renderEdit() {
-    let { revision, document, template, attribute, reviseDocument } = this.props;
-    return <TextAreaInput
-      defaultValue={ revision }
-      className='text_box'
-      onChange={ (value) => reviseDocument(document,template,attribute,value) }
-    />;
+export default class TextAttribute extends React.Component{
+  renderEdit(){
+    let {revision, document, template, attribute, reviseDocument} = this.props;
+    let input_props = {
+      defaultValue: revision,
+      className: 'text_box',
+      onChange: (value)=>{
+        reviseDocument({
+          document,
+          template,
+          attribute,
+          revised_value: value
+        });
+      }
+    };
+
+    return <TextAreaInput {...input_props} />;
   }
 
-  render() {
-    let { mode, value } = this.props;
-    return <div className="value">
-      { mode == 'edit' ? this.renderEdit() : value }
-    </div>
+  render(){
+    return(
+      <div className='value'>
+
+        {this.props.mode == 'edit' ? this.renderEdit() : this.props.value}
+      </div>
+    );
   }
 }
 
-export default connect(
-  null,
-  {reviseDocument}
+const mapStateToProps = (dispatch, own_props)=>{
+  return {};
+};
+
+const mapDispatchToProps = (dispatch, own_props)=>{
+  return {
+    reviseDocument: (args)=>{
+      dispatch(MagmaActions.reviseDocument(args));
+    }
+  };
+};
+
+export const TextAttributeContainer = ReactRedux.connect(
+  mapStateToProps,
+  mapDispatchToProps
 )(TextAttribute);

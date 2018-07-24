@@ -29,7 +29,7 @@ import {AppNavContainer as AppNav} from './components/general/app_nav';
 import {HomePageContainer as HomePage} from './components/home_page';
 import {SettingsContainer as Settings} from './components/settings/settings';
 
-import ModelMap from './components/model_map';
+import ModelMap from './components/model_map/model_map';
 import Search from './components/search/search';
 import Activity from './components/activity';
 import Noauth from './components/noauth';
@@ -86,7 +86,7 @@ class IliadApplication{
     ];
 
     // Apply the logging if we are not in production.
-    if(process.env.NODE_ENV != 'production') middlewares.push(createLogger());
+    //if(process.env.NODE_ENV != 'production') middlewares.push(createLogger());
 
     this.store = Redux.createStore(
       reducers,
@@ -157,15 +157,6 @@ class IliadApplication{
   }
 
   createUI(){
-/*
-    let app_nav_props = {
-      user: props.user,
-      can_edit: props.can_edit,
-      mode: props.mode,
-      environment: props.environment
-    };
-*/
-
     ReactDOM.render(
       <Provider store={this.store}>
 

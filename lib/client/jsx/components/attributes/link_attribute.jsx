@@ -1,78 +1,91 @@
-
 // Framework libraries.
 import * as React from 'react';
-import { connect } from 'react-redux';
+import * as ReactRedux from 'react-redux';
 
-import { reviseDocument } from '../../actions/magma_actions';
 import SlowTextInput from '../inputs/slow_text_input';
 import MagmaLink from '../magma_link';
+import {reviseDocument} from '../../actions/magma_actions';
 
-class LinkAttribute extends React.Component{
-  setLink(value) {
-    let { document, template, attribute, reviseDocument } = this.props;
-
-    reviseDocument(
-      document,
-      template,
-      attribute,
-      value
-    );
-  }
-
-  removeLink(e) {
-    let { document, template, attribute, reviseDocument } = this.props;
-
-    reviseDocument(
-      document,
-      template,
-      attribute,
-      null
-    );
-  }
-
+export class LinkAttribute extends React.Component{
   renderEdit(){
-    let { revision, value } = this.props;
+    let {document, template, attribute, reviseDocument} = this.props;
+    let link_props = {
+      className: 'delete_link',
+      onClick: function(event){
+        reviseDocument({
+          document,
+          template,
+          attribute,
+          revised_value: null
+        });
+      }
+    };
 
-    if (revision && revision == value) {
+    if(this.props.revision && this.props.revision == this.props.value){
       return(
         <div className='value'>
-          <span className='delete_link'
-            onClick={ this.removeLink.bind(this) }>
-            {revision}
+
+          <span {...link_props}>
+
+            {this.props.revision}
           </span>
         </div>
       );
     }
 
+    let input_props = {
+      className: 'link_text',
+      waitTime: 500,
+      onChange: (value)=>{
+        reviseDocument({
+          document,
+          template,
+          attribute,
+          revised_value: value
+        })
+      },
+      placeholder:'New or existing ID',
+      defaultValue: ''
+    };
+
     return(
       <div className='value'>
-        <SlowTextInput
-          className='link_text'
-          waitTime={500}
-          onChange={ this.setLink.bind(this) }
-          placeholder='New or existing ID' />
+
+        <SlowTextInput {...input_props} />
       </div>
     );
   }
 
   render(){
-    let { mode, attribute, value } = this.props;
+    if (this.props.mode == 'edit') return this.renderEdit();
 
-    if (mode == 'edit') return this.renderEdit();
-
+    let {value, attribute} = this.props;
     if(value){
       return(
         <div className='value'>
-          <MagmaLink link={value} model={ attribute.model_name } />
+
+          <MagmaLink link={value} model={attribute.model_name} />
         </div>
       );
     }
 
-    return <div className='value'/>;
+    return <div className='value' />;
   }
 }
 
-export default connect(
-  null,
-  { reviseDocument }
+const mapStateToProps = (dispatch, own_props)=>{
+  return {};
+};
+
+const mapDispatchToProps = (dispatch, own_props)=>{
+  return {
+    reviseDocument: (args)=>{
+      dispatch(reviseDocument(args));
+    }
+  };
+};
+
+export const LinkAttributeContainer = ReactRedux.connect(
+  mapStateToProps,
+  mapDispatchToProps
 )(LinkAttribute);

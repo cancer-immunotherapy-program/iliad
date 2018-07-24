@@ -1,11 +1,11 @@
 // Framework libraries.
 import * as React from 'react';
-import { connect } from 'react-redux';
+import * as ReactRedux from 'react-redux';
 
-import { reviseDocument } from '../../actions/magma_actions';
 import SelectInput from '../inputs/select_input';
+import {reviseDocument} from '../../actions/magma_actions';
 
-class SelectAttribute extends React.Component{
+export class SelectAttribute extends React.Component{
   revise(value) {
     let { document, template, attribute, reviseDocument } = this.props;
 
@@ -18,31 +18,49 @@ class SelectAttribute extends React.Component{
   }
 
   renderEdit(){
-    let { attribute, value } = this.props;
+    let {value, document, template, attribute, reviseDocument} = this.props;
     let input_props = {
-      className:"selection",
-      onChange: this.revise.bind(this),
+      className: 'selection',
+      onChange: function(value){
+        reviseDocument({
+          document,
+          template,
+          attribute,
+          revised_value: value
+        });
+      },
       defaultValue: value,
-      showNone:"disabled",
+      showNone: 'disabled',
       values: attribute.options
-    }
+    };
 
     return(
-      <div className="value">
+      <div className='value'>
 
         <SelectInput {...input_props} />
       </div>
-    )
+    );
   }
 
   render(){
-    let { mode, value } = this.props;
-    if (mode == "edit") return this.renderEdit();
-    return <div className="value">{ value }</div>;
+    if (this.props.mode == 'edit') return this.renderEdit();
+    return <div className='value'>{this.props.value}</div>;
   }
 }
 
-export default connect(
-  null,
-  { reviseDocument }
+const mapStateToProps = (dispatch, own_props)=>{
+  return {};
+};
+
+const mapDispatchToProps = (dispatch, own_props)=>{
+  return {
+    reviseDocument: (args)=>{
+      dispatch(reviseDocument(args));
+    }
+  };
+};
+
+export const SelectAttributeContainer = ReactRedux.connect(
+  mapStateToProps,
+  mapDispatchToProps
 )(SelectAttribute);

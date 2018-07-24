@@ -38,7 +38,6 @@ export default class SearchTableCell extends Component{
     if(template.attributes[att_name].attribute_class!='Magma::TableAttribute'){
 
       var attr_viewer_props = {
-
         'mode': this.props.mode,
         'template': template,
         'document': this.props.document,
