@@ -52,8 +52,6 @@ class TableViewer extends React.Component{
       current_page
     } = this.props;
 
-    if (!record_names.length) null;
-
     record_names = record_names.slice(
       page_size * current_page,
       page_size * (current_page+1)
@@ -112,14 +110,6 @@ class TableViewer extends React.Component{
     return(
       <Pager {...pager_props}>
 
-        <div className='pager-filter-group'>
-
-          <div className='pager-filter-search-icon'>
-
-            <span className='fas fa-search'></span>
-          </div>
-          <input {...filter_props} />
-        </div>
         <button {...export_props}>
 
           <i className='fas fa-download' aria-hidden='true' ></i>
@@ -131,6 +121,9 @@ class TableViewer extends React.Component{
 
   render(){
     if(!this.props) return null;
+    if(!this.props.record_names.length) return <div>{'No results.'}</div>;
+    if(this.props.record_names.length <= 0) return <div>{'No results.'}</div>;
+
     return(
       <div className='table-viewer-group'>
 
