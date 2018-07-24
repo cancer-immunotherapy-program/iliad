@@ -229,10 +229,22 @@ const mapStateToProps = (state = {}, own_props)=>{
   let revision = selectModelRevision(state, project, model, record);
   let view = (state.app.views ? state.app.views[model] : null);
 
+  let can_edit = false;
+  if(state.app.user.permissions){
+    state.app.user.permissions.forEach((perm)=>{
+      if(perm.project_name == APP_CONFIG.project_name){
+        if(perm.role == 'administrator' || perm.role == 'editor'){
+          can_edit = true;
+        }
+      }
+    });
+  }
+
   return {
     template,
     revision,
     view,
+    can_edit,
     project_name: project,
     model_name: model,
     record_name: record,
