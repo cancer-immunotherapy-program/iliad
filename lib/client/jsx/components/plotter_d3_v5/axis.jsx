@@ -22,6 +22,13 @@ export default class Axis extends Component{
       axis.tickFormat(d3.timeFormat(this.props.timeformat));
     }
 
+    if(this.props.string_search){
+      axis.tickFormat((d, i) => {
+        let index = d.indexOf(this.props.string_search);
+        return d.slice(0, index);
+      })
+    }
+
     d3.select(this.axisElement).call(axis);
   }
 

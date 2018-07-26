@@ -113,7 +113,7 @@ class TimelineGraph extends Component {
     
     let yScale = this.bandScale
       .padding(0.5)
-      .domain(data.map(datum => datum.label))
+      .domain(data.map(datum => datum.event_id))
       .range([svg_dimensions.height - margins.bottom, margins.top]);
 
     let xProps = {
@@ -129,6 +129,7 @@ class TimelineGraph extends Component {
       scale: yScale,
       translate: `translate(${margins.left}, 0)`,
       tickSize: svg_dimensions.width - margins.left - margins.right,
+      string_search: '::'
     };
 
     let events_props = {

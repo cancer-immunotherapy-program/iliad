@@ -15,16 +15,16 @@ class TimelineEvents extends Component {
         datum.start !== datum.end
       ) {
         let rect_props = {
-          key: `${datum.label}_${index}`,
+          key: `${datum.event_id}_${index}`,
           x: xScale(new Date(datum.start)),
-          y: yScale(datum.label),
+          y: yScale(datum.event_id),
           height: yScale.bandwidth(),
           width: xScale(new Date(datum.end)) - xScale(new Date(datum.start)),
           fill: color,
           onMouseOver: showToolTip,
           onMouseOut: hideToolTip,
           'data-value':  JSON.stringify(datum),
-          'data-type': datum.label,
+          'data-type': datum.event_id,
           'data-start': datum.start || '',
           'data-end': datum.end || ''
         };
@@ -33,9 +33,9 @@ class TimelineEvents extends Component {
       } 
       else {
         let cir_props = {
-          key: `${datum.label}_${index}`,
+          key: `${datum.event_id}_${index}`,
           cx: xScale(new Date(datum.start)),
-          cy: yScale(datum.label) + yScale.bandwidth() / 2,
+          cy: yScale(datum.event_id) + yScale.bandwidth() / 2,
           r:  yScale.bandwidth() / 2,
           fill: color,
           onMouseOver: showToolTip,

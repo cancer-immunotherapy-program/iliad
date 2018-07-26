@@ -123,12 +123,12 @@ let hashPatientData = (hashed_obj, array) => {
   }
 }
 
-let uniqueLabelByDate = (array) => {
+let uniqueTypeByDate = (array) => {
   array.sort((a,b) => {
     return new Date(a.start) - new Date(b.start);
   });
   array.map((obj, index) => {
-    obj.label = `${obj.label} ${++index}`;
+    obj.type = `${obj.type} ${++index}`;
   });
   return array;
 }
@@ -154,12 +154,16 @@ let flatten = (nested_obj, array, level) => {
 
 let normalizePatientDataD3 = (records) => {
   let d3_records = [];
+  let count = 0;
   for(let record in records) {
+    count++;
     let d3_record = {};
     d3_record.data = [];
     d3_record.name = records[record].name;
-    d3_record.label = records[record].name.replace(/[_-]/g, " "); 
-    d3_record.group = records[record].patient_id;
+    d3_record.label = `${records[record].patient_id} ${records[record].name}`;
+    d3_record.type = records[record].name.replace(/[_-]/g, " "); 
+    d3_record.event_id = `${records[record].patient_id} ${records[record].name} ::${count++}`;
+    d3_record.patient_id = records[record].patient_id;
 
     if(records[record].name === 'diagnosis_date') {
       let time_str = new Date(records[record].value).toUTCString();
@@ -212,9 +216,9 @@ let normalizePatientDataD3 = (records) => {
     }
   })
 
-  prior_treatment_arr = uniqueLabelByDate(prior_treatment_arr);
-  treatment_arr = uniqueLabelByDate(treatment_arr);
-  diagnostic_arr = uniqueLabelByDate(diagnostic_arr);
+  // prior_treatment_arr = uniqueTypeByDate(prior_treatment_arr);
+  // treatment_arr = uniqueTypeByDate(treatment_arr);
+  // diagnostic_arr = uniqueTypeByDate(diagnostic_arr);
 
   return [...prior_treatment_arr, ...treatment_arr, ...diagnostic_arr];
 }
@@ -246,7 +250,7 @@ let normalizeAEPatientDataD3 = (hashed_obj, array) => {
           start: utc_start_str || null,
           end: utc_end_str || null,
           name: category.rows[index][4],
-          label: category.rows[index][4]
+          type: category.rows[index][4]
         };
 
         if(hashed_obj[meddra_code].name === 'adverse_events'){
@@ -260,16 +264,23 @@ let normalizeAEPatientDataD3 = (hashed_obj, array) => {
     }
   }
 
-  adverse_events_arr = uniqueLabelByDate(adverse_events_arr);
-  prior_adverse_events_arr = uniqueLabelByDate(prior_adverse_events_arr);
+  adverse_events_arr = uniqueTypeByDate(adverse_events_arr);
+  prior_adverse_events_arr = uniqueTypeByDate(prior_adverse_events_arr);
 
   return [...adverse_events_arr, ...prior_adverse_events_arr]
 };
+
+Array.prototype.sortBy = function(p) {
+  return this.slice(0).sort(function(a,b) {
+    return (a[p] > b[p]) ? 1 : (a[p] < b[p]) ? -1 : 0;
+  });
+}
 
 const mapStateToProps = (state = {}, own_props)=>{
   let selected_plot, selected_manifest, selected_consignment = undefined;
   let records;
   let hashed_obj = {};
+  let sorted;
 
   selected_manifest = state.manifests['188'];
 
@@ -281,18 +292,50 @@ const mapStateToProps = (state = {}, own_props)=>{
   }
 
   if(selected_consignment){
-    let {diagnostic_data} = selected_consignment;
-    let patients_data = [diagnostic_data];
+    let {
+      diagnostic_data, 
+      treatment_data,
+      prior_treatment_data,
+      adverse_events,
+      prior_adverse_events
+    } = selected_consignment;
+
+    console.log("============== selected consignment =================")
+    console.log(selected_consignment);
+
+    let patients_data = [
+      diagnostic_data, 
+      treatment_data
+    ];
+    
+    let ae_patient_data = [
+      adverse_events,
+      prior_adverse_events
+    ];
 
     hashPatientData(hashed_obj, patients_data);
     hashed_obj = nestDataset(hashed_obj, 'uid', 'parent_uid');
     records = normalizePatientDataD3(hashed_obj);
+    sorted = records.sortBy('event_id');
+
+    console.log("============== records =================")
+    console.log(records);
+    console.log("============== sorted =================")
+    console.log(sorted);
+
+    // prior_adverse_events.col_names.push('name');
+    // prior_adverse_events.rows.map(row => {row.push('prior_adverse_events');});
+    // adverse_events.col_names.push('name');
+    // adverse_events.rows.map(row => {row.push('adverse_events');});
+    // ae_records = normalizeAEPatientDataD3(hashed_obj, ae_patient_data);
+
+    // records = [...ae_records, ...records];  
   }
 
   return {
     selected_consignment,
     selected_manifest,
-    records
+    records: sorted
   }
 }
 
