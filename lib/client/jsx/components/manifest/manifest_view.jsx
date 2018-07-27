@@ -109,8 +109,7 @@ export class ManifestView extends React.Component{
   }
 
   render(){
-    let {consignment, manifest, update} = this.props;
-
+    let {consignment, manifest, update, is_admin} = this.props;
     if (manifest == null) return null;
 
     let {script, name, user, updated_at, description, access} = manifest;
@@ -141,6 +140,7 @@ export class ManifestView extends React.Component{
       onChange: update('access'),
       type: 'radio',
       value: 'private',
+      checked: (manifest.access == 'private') ? 'checked' : '',
       disabled
     };
 
@@ -149,6 +149,7 @@ export class ManifestView extends React.Component{
       onChange: update('access'),
       type: 'radio',
       value: 'public',
+      checked: (manifest.access == 'public') ? 'checked' : '',
       disabled
     };
 
@@ -157,8 +158,20 @@ export class ManifestView extends React.Component{
       onChange: update('access'),
       type: 'radio',
       value: 'view',
+      checked: (manifest.access == 'public') ? 'checked' : '',
       disabled
     };
+    let view_radio = <input {...view_props} />{'VIEW'};
+    if(!is_admin) view_radio = null;
+
+    let manifest_id = (
+      <div className='manifest-form-detail'>
+
+        <span>{'MANIFEST ID'}&nbsp;&nbsp;</span>
+        {manifest.id}
+      </div>
+    );
+    if(!is_admin) manifest_id = null;
 
     return(
       <div className='manifest-elements'>
@@ -194,8 +207,9 @@ export class ManifestView extends React.Component{
                 &nbsp;
                 <input {...pub_props} />{'PUBLIC'}
                 &nbsp;
-                <input {...view_props} />{'VIEW'}
+                {view_radio}
               </div>
+              {manifest_id}
               <br />
               <div className='manifest-form-detail'>
 

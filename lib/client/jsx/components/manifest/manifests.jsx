@@ -68,7 +68,7 @@ export class Manifests extends React.Component{
 
     // Copy the manifest so you don't modify the store.
     this.setState({
-      manifest: { ...manifest },
+      manifest: {...manifest},
       md5sum: manifest.md5sum
     });
   }
