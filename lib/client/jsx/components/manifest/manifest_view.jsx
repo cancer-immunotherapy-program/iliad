@@ -67,17 +67,15 @@ export class ManifestView extends React.Component{
     if(!consignment) requestConsignments([manifest]);
   }
 
-  updateManifest() {
-    let { is_editing } = this.state;
-
+  updateManifest(){
+    let {is_editing} = this.state;
     this.props.save();
-
-    if (is_editing) this.toggleEdit();
+    if(is_editing) this.toggleEdit();
   }
 
   cancelEdit(){
-    // Reset the manifest
-    this.props.revert()
+    // Reset the manifest.
+    this.props.revert();
 
     // Turn of the editing mode.
     this.toggleEdit();
@@ -98,8 +96,8 @@ export class ManifestView extends React.Component{
 
   getButtons() {
     let is_editing = this.editState();
-    let { consignment } = this.props;
-    let { run, save, cancel, plot, copy, remove, edit } = this.buttons;
+    let {consignment} = this.props;
+    let {run, save, cancel, plot, copy, remove, edit} = this.buttons;
     return [
       !consignment && run,
       is_editing && save,
@@ -111,8 +109,7 @@ export class ManifestView extends React.Component{
   }
 
   render(){
-    let { consignment, manifest, update } = this.props;
-
+    let {consignment, manifest, update, is_admin} = this.props;
     if (manifest == null) return null;
 
     let {script, name, user, updated_at, description, access} = manifest;
@@ -140,19 +137,46 @@ export class ManifestView extends React.Component{
 
     let priv_props = {
       name: 'manifest-access',
-      value: 'private',
       onChange: update('access'),
       type: 'radio',
+      value: 'private',
+      checked: (manifest.access == 'private') ? 'checked' : '',
       disabled
     };
 
     let pub_props = {
       name: 'manifest-access',
-      value: 'public',
       onChange: update('access'),
       type: 'radio',
+      value: 'public',
+      checked: (manifest.access == 'public') ? 'checked' : '',
       disabled
     };
+
+    let view_props = {
+      name: 'manifest-access',
+      onChange: update('access'),
+      type: 'radio',
+      value: 'view',
+      checked: (manifest.access == 'view') ? 'checked' : '',
+      disabled
+    };
+    let view_radio = (
+      <div style={{display: 'inline-block'}}>
+
+        <input {...view_props} />{'VIEW'};
+      </div>
+    );
+    if(!is_admin) view_radio = null;
+
+    let manifest_id = (
+      <div className='manifest-form-detail'>
+
+        <span>{'MANIFEST ID:'}&nbsp;&nbsp;</span>
+        {`(${manifest.id})`}
+      </div>
+    );
+    if(!is_admin) manifest_id = null;
 
     return(
       <div className='manifest-elements'>
@@ -187,7 +211,10 @@ export class ManifestView extends React.Component{
                 <input {...priv_props} />{'PRIVATE'}
                 &nbsp;
                 <input {...pub_props} />{'PUBLIC'}
+                &nbsp;
+                {view_radio}
               </div>
+              {manifest_id}
               <br />
               <div className='manifest-form-detail'>
 
@@ -205,6 +232,7 @@ export class ManifestView extends React.Component{
     );
   }
 }
+
 const mapStateToProps = (state = {}, own_props)=>{
   return {
     consignment: own_props.md5sum && selectConsignment(state, own_props.md5sum)
