@@ -138,21 +138,16 @@ export class ManifestView extends React.Component{
       disabled
     };
 
-    let priv_props = {
+    let access_props = {
       name: 'manifest-access',
-      value: 'private',
       onChange: update('access'),
       type: 'radio',
       disabled
     };
 
-    let pub_props = {
-      name: 'manifest-access',
-      value: 'public',
-      onChange: update('access'),
-      type: 'radio',
-      disabled
-    };
+    let priv_props = Object.assign(access_props, {value: 'private'});
+    let pub_props = Object.assign(access_props, {value: 'public'});
+    let view_props = Object.assign(access_props, {value: 'view'});
 
     return(
       <div className='manifest-elements'>
@@ -187,6 +182,8 @@ export class ManifestView extends React.Component{
                 <input {...priv_props} />{'PRIVATE'}
                 &nbsp;
                 <input {...pub_props} />{'PUBLIC'}
+                &nbsp;
+                <input {...view_props} />{'VIEW'}
               </div>
               <br />
               <div className='manifest-form-detail'>
@@ -205,6 +202,7 @@ export class ManifestView extends React.Component{
     );
   }
 }
+
 const mapStateToProps = (state = {}, own_props)=>{
   return {
     consignment: own_props.md5sum && selectConsignment(state, own_props.md5sum)
