@@ -158,7 +158,7 @@ export class ManifestView extends React.Component{
       onChange: update('access'),
       type: 'radio',
       value: 'view',
-      checked: (manifest.access == 'public') ? 'checked' : '',
+      checked: (manifest.access == 'view') ? 'checked' : '',
       disabled
     };
     let view_radio = (
