@@ -67,17 +67,15 @@ export class ManifestView extends React.Component{
     if(!consignment) requestConsignments([manifest]);
   }
 
-  updateManifest() {
-    let { is_editing } = this.state;
-
+  updateManifest(){
+    let {is_editing} = this.state;
     this.props.save();
-
-    if (is_editing) this.toggleEdit();
+    if(is_editing) this.toggleEdit();
   }
 
   cancelEdit(){
-    // Reset the manifest
-    this.props.revert()
+    // Reset the manifest.
+    this.props.revert();
 
     // Turn of the editing mode.
     this.toggleEdit();
@@ -98,8 +96,8 @@ export class ManifestView extends React.Component{
 
   getButtons() {
     let is_editing = this.editState();
-    let { consignment } = this.props;
-    let { run, save, cancel, plot, copy, remove, edit } = this.buttons;
+    let {consignment} = this.props;
+    let {run, save, cancel, plot, copy, remove, edit} = this.buttons;
     return [
       !consignment && run,
       is_editing && save,
@@ -111,7 +109,7 @@ export class ManifestView extends React.Component{
   }
 
   render(){
-    let { consignment, manifest, update } = this.props;
+    let {consignment, manifest, update} = this.props;
 
     if (manifest == null) return null;
 
@@ -138,16 +136,29 @@ export class ManifestView extends React.Component{
       disabled
     };
 
-    let access_props = {
+    let priv_props = {
       name: 'manifest-access',
       onChange: update('access'),
       type: 'radio',
+      value: 'private',
       disabled
     };
 
-    let priv_props = Object.assign(access_props, {value: 'private'});
-    let pub_props = Object.assign(access_props, {value: 'public'});
-    let view_props = Object.assign(access_props, {value: 'view'});
+    let pub_props = {
+      name: 'manifest-access',
+      onChange: update('access'),
+      type: 'radio',
+      value: 'public',
+      disabled
+    };
+
+    let view_props = {
+      name: 'manifest-access',
+      onChange: update('access'),
+      type: 'radio',
+      value: 'view',
+      disabled
+    };
 
     return(
       <div className='manifest-elements'>
