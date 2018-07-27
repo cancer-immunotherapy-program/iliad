@@ -237,8 +237,8 @@ const mapDispatchToProps = (dispatch, own_props)=>{
       dispatch(requestDocuments(args));
     },
 
-    requestTSV: (model_names, record_names)=>{
-      dispatch(requestTSV(model_names, record_names));
+    requestTSV: (model_name, filter, record_names)=>{
+      dispatch(requestTSV(model_name, filter, record_names));
     }
   };
 };

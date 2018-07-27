@@ -42,6 +42,15 @@ const TableRow = (template, documents, attribute_names)=>{
 };
 
 class TableViewer extends React.Component{
+
+  downloadTSV(event){
+    this.props.requestTSV(
+      this.props.model_name,
+      null,
+      this.props.record_names
+    );
+  }
+
   renderRecords(){
     let {
       template,
@@ -103,9 +112,7 @@ class TableViewer extends React.Component{
     let export_props = {
       className: 'pager-export-btn',
       type: 'button',
-      onClick: ()=>{
-        this.props.requestTSV(model_name, record_names);
-      },
+      onClick: this.downloadTSV.bind(this),
       value: '\u21af TSV'
     };
 
@@ -192,8 +199,8 @@ const mapStateToProps = (state = {}, own_props)=>{
 
 const mapDispatchToProps = (dispatch, own_props)=>{
   return {
-    requestTSV: (model_names, record_names)=>{
-      dispatch(requestTSV(model_names, record_names));
+    requestTSV: (model_names, filter, record_names)=>{
+      dispatch(requestTSV(model_names, filter, record_names));
     }
   };
 };
