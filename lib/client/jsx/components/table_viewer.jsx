@@ -7,6 +7,7 @@ import {HelpContainer as Help} from './help';
 import AttributeViewer from './attributes/attribute_viewer';
 
 import {requestTSV} from '../actions/magma_actions';
+import {downloadCSV} from '../utils/csv';
 import {
   selectModelTemplate,
   selectModelDocuments
@@ -43,11 +44,25 @@ const TableRow = (template, documents, attribute_names)=>{
 
 class TableViewer extends React.Component{
 
+/*
   downloadTSV(event){
     this.props.requestTSV(
       this.props.model_name,
       null,
       this.props.record_names
+    );
+  }
+*/
+
+  downloadMatrix(){
+    let data = Object.keys(this.props.documents).map((id)=>{
+      return this.props.documents[id];
+    });
+
+    downloadCSV(
+      data,
+      this.props.attribute_names,
+      `${APP_CONFIG.project_name}_${this.props.model_name}`
     );
   }
 
@@ -112,7 +127,7 @@ class TableViewer extends React.Component{
     let export_props = {
       className: 'pager-export-btn',
       type: 'button',
-      onClick: this.downloadTSV.bind(this),
+      onClick: this.downloadMatrix.bind(this),
       value: '\u21af TSV'
     };
 
@@ -141,6 +156,8 @@ class TableViewer extends React.Component{
 
     return(
       <Pager {...pager_props}>
+
+        {download_elem}
       </Pager>
     );
   }
