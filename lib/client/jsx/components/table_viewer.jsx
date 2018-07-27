@@ -104,29 +104,36 @@ class TableViewer extends React.Component{
       className: 'pager-export-btn',
       type: 'button',
       onClick: ()=>{
-        requestTSV(model_name, record_names);
+        this.props.requestTSV(model_name, record_names);
       },
       value: '\u21af TSV'
     };
 
-    // Disabling downloads and filtering.
-    return <Pager {...pager_props} />;
+    /*
+     * This is not being included in the display until we can make sure the
+     * filtering works properly.
+     */
+    let filter_elem = (
+      <div className='pager-filter-group'>
+
+        <div className='pager-filter-search-icon'>
+
+          <span className='fas fa-search'></span>
+        </div>
+        <input {...filter_props} />
+      </div>
+    );
+
+    let download_elem = (
+      <button {...export_props}>
+
+        <i className='fas fa-download' aria-hidden='true' ></i>
+        &nbsp;{'DOWNLOAD'}
+      </button>
+    );
+
     return(
       <Pager {...pager_props}>
-
-        <div className='pager-filter-group'>
-
-          <div className='pager-filter-search-icon'>
-
-            <span className='fas fa-search'></span>
-          </div>
-          <input {...filter_props} />
-        </div>
-        <button {...export_props}>
-
-          <i className='fas fa-download' aria-hidden='true' ></i>
-          &nbsp;{'DOWNLOAD'}
-        </button>
       </Pager>
     );
   }
