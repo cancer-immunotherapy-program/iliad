@@ -161,14 +161,19 @@ export class ManifestView extends React.Component{
       checked: (manifest.access == 'public') ? 'checked' : '',
       disabled
     };
-    let view_radio = <input {...view_props} />{'VIEW'};
+    let view_radio = (
+      <div style={{display: 'inline-block'}}>
+
+        <input {...view_props} />{'VIEW'};
+      </div>
+    );
     if(!is_admin) view_radio = null;
 
     let manifest_id = (
       <div className='manifest-form-detail'>
 
-        <span>{'MANIFEST ID'}&nbsp;&nbsp;</span>
-        {manifest.id}
+        <span>{'MANIFEST ID:'}&nbsp;&nbsp;</span>
+        {`(${manifest.id})`}
       </div>
     );
     if(!is_admin) manifest_id = null;
