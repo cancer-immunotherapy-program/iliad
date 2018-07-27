@@ -35,11 +35,6 @@ class App
         erb_view(:index)
       end
 
-      # Settings page.
-      get ':project_name/settings/:settings_page', as: :settings do
-        erb_view(:index)
-      end
-
       # Manifest page.
       get ':project_name/manifests', as: :manifests do
         erb_view(:index)
@@ -73,13 +68,20 @@ class App
       post ':project_name/manifests/create', action: 'manifests#create'
       post ':project_name/manifests/update/:id', action: 'manifests#update'
       delete ':project_name/manifests/destroy/:id', action: 'manifests#destroy'
-    end
 
-    with(auth: {user: {is_admin?: :project_name}}) do
       # view_controller.rb
       get ':project_name/view/:model_name',
         action: 'view#retrieve_view',
         as: :retrieve_view
+    end
+
+    with(auth: {user: {is_admin?: :project_name}}) do
+      # Settings page.
+      get ':project_name/settings/:settings_page', as: :settings do
+        erb_view(:index)
+      end
+
+      # view_controller.rb
       post ':project_name/view/update',
         action: 'view#update_view',
         as: :update_view

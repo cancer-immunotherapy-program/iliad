@@ -156,14 +156,20 @@ const mapStateToProps = (state = {}, own_props)=>{
   let models = selectModels(state, APP_CONFIG.project_name);
 
   Object.keys(models).forEach(function(model_name){
-    idents[model_name] = Object.keys(models[model_name].documents);
+
+    /*
+     * There are two kinds of models in the magma data store. Regular data
+     * models and dictionarires. Dictionaries do not have a document object. So,
+     * we filter for it here.
+     */
+    if('documents' in models[model_name]){
+      idents[model_name] = Object.keys(models[model_name].documents);
+    }
   });
 
-  var data = {
-    'identifiers': Object.keys(idents).length ? idents : null
+  return {
+    identifiers: Object.keys(idents).length ? idents : null
   };
-
-  return data;
 };
 
 const mapDispatchToProps = (dispatch, own_props)=>{

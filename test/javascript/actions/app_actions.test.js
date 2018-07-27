@@ -82,16 +82,16 @@ requesting a single model view from the requestView action.`;
     let expected_actions = [
       {
         type: 'ADD_EXCHANGE',
-        exchange_name: `view for ${model_nm} ${rec_nm}`,
+        exchange_name,
         exchange: {
-          exchange_name: `view for ${model_nm} ${rec_nm}`,
+          exchange_name,
           exchange_path: `${url}/${PROJECT_NAME}/view/${model_nm}`,
           start_time: current_date,
         }
       },
       {
         type: 'REMOVE_EXCHANGE',
-        exchange_name: `view for ${model_nm} ${rec_nm}`
+        exchange_name,
       },
       {
         type: 'ADD_EXCHANGE',
@@ -143,16 +143,16 @@ requesting a non existant model view from the requestView action.`;
     let expected_actions = [
       {
         type: 'ADD_EXCHANGE',
-        exchange_name: `view for ${model_nm} ${rec_nm}`,
+        exchange_name,
         exchange: {
-          exchange_name: `view for ${model_nm} ${rec_nm}`,
+          exchange_name,
           exchange_path: `${url}/${PROJECT_NAME}/view/${model_nm}`,
           start_time: current_date,
         }
       },
       {
         type: 'REMOVE_EXCHANGE',
-        exchange_name: `view for ${model_nm} ${rec_nm}`
+        exchange_name
       }
     ];
 
