@@ -94,7 +94,7 @@ class TimelineGraph extends Component {
   render() {
     if(this.state.timeDomain.length < 1) return null;
     let {timeDomain, data} = this.state;
-    let margins = { top: 41, right: 145, bottom: 440, left: 145 };
+    let margins = {top: 41, right: 145, bottom: 440, left: 145};
     let svg_dimensions = { 
       width: Math.max(this.props.parent_width, 500),
       height: data.length * 24 + 481

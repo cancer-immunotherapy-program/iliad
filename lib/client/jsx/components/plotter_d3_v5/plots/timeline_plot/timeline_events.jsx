@@ -10,6 +10,13 @@ class TimelineEvents extends Component {
     let {xScale, yScale} = scales;
 
     const events = data.map((datum, index) => {
+      let text_props = {
+        className: 'label-text',
+        alignmentBaseline: 'middle',
+        x: '0',
+        y: yScale(datum.event_id) + yScale.bandwidth() / 2,
+      }
+
       if(
         (datum.end !== undefined && datum.end !== null) && 
         datum.start !== datum.end
@@ -28,8 +35,12 @@ class TimelineEvents extends Component {
           'data-start': datum.start || '',
           'data-end': datum.end || ''
         };
-        return <rect {...rect_props}/>;
-
+        return( 
+          <g>
+            <text {...text_props}>{`${datum.patient_id} ${datum.type}`}</text>
+            <rect {...rect_props}/>
+          </g>
+        );
       } 
       else {
         let cir_props = {
@@ -45,7 +56,12 @@ class TimelineEvents extends Component {
           'data-start': datum.start || '',
           'data-end': datum.end || ''
         };
-        return <circle {...cir_props}/>;
+        return(
+          <g>
+          <text {...text_props} >{`${datum.patient_id} ${datum.type}`}</text>
+          <circle {...cir_props}/>
+          </g>
+        ) 
       }
     })
 

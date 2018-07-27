@@ -41,7 +41,7 @@ export class TimelineGroupPlotAttribute extends GenericPlotAttribute{
     };
 
     return(
-      <div id='timeline_charts' className='value'>
+      <div id='timeline_group_chart' className='value'>
         {this.state.records && <Resize render={width  => (
           <TimelinePlot {...plot_props} parent_width={width} />
         )}/>}
@@ -160,9 +160,8 @@ let normalizePatientDataD3 = (records) => {
     let d3_record = {};
     d3_record.data = [];
     d3_record.name = records[record].name;
-    d3_record.label = `${records[record].patient_id} ${records[record].name}`;
     d3_record.type = records[record].name.replace(/[_-]/g, " "); 
-    d3_record.event_id = `${records[record].patient_id} ${records[record].name} ::${count++}`;
+    d3_record.event_id = `${records[record].patient_id} ${records[record].name} ${count++}`;
     d3_record.patient_id = records[record].patient_id;
 
     if(records[record].name === 'diagnosis_date') {

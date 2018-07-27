@@ -363,6 +363,9 @@
 
 .label-text {
   display: inline;
-  font-size: 12px;
+  font-size: 11px;
 }
 
+#timeline_group_chart .axis.axis-Left text {
+  display: none;
+}
