@@ -115,25 +115,25 @@
   margin-left: 10px;
   cursor: pointer;
   padding:5px;
-  border: 1px solid #333;
+  border: 1px solid $dark-grey;
   outline: none;
-  background: #eee;
+  background: $light-grey;
   font-size: 0.6em;
 }
 
 .pager-export-btn:hover:enabled,
 .pager-nav-btn:hover:enabled,
 .pager-filter-btn:hover:enabled{
-  color: #fff;
-  background: #22a778;
-  border: 1px solid #22a778;
+  color: $white;
+  background: $med-color;
+  border: 1px solid $med-color;
 }
 
 .pager-export-btn:disabled,
 .pager-nav-btn:disabled,
 .pager-filter-btn:disabled{
   cursor: default;
-  border: 1px solid #ccc;
+  border: 1px solid $light-grey-2;
 }
 
 .pager-filter-group{

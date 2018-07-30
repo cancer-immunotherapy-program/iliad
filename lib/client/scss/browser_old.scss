@@ -1,3 +1,28 @@
+.header-edit-btn{
+  display: inline-block;
+  vertical-align: top;
+  font-family: $main-font;
+  margin-left: 10px;
+  cursor: pointer;
+  padding:5px;
+  border: 1px solid $dark-grey;
+  outline: none;
+  background: $light-grey;
+  font-size: 0.6em;
+}
+
+.header-edit-btn:hover:enabled{
+  color: $white;
+  background: $med-color;
+  border: 1px solid $med-color;
+}
+
+.header-edit-btn:disabled{
+  cursor: default;
+  border: 1px solid $light-grey-2;
+}
+
+/* OLD SCSS *******************************************************************/
 .loader{
   font-family: $main-font;
   margin-left: 15px;
