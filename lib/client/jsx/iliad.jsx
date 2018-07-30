@@ -28,9 +28,9 @@ import {MessagesContainer as Messages} from './components/messages';
 import {AppNavContainer as AppNav} from './components/general/app_nav';
 import {HomePageContainer as HomePage} from './components/home_page';
 import {SettingsContainer as Settings} from './components/settings/settings';
+import {SearchContainer as Search} from './components/search/search';
 
 import ModelMap from './components/model_map';
-import Search from './components/search/search';
 import Activity from './components/activity';
 import Noauth from './components/noauth';
 

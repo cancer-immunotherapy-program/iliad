@@ -59,14 +59,24 @@ body{
   font-family: $main-font;
 }
 
-#main{
+#main {
   padding-left: 40px;
   padding-right: 40px;
 }
 
+/*
+#browse {
+  padding-left: 150px;
+}
+*/
+
 a{
   text-decoration: none;
-  color: olive;
+  color: $darkest-color;
+}
+
+a:visited{
+  color: $darkest-color;
 }
 
 a:hover{
@@ -151,7 +161,45 @@ a:hover{
   animation: loader-graphic 1.5s linear infinite;
 }
 
+.general-select{
+  background: $light-grey;
+  font-family: $main-font;
+  font-size: 0.8em;
+  border: 1px solid $med-grey-2;
+  display: inline-block;
+  vertical-align: top;
+  padding: 3px;
+  margin-left: 10px;
+  color: $black;
+  -webkit-appearance: none;
+  -webkit-border-radius: 0px;
+  outline: none;
+  height: 25px;
+}
+
+.general-select:focus{
+  outline-offset: 0px;
+}
+
+.general-select:disabled{
+  border: 1px solid $white;
+  background: $white;
+  outline: none;
+  box-shadow: none;
+  -webkit-text-fill-color: $black;
+  -webkit-opacity:1;
+  color: $black;
+  background: $white;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+}
+
+.general-select option{
+  padding: 3px;
+}
+
 /* OLD GLOBALS ****************************************************************/
+
 @mixin text_defaults {
   color: darkorchid;
   border: 0px none black;
