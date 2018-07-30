@@ -286,8 +286,8 @@ const mapDispatchToProps = (dispatch, own_props)=>{
       dispatch(discardRevision(record_name, model_name));
     },
 
-    sendRevisions: (model_name, revisions, success, error)=>{
-      dispatch(sendRevisions({model_name, revisions, success, error}));
+    sendRevisions: (args)=>{
+      dispatch(sendRevisions(args));
     }
   };
 };

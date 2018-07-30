@@ -12,12 +12,7 @@ export class Attribute extends React.Component{
       className: 'full_text',
       placeholder: attribute.placeholder,
       onChange: (value)=>{
-        reviseDocument({
-          document,
-          template,
-          attribute,
-          revised_value: value
-        });
+        reviseDocument(document, template, attribute, value);
       },
       defaultValue: (revision == null) ? '' : revision
     };
@@ -41,8 +36,8 @@ const mapStateToProps = (dispatch, own_props)=>{
 
 const mapDispatchToProps = (dispatch, own_props)=>{
   return {
-    reviseDocument: (args)=>{
-      dispatch(reviseDocument(args));
+    reviseDocument: (doc, tmplt, attr, rev_val)=>{
+      dispatch(reviseDocument(doc, tmplt, attr, rev_val));
     }
   };
 };
