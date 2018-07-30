@@ -2,7 +2,7 @@
 @import "attribute";
 
 .loader{
-  font-family: $body_font;
+  font-family: $main-font;
   margin-left: 15px;
 }
 
@@ -10,7 +10,7 @@
   position: relative;
   padding-top: 10px;
   .header {
-    font-family: $body_font;
+    font-family: $main-font;
     position: relative;
     padding-left: 5%;
     @keyframes fade {
@@ -55,7 +55,7 @@
 }
 
 .browser-tab-bar{
-  font-family: $body_font;
+  font-family: $main-font;
   display: flex;
 }
 
@@ -99,7 +99,7 @@
 }
 
 #browser-tab .pane .title{
-  font-family: $body_font;
+  font-family: $main-font;
   border-bottom: 1px $dark-color solid;
   color: $dark-grey;
   margin-top: 15px;
@@ -127,14 +127,14 @@
   padding-right: 10px;
   padding-bottom: 10px;
   text-align: right;
-  font-family: $body_font;
+  font-family: $main-font;
   color: $dark-grey;
 }
 
 #browser-tab .pane .attributes .attribute .value{
   flex-grow: 1;
   display: inline-block;
-  font-family: $body_font;
+  font-family: $main-font;
   border-left: 1px solid $med-color;
   padding-left: 10px;
   padding-bottom: 5px;
