@@ -2,7 +2,7 @@
 
 .plot-container {
   display: flex;
-  font-family: $body_font;
+  font-family: $main-font;
   a {
     color: black
   }
@@ -14,7 +14,7 @@
 
 svg {
   &.box_plot {
-    font-family: $value_font;
+    font-family: $monospace-font;
     font-size: 10px;
 
     .whisker_box {
@@ -37,7 +37,7 @@ svg {
     }
   }
   &.line_plot {
-    font-family: $value_font;
+    font-family: $monospace-font;
     font-size: 12px;
     .axis path,
     .axis line {
@@ -47,7 +47,7 @@ svg {
     }
   }
   &.bar_plot {
-    font-family: $value_font;
+    font-family: $monospace-font;
     font-size: 12px;
     .plot_canvas {
       rect {
@@ -108,7 +108,7 @@ svg {
     }
   }
   &.scatter_plot {
-    font-family: $value_font;
+    font-family: $monospace-font;
     font-size: 12px;
     .plot_canvas {
       rect {
@@ -134,7 +134,7 @@ svg {
     }
   }
   &.heatmap_plot {
-    font-family: $value_font;
+    font-family: $monospace-font;
     font-size: 12px;
     .plot_canvas {
       rect {
@@ -152,7 +152,7 @@ svg {
     }
   }
   &.correlation_plot {
-    font-family: $value_font;
+    font-family: $monospace-font;
     font-size: 12px;
     .plot_canvas {
       rect {
@@ -170,7 +170,7 @@ svg {
     }
   }
   &.density_plot {
-    font-family: $value_font;
+    font-family: $monospace-font;
     font-size: 12px;
     .plot_canvas {
       rect {
@@ -197,7 +197,7 @@ svg {
     }
   }
   &.dendrogram_plot {
-    font-family: $value_font;
+    font-family: $monospace-font;
     font-size: 10px;
     line {
       stroke: black;
