@@ -2,7 +2,7 @@
 
 .plotter-group{
   position: relative;
-  font-family: $body_font;
+  font-family: $main-font;
 }
 
 .plotter-view-group{
@@ -160,9 +160,9 @@
 .plotter {
   position: relative;
   color: midnightblue;
-  font-family: $body_font;
+  font-family: $main-font;
   .header {
-    font-family: $body_font;
+    font-family: $main-font;
     @keyframes fade {
       0% { color: forestgreen; }
       50% { color: midnightblue; }
@@ -203,7 +203,7 @@
   select {
     border: 1px solid forestgreen;
     color: #33333c;
-    font-family: $value_font;
+    font-family: $monospace-font;
     font-size: 16px;
     background: white;
   }
