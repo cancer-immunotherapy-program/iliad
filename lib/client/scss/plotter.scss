@@ -1,5 +1,3 @@
-@import 'globals';
-
 .plotter-group{
   position: relative;
   font-family: $main-font;
@@ -187,7 +185,7 @@
     }
   }
   .variables {
-    .header { 
+    .header {
       padding: 3px;
       border-bottom: 1px solid forestgreen;
       background-color: rgba(midnightblue,0.2);

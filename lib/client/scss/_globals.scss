@@ -59,14 +59,24 @@ body{
   font-family: $main-font;
 }
 
-#main{
+#main {
   padding-left: 40px;
   padding-right: 40px;
 }
 
+/*
+#browse {
+  padding-left: 150px;
+}
+*/
+
 a{
   text-decoration: none;
-  color: olive;
+  color: $darkest-color;
+}
+
+a:visited{
+  color: $darkest-color;
 }
 
 a:hover{
@@ -189,6 +199,7 @@ a:hover{
 }
 
 /* OLD GLOBALS ****************************************************************/
+
 @mixin text_defaults {
   color: darkorchid;
   border: 0px none black;
