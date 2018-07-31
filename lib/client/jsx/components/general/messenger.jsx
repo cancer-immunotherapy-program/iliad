@@ -7,15 +7,35 @@ import {dismissMessages} from '../../actions/app_actions';
 export class Messenger extends React.Component{
   constructor(props){
     super(props);
-    this.state = {current_message: 0};
   }
 
   render(){
 
-    if(this.props.messages.length > 0){
-      console.log(this.props.messages);
-    }
-    return <div />;
+    let msngr_props = {
+      className: 'messenger-group',
+      style: {
+        display: (this.props.messages.length > 0) ? 'block' : 'none'
+      }
+    };
+
+    let dismiss_props = {
+      className: 'messenger-dismiss-btn',
+      onClick: this.props.dismissMessages,
+      title: 'Dismiss message.'
+    };
+
+    return(
+      <div {...msngr_props}>
+
+        <button {...dismiss_props}>
+
+          <i className='fas fa-times'></i>
+        </button>
+        {this.props.messages.map((message, index)=>{
+          return <div className='message' key={index}>{message}</div>;
+        })}
+      </div>
+    );
   }
 }
 

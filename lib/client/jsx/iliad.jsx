@@ -60,7 +60,9 @@ class IliadApplication{
       search: {
         pages: {}
       },
-      app: {}
+      app: {
+        messages: []
+      }
     };
 
     let reducers = Redux.combineReducers({
