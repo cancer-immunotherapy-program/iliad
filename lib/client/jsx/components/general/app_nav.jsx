@@ -2,7 +2,7 @@
 import * as React from 'react';
 import * as ReactRedux from 'react-redux';
 
-import {IdentifierSearchContainer as IdentifierSearch} from '../identifier_search';
+import {IdentifierSearchContainer as IdentifierSearch} from './identifier_search';
 import {toggleConfig} from '../../actions/app_actions';
 
 export class AppNav extends React.Component{

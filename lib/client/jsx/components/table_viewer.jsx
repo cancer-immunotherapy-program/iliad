@@ -3,7 +3,6 @@ import * as React from 'react';
 import * as ReactRedux from 'react-redux';
 
 import Pager from './general/pager';
-import {HelpContainer as Help} from './help';
 import AttributeViewer from './attributes/attribute_viewer';
 
 import {requestTSV} from '../actions/magma_actions';

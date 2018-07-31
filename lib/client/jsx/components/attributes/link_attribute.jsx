@@ -3,7 +3,7 @@ import * as React from 'react';
 import * as ReactRedux from 'react-redux';
 
 import SlowTextInput from '../inputs/slow_text_input';
-import MagmaLink from '../magma_link';
+import MagmaLink from '../general/magma_link';
 import {reviseDocument} from '../../actions/magma_actions';
 
 export class LinkAttribute extends React.Component{

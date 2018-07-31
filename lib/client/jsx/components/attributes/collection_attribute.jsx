@@ -3,7 +3,7 @@ import * as React from 'react';
 import * as ReactRedux from 'react-redux';
 
 import {reviseDocument} from '../../actions/magma_actions';
-import MagmaLink from '../magma_link';
+import MagmaLink from '../general/magma_link';
 import ListInput from '../inputs/list_input';
 import SlowTextInput from '../inputs/slow_text_input';
 

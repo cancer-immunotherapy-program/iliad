@@ -3,8 +3,8 @@ import * as React from 'react';
 import * as ReactRedux from 'react-redux';
 
 import MagmaLink from './magma_link';
-import {requestIdentifiers} from '../actions/magma_actions';
-import {selectModels} from '../selectors/magma_selector';
+import {requestIdentifiers} from '../../actions/magma_actions';
+import {selectModels} from '../../selectors/magma_selector';
 
 export class IdentifierSearch extends React.Component{
   constructor(props){

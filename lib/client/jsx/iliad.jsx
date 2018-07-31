@@ -10,7 +10,6 @@ import {addTokenUser} from './actions/app_actions';
 
 // Reducers.
 import magma from './reducers/magma_reducer';
-import messages from './reducers/message_reducer';
 import plots from './reducers/plots_reducer';
 import app from './reducers/app_reducer';
 import search from './reducers/search_reducer';
@@ -21,19 +20,16 @@ import exchanges from './reducers/exchanges_reducer';
 import predicates from './reducers/predicates_reducer';
 
 // Components.
+import {MessengerContainer as Messenger} from './components/general/messenger';
+import {AppNavContainer as AppNav} from './components/general/app_nav';
 import {ManifestsContainer as Manifests} from './components/manifest/manifests';
 import {BrowserContainer as Browser} from './components/browser/browser';
 import {PlotterContainer as Plotter} from './components/plotter/plotter';
-import {MessagesContainer as Messages} from './components/messages';
-import {AppNavContainer as AppNav} from './components/general/app_nav';
 import {HomePageContainer as HomePage} from './components/home_page';
 import {SettingsContainer as Settings} from './components/settings/settings';
 import {SearchContainer as Search} from './components/search/search';
 
 import ModelMap from './components/model_map';
-import Activity from './components/activity';
-import Noauth from './components/noauth';
-
 
 class IliadApplication{
   constructor(){
@@ -55,7 +51,6 @@ class IliadApplication{
         selected: null
       },
       manifests: {},
-      messages: [],
       plots: {
         plotsMap: {},
         selected: null,
@@ -70,7 +65,6 @@ class IliadApplication{
 
     let reducers = Redux.combineReducers({
       magma,
-      messages,
       plots,
       app,
       search,
@@ -129,28 +123,22 @@ class IliadApplication{
     // Extract the component portion of the path out of the store.
     let state = this.store.getState();
     let component = (state.app.path) ? state.app.path.component : '';
-    let props = {};
-    //return <HomePage {...props} />;
 
     switch(component){
       case '':
-        return <HomePage {...props} />;
+        return <HomePage />;
       case 'manifests':
-        return <Manifests {...props} />;
+        return <Manifests />;
       case 'browse':
-        return <Browser {...props} />;
+        return <Browser />;
       case 'map':
         return <ModelMap />;
       case 'plots':
-        return <Plotter {...props}/>;
+        return <Plotter />;
       case 'search':
-        return <Search  {...props} />;
+        return <Search />;
       case 'settings':
-        return <Settings {...props} />;
-      case 'activity':
-        return <Activity {...props} />;
-      case 'noauth':
-        return <Noauth {...props} />;
+        return <Settings />;
       default:
         return null;
     }
@@ -163,7 +151,7 @@ class IliadApplication{
         <div id='ui-container'>
 
           <AppNav />
-          <Messages />
+          <Messenger />
           {this.createComponent()}
         </div>
       </Provider>,
