@@ -4,7 +4,7 @@ import * as ReactRedux from 'react-redux';
 
 import {reviseDocument} from '../../actions/magma_actions';
 
-class DocumentAttribute extends React.Component{
+export class DocumentAttribute extends React.Component{
   renderEdit(){
     let {document, template, attribute, reviseDocument} = this.props;
     let input_props = {
@@ -61,7 +61,7 @@ const mapDispatchToProps = (dispatch, own_props)=>{
   };
 };
 
-export default ReactRedux.connect(
+export const DocumentAttributeContainer = ReactRedux.connect(
   mapStateToProps,
   mapDispatchToProps
 )(DocumentAttribute);
