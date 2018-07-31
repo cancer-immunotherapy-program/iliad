@@ -369,3 +369,11 @@
 #timeline_group_chart .axis.axis-Left text {
   display: none;
 }
+
+.clip_path_obj {
+  clip-path: url(#clip);
+}
+
+#timeline_group_chart .resize-wrapper {
+  margin-right: 100px;
+}

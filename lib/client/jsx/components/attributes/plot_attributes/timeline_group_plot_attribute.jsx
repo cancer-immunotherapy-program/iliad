@@ -6,11 +6,9 @@ import {GenericPlotAttribute} from './generic_plot_attribute';
 import TimelinePlot from '../../plotter_d3_v5/plots/timeline_plot/timeline_graph';
 import Resize from '../../plotter_d3_v5/resize';
 
-
 // Module imports.
 import * as ManifestActions from '../../../actions/manifest_actions';
 import * as ConsignmentSelector from '../../../selectors/consignment_selector';
-
 
 export class TimelineGroupPlotAttribute extends GenericPlotAttribute{
   constructor(props) {
@@ -28,7 +26,6 @@ export class TimelineGroupPlotAttribute extends GenericPlotAttribute{
         next_props.selected_consignment === null
     ) return null;
     
-
     return {
       records: next_props.records
     };
@@ -42,7 +39,7 @@ export class TimelineGroupPlotAttribute extends GenericPlotAttribute{
 
     return(
       <div id='timeline_group_chart' className='value'>
-        {this.state.records && <Resize render={width  => (
+        {this.state.records && <Resize className="resize-component" render={width  => (
           <TimelinePlot {...plot_props} parent_width={width} />
         )}/>}
       </div>
@@ -269,9 +266,9 @@ let normalizeAEPatientDataD3 = (hashed_obj, array) => {
   return [...adverse_events_arr, ...prior_adverse_events_arr]
 };
 
-Array.prototype.sortBy = function(p) {
-  return this.slice(0).sort(function(a,b) {
-    return (a[p] > b[p]) ? 1 : (a[p] < b[p]) ? -1 : 0;
+let sortBy = (object, property) => {
+  return object.slice(0).sort(function(a,b) {
+    return (a[property] > b[property]) ? 1 : (a[property] < b[property]) ? -1 : 0;
   });
 }
 
@@ -299,12 +296,9 @@ const mapStateToProps = (state = {}, own_props)=>{
       prior_adverse_events
     } = selected_consignment;
 
-    console.log("============== selected consignment =================")
-    console.log(selected_consignment);
-
     let patients_data = [
       diagnostic_data, 
-      treatment_data
+      // treatment_data
     ];
     
     let ae_patient_data = [
@@ -315,19 +309,13 @@ const mapStateToProps = (state = {}, own_props)=>{
     hashPatientData(hashed_obj, patients_data);
     hashed_obj = nestDataset(hashed_obj, 'uid', 'parent_uid');
     records = normalizePatientDataD3(hashed_obj);
-    sorted = records.sortBy('event_id');
-
-    console.log("============== records =================")
-    console.log(records);
-    console.log("============== sorted =================")
-    console.log(sorted);
+    sorted = sortBy(records, 'event_id');
 
     // prior_adverse_events.col_names.push('name');
     // prior_adverse_events.rows.map(row => {row.push('prior_adverse_events');});
     // adverse_events.col_names.push('name');
     // adverse_events.rows.map(row => {row.push('adverse_events');});
     // ae_records = normalizeAEPatientDataD3(hashed_obj, ae_patient_data);
-
     // records = [...ae_records, ...records];  
   }
 

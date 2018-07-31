@@ -1,6 +1,5 @@
 import React, {Component} from 'react';
 import * as d3 from 'd3';
-// import Axis from './axis';
 import Axis from '../../axis';
 import TimelineEvents from './timeline_events';
 import Tooltip from './tooltip';
@@ -11,12 +10,15 @@ class TimelineGraph extends Component {
     this.state = {
       timeDomain:[],
       data: [],
-      tooltip: {display: false, data: {key: '',value: ''}}
+      tooltip: {display: false, data: {key: '',value: ''}},
+      zoom_transform: null
     };
+
     this.timeScale = d3.scaleTime();
     this.bandScale = d3.scaleBand();
     this.showToolTip = this.showToolTip.bind(this);
     this.hideToolTip = this.hideToolTip.bind(this);
+    this.zoom = d3.zoom();
   }
 
   static getDerivedStateFromProps(next_props, prev_state){
@@ -49,6 +51,20 @@ class TimelineGraph extends Component {
       timeDomain: [min, max],
       data: next_props.all_events
     };
+  }
+
+  componentDidMount() {
+    d3.select(this.refs.svg)
+      .call(this.zoom);
+  }
+  componentDidUpdate() {
+    d3.select(this.refs.svg)
+      .call(this.zoom);
+  }
+  zoomed() {
+    this.setState({ 
+      zoom_transform: d3.event.transform
+    });
   }
 
   showToolTip(event) {
@@ -93,16 +109,11 @@ class TimelineGraph extends Component {
 
   render() {
     if(this.state.timeDomain.length < 1) return null;
-    let {timeDomain, data} = this.state;
-    let margins = {top: 41, right: 145, bottom: 440, left: 145};
+    let {timeDomain, data, tooltip, zoom_transform} = this.state;
+    let margins = {top: 41, right: 5, bottom: 100, left: 150};
     let svg_dimensions = { 
       width: Math.max(this.props.parent_width, 500),
       height: data.length * 24 + 481
-    };
-
-    let svg_props = {
-      width: svg_dimensions.width,
-      height: svg_dimensions.height
     };
     
     //Create time scale.
@@ -115,6 +126,17 @@ class TimelineGraph extends Component {
       .padding(0.5)
       .domain(data.map(datum => datum.event_id))
       .range([svg_dimensions.height - margins.bottom, margins.top]);
+
+    this.zoom.scaleExtent([1, 100])
+      .translateExtent([
+        [0, 0], 
+        [svg_dimensions.width, svg_dimensions.height]
+      ])
+      .extent([
+        [0, 0], 
+        [svg_dimensions.width, svg_dimensions.height]
+      ])
+      .on("zoom", this.zoomed.bind(this));
 
     let xProps = {
       orient: 'Bottom',
@@ -133,27 +155,40 @@ class TimelineGraph extends Component {
     };
 
     let events_props = {
-      scales: { xScale, yScale },
+      scales: {xScale, yScale},
       margins,
-      data: this.state.data,
+      data,
       svg_dimensions,
       showToolTip: this.showToolTip,
       hideToolTip: this.hideToolTip,
-      color: this.props.color
+      color: this.props.color,
+      zoom_transform,
+      x: 0,
+      y: 0
     };
 
     let tooltip_props = {
-      tooltip: this.state.tooltip, 
+      tooltip: tooltip, 
       text_style: 'tooltip-text',
       bg_style: 'tooltip-bg',
       x_value: 'Type', 
       y_value: 'Value'
     };
 
+    let rect_props = {
+      className: 'zoom',
+      width: svg_dimensions.width - margins.right - margins.left,
+      height: svg_dimensions.height,
+      transform: `translate(${margins.left}, ${margins.top})`,
+    }
+
     return(
-      <svg {...svg_props}>
+      <svg {...svg_dimensions} ref='svg' >
         <Axis {...xProps} />
         <Axis {...yProps} />
+        <clipPath id='clip'>
+          <rect {...rect_props}  />
+        </clipPath>
         <TimelineEvents {...events_props} />
         <Tooltip {...tooltip_props}/>
       </svg>

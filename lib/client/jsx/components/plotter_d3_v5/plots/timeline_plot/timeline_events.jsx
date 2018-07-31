@@ -3,6 +3,25 @@ import React, {Component} from 'react';
 class TimelineEvents extends Component {
   constructor(props) {
     super(props);
+    this.updateD3(props);
+  }
+
+  componentWillUpdate(nextProps) {
+    this.updateD3(nextProps);
+  }
+
+  updateD3(props) {
+    const {scales, data, zoom_transform} = props;
+    const {xScale, yScale} = scales;
+
+    if (zoom_transform) {
+      xScale.domain(zoom_transform.rescaleX(xScale).domain());
+    }
+  }
+
+  get transform() {
+    const {x, y} = this.props;
+    return `translate(${x}, ${y})`;
   }
 
   render() {
@@ -23,6 +42,7 @@ class TimelineEvents extends Component {
       ) {
         let rect_props = {
           key: `${datum.event_id}_${index}`,
+          className: 'clip_path_obj',
           x: xScale(new Date(datum.start)),
           y: yScale(datum.event_id),
           height: yScale.bandwidth(),
@@ -45,6 +65,7 @@ class TimelineEvents extends Component {
       else {
         let cir_props = {
           key: `${datum.event_id}_${index}`,
+          className: 'clip_path_obj',
           cx: xScale(new Date(datum.start)),
           cy: yScale(datum.event_id) + yScale.bandwidth() / 2,
           r:  yScale.bandwidth() / 2,
@@ -58,14 +79,14 @@ class TimelineEvents extends Component {
         };
         return(
           <g>
-          <text {...text_props} >{`${datum.patient_id} ${datum.type}`}</text>
-          <circle {...cir_props}/>
+            <text {...text_props} >{`${datum.patient_id} ${datum.type}`}</text>
+            <circle {...cir_props}/>
           </g>
         ) 
       }
     })
 
-    return <g>{events}</g>;
+    return <g transform={this.transform}>{events}</g>;
   }
 }
 
