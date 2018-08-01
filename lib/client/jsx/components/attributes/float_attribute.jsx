@@ -2,33 +2,32 @@
 import * as React from 'react';
 import * as ReactRedux from 'react-redux';
 
-import SelectInput from '../inputs/select_input';
+// Module imports.
 import {reviseDocument} from '../../actions/magma_actions';
+import {FloatInput} from '../inputs/numeric_input';
 
-export class SelectAttribute extends React.Component{
-  renderEdit(){
-    let {value, document, template, attribute, reviseDocument} = this.props;
+export class FloatAttribute extends React.Component{
+  renderInput(){
+    let {revision, attribute, NumericInput, reviseDocument} = this.props;
     let input_props = {
-      className: 'selection',
-      onChange: function(value){
+      className: 'full_text',
+      placeholder: attribute.placeholder,
+      defaultValue: revision,
+      onChange: (value)=>{
         reviseDocument(document, template, attribute, value);
-      },
-      defaultValue: value,
-      showNone: 'disabled',
-      values: attribute.options
+      }
     };
 
-    return(
-      <div className='value'>
-
-        <SelectInput {...input_props} />
-      </div>
-    );
+    return <FloatInput {...input_props} />;
   }
 
   render(){
-    if (this.props.mode == 'edit') return this.renderEdit();
-    return <div className='value'>{this.props.value}</div>;
+    return(
+      <div className='value'>
+
+        {this.props.mode == 'edit' ? this.renderInput() : this.props.value}
+      </div>
+    );
   }
 }
 
@@ -44,7 +43,7 @@ const mapDispatchToProps = (dispatch, own_props)=>{
   };
 };
 
-export const SelectAttributeContainer = ReactRedux.connect(
+export const FloatAttributeContainer = ReactRedux.connect(
   mapStateToProps,
   mapDispatchToProps
-)(SelectAttribute);
+)(FloatAttribute);

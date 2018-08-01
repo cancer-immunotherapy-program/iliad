@@ -3,21 +3,16 @@ import * as React from 'react';
 import * as ReactRedux from 'react-redux';
 
 // Module imports.
-import * as MagmaActions from '../../actions/magma_actions';
+import {reviseDocument} from '../../actions/magma_actions';
 import markdown from '../../utils/markdown';
 
-export default class MarkdownAttribute extends React.Component{
+export class MarkdownAttribute extends React.Component{
   renderEdit(){
-    let self = this;
+    let {document, template, attribute, reviseDocument} = this.props;
     let textarea_props = {
       className: 'text_box',
       onChange: function(event){
-        self.props.updateMarkdown(
-          self.props.document,
-          self.props.template,
-          self.props.attribute,
-          event.target.value
-        );
+        reviseDocument(document, template, attribute, event.target.value);
       },
       defaultValue: this.props.revision
     };
@@ -45,8 +40,8 @@ const mapStateToProps = (dispatch, own_props)=>{
 
 const mapDispatchToProps = (dispatch, own_props)=>{
   return {
-    updateMarkdown: (doc, template, attribute, value)=>{
-      dispatch(MagmaActions.reviseDocument(doc, template, attribute, value));
+    reviseDocument: (doc, tmplt, attr, rev_val)=>{
+      dispatch(reviseDocument(doc, tmplt, attr, rev_val));
     }
   };
 };

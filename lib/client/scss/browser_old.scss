@@ -1,8 +1,30 @@
-@import "globals";
-@import "attribute";
+.header-edit-btn{
+  display: inline-block;
+  vertical-align: top;
+  font-family: $main-font;
+  margin-left: 10px;
+  cursor: pointer;
+  padding:5px;
+  border: 1px solid $dark-grey;
+  outline: none;
+  background: $light-grey;
+  font-size: 0.6em;
+}
 
+.header-edit-btn:hover:enabled{
+  color: $white;
+  background: $med-color;
+  border: 1px solid $med-color;
+}
+
+.header-edit-btn:disabled{
+  cursor: default;
+  border: 1px solid $light-grey-2;
+}
+
+/* OLD SCSS *******************************************************************/
 .loader{
-  font-family: $body_font;
+  font-family: $main-font;
   margin-left: 15px;
 }
 
@@ -10,7 +32,7 @@
   position: relative;
   padding-top: 10px;
   .header {
-    font-family: $body_font;
+    font-family: $main-font;
     position: relative;
     padding-left: 5%;
     @keyframes fade {
@@ -55,7 +77,7 @@
 }
 
 .browser-tab-bar{
-  font-family: $body_font;
+  font-family: $main-font;
   display: flex;
 }
 
@@ -99,7 +121,7 @@
 }
 
 #browser-tab .pane .title{
-  font-family: $body_font;
+  font-family: $main-font;
   border-bottom: 1px $dark-color solid;
   color: $dark-grey;
   margin-top: 15px;
@@ -126,13 +148,13 @@
   max-width: 170px;
   padding-bottom: 10px;
   text-align: right;
-  font-family: $body_font;
+  font-family: $main-font;
   color: $dark-grey;
 }
 
 #browser-tab .pane .attributes .attribute .value{
   display: inline-block;
-  font-family: $body_font;
+  font-family: $main-font;
   border-left: 1px solid $med-color;
   padding-left: 10px;
   padding-right: 10px;

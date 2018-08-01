@@ -3,8 +3,8 @@ import * as React from 'react';
 import * as ReactRedux from 'react-redux';
 
 import MagmaLink from './magma_link';
-import {requestIdentifiers} from '../actions/magma_actions';
-import {selectModels} from '../selectors/magma_selector';
+import {requestIdentifiers} from '../../actions/magma_actions';
+import {selectModels} from '../../selectors/magma_selector';
 
 export class IdentifierSearch extends React.Component{
   constructor(props){
@@ -156,14 +156,20 @@ const mapStateToProps = (state = {}, own_props)=>{
   let models = selectModels(state, APP_CONFIG.project_name);
 
   Object.keys(models).forEach(function(model_name){
-    idents[model_name] = Object.keys(models[model_name].documents);
+
+    /*
+     * There are two kinds of models in the magma data store. Regular data
+     * models and dictionarires. Dictionaries do not have a document object. So,
+     * we filter for it here.
+     */
+    if('documents' in models[model_name]){
+      idents[model_name] = Object.keys(models[model_name].documents);
+    }
   });
 
-  var data = {
-    'identifiers': Object.keys(idents).length ? idents : null
+  return {
+    identifiers: Object.keys(idents).length ? idents : null
   };
-
-  return data;
 };
 
 const mapDispatchToProps = (dispatch, own_props)=>{

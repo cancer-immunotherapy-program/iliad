@@ -1,10 +1,8 @@
-@import "globals";
-
 #query { 
   margin-top: 10px;
   line-height: 250%;
   .query {
-    font-family: $value_font;
+    font-family: $monospace-font;
     font-weight: bold;
     font-size: 1.2em;
   }
@@ -18,7 +16,7 @@
     display: inline;
     padding: 4px;
     margin-right: 4px;
-    font-family: $value_font;
+    font-family: $monospace-font;
     font-weight: bold;
     font-size: 1.2em;
 
@@ -99,7 +97,7 @@
       display: inline;
       text-align: center;
 
-      font-family: $value_font;
+      font-family: $monospace-font;
       font-weight: bold;
       font-size: 1em;
       color: forestgreen;

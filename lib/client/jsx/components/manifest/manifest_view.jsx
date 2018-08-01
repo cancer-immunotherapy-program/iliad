@@ -1,6 +1,6 @@
 // Framework libraries.
 import * as React from 'react';
-import { connect } from 'react-redux';
+import * as ReactRedux from 'react-redux';
 
 // Class imports.
 import ButtonBar from '../general/button_bar';
@@ -10,14 +10,11 @@ import Consignment from '../../models/consignment';
 import ManifestScript from './manifest_script';
 import ConsignmentView from './consignment_view';
 
-import {
-  requestConsignments
-} from '../../actions/manifest_actions';
-import { cloneManifest } from '../../selectors/manifest_selector';
-import { selectConsignment } from '../../selectors/consignment_selector';
+import {requestConsignments} from '../../actions/manifest_actions';
+import {cloneManifest} from '../../selectors/manifest_selector';
+import {selectConsignment} from '../../selectors/consignment_selector';
 
 import {formatDate} from '../../utils/dates';
-
 
 export class ManifestView extends React.Component{
   constructor(props){
@@ -65,22 +62,20 @@ export class ManifestView extends React.Component{
     };
   }
 
-  runManifest() {
-    let { consignment, requestConsignments, manifest } = this.props;
+  runManifest(){
+    let {consignment, requestConsignments, manifest} = this.props;
     if(!consignment) requestConsignments([manifest]);
   }
 
-  updateManifest() {
-    let { is_editing } = this.state;
-
+  updateManifest(){
+    let {is_editing} = this.state;
     this.props.save();
-
-    if (is_editing) this.toggleEdit();
+    if(is_editing) this.toggleEdit();
   }
 
   cancelEdit(){
-    // Reset the manifest
-    this.props.revert()
+    // Reset the manifest.
+    this.props.revert();
 
     // Turn of the editing mode.
     this.toggleEdit();
@@ -101,8 +96,8 @@ export class ManifestView extends React.Component{
 
   getButtons() {
     let is_editing = this.editState();
-    let { consignment } = this.props;
-    let { run, save, cancel, plot, copy, remove, edit } = this.buttons;
+    let {consignment} = this.props;
+    let {run, save, cancel, plot, copy, remove, edit} = this.buttons;
     return [
       !consignment && run,
       is_editing && save,
@@ -114,8 +109,7 @@ export class ManifestView extends React.Component{
   }
 
   render(){
-    let { consignment, manifest, update } = this.props;
-
+    let {consignment, manifest, update, is_admin} = this.props;
     if (manifest == null) return null;
 
     let {script, name, user, updated_at, description, access} = manifest;
@@ -143,19 +137,46 @@ export class ManifestView extends React.Component{
 
     let priv_props = {
       name: 'manifest-access',
-      value: 'private',
       onChange: update('access'),
       type: 'radio',
+      value: 'private',
+      checked: (manifest.access == 'private') ? 'checked' : '',
       disabled
     };
 
     let pub_props = {
       name: 'manifest-access',
-      value: 'public',
       onChange: update('access'),
       type: 'radio',
+      value: 'public',
+      checked: (manifest.access == 'public') ? 'checked' : '',
       disabled
     };
+
+    let view_props = {
+      name: 'manifest-access',
+      onChange: update('access'),
+      type: 'radio',
+      value: 'view',
+      checked: (manifest.access == 'view') ? 'checked' : '',
+      disabled
+    };
+    let view_radio = (
+      <div style={{display: 'inline-block'}}>
+
+        <input {...view_props} />{'VIEW'};
+      </div>
+    );
+    if(!is_admin) view_radio = null;
+
+    let manifest_id = (
+      <div className='manifest-form-detail'>
+
+        <span>{'MANIFEST ID:'}&nbsp;&nbsp;</span>
+        {`(${manifest.id})`}
+      </div>
+    );
+    if(!is_admin) manifest_id = null;
 
     return(
       <div className='manifest-elements'>
@@ -175,15 +196,30 @@ export class ManifestView extends React.Component{
             </div>
             <div className='manifest-form-details'>
 
-              {`AUTHOR: ${user}`}
+              <div className='manifest-form-detail'>
+
+                <span>{'AUTHOR:'}&nbsp;&nbsp;</span>
+                {user}
+              </div>
+              <div className='manifest-form-detail'>
+
+                <span>{'LAST UPDATED:'}&nbsp;&nbsp;</span>
+                {updated_at}
+              </div>
+              <div className='manifest-form-detail'>
+                <span>{'ACCESS:'}&nbsp;&nbsp;</span>
+                <input {...priv_props} />{'PRIVATE'}
+                &nbsp;
+                <input {...pub_props} />{'PUBLIC'}
+                &nbsp;
+                {view_radio}
+              </div>
+              {manifest_id}
               <br />
-              {`LAST UPDATED: ${updated_at}`}
-              <br />
-              {'ACCESS: '}
-              <input {...priv_props} />{'PRIVATE'}
-              <input {...pub_props} />{'PUBLIC'}
-              <br />
-              {'DESCRIPTION: '}
+              <div className='manifest-form-detail'>
+
+                <span>{'DESCRIPTION: '}</span>
+              </div>
               <br />
               <textarea {...textarea_props} />
             </div>
@@ -197,16 +233,21 @@ export class ManifestView extends React.Component{
   }
 }
 
-export default connect(
-  // map state
-  (state = {}, {manifest,md5sum})=>{
-    return {
-      consignment: md5sum && selectConsignment(state, md5sum)
-    };
-  },
+const mapStateToProps = (state = {}, own_props)=>{
+  return {
+    consignment: own_props.md5sum && selectConsignment(state, own_props.md5sum)
+  };
+};
 
-  // map dispatch
-  {
-    requestConsignments
-  }
+const mapDispatchToProps = (dispatch, own_props)=>{
+  return {
+    requestConsignments: (manifests)=>{
+      dispatch(requestConsignments(manifests));
+    }
+  };
+}
+
+export const ManifestViewContainer = ReactRedux.connect(
+  mapStateToProps,
+  mapDispatchToProps
 )(ManifestView);

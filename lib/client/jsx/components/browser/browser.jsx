@@ -15,7 +15,6 @@ import * as ReactRedux from 'react-redux';
 
 // Class imports.
 import Header from '../general/header';
-import {HelpContainer as Help} from '../help';
 import {TabBarContainer as TabBar} from '../general/tab_bar';
 import BrowserTab from './browser_tab';
 
@@ -58,7 +57,6 @@ export class Browser extends React.Component{
     let {model_name, record_name} = this.props;
     let onSuccess = ()=>{this.setState({mode: 'browse'})};
 
-    //this.props.addTokenUser();
     this.props.requestManifests();
     this.props.requestPlots();
     this.props.requestView(
@@ -76,34 +74,33 @@ export class Browser extends React.Component{
   }
 
   headerHandler(action){
+
+    let {
+      revision,
+      record_name,
+      model_name,
+      discardRevision,
+      sendRevisions
+    } = this.props;
+
     switch(action){
       case 'cancel':
-
         this.setState({mode: 'browse'});
-        this.props.discardRevision(
-          this.props.record_name,
-          this.props.model_name
-        );
+        discardRevision({record_name, model_name});
         return;
       case 'approve':
-
         if(this.props.has_revisions){
-
           this.setState({mode: 'submit'});
-          this.props.sendRevisions(
-            this.props.model_name,
-            {[this.props.record_name] : this.props.revision},
-            ()=>this.setState({mode: 'browse'}),
-            ()=>this.setState({mode: 'edit'})
-          );
+          sendRevisions({
+            model_name,
+            revisions: {[record_name] : revision},
+            success: ()=>this.setState({mode: 'browse'}),
+            error: ()=>this.setState({mode: 'browse'})
+          });
         }
         else{
-
           this.setState({mode: 'browse'});
-          this.props.discardRevision(
-            this.props.record_name,
-            this.props.model_name
-          );
+          discardRevision({record_name, model_name});
         }
         return;
       case 'edit':
@@ -214,7 +211,6 @@ export class Browser extends React.Component{
             <span>{`${this.camelize(this.props.model_name)} : `}</span>
             {this.props.record_name}
           </div>
-          <Help info='edit' />
         </Header>
         <TabBar {...tab_bar_props} />
         <BrowserTab {...browser_tab_props} />
@@ -231,10 +227,22 @@ const mapStateToProps = (state = {}, own_props)=>{
   let revision = selectModelRevision(state, project, model, record);
   let view = (state.app.views ? state.app.views[model] : null);
 
+  let can_edit = false;
+  if(state.app.user.permissions){
+    state.app.user.permissions.forEach((perm)=>{
+      if(perm.project_name == APP_CONFIG.project_name){
+        if(perm.role == 'administrator' || perm.role == 'editor'){
+          can_edit = true;
+        }
+      }
+    });
+  }
+
   return {
     template,
     revision,
     view,
+    can_edit,
     project_name: project,
     model_name: model,
     record_name: record,
@@ -276,8 +284,8 @@ const mapDispatchToProps = (dispatch, own_props)=>{
       dispatch(discardRevision(record_name, model_name));
     },
 
-    sendRevisions: (model_name, revisions, success, error)=>{
-      dispatch(sendRevisions({model_name, revisions, success, error}));
+    sendRevisions: (args)=>{
+      dispatch(sendRevisions(args));
     }
   };
 };

@@ -2,29 +2,30 @@
 import * as React from 'react';
 import * as ReactRedux from 'react-redux';
 
+// Module imports.
 import {reviseDocument} from '../../actions/magma_actions';
-import SlowTextInput from '../inputs/slow_text_input';
+import {IntegerInput} from '../inputs/numeric_input';
 
-export class Attribute extends React.Component{
-  renderEdit(){
-    let {document, template, attribute, revision, reviseDocument} = this.props;
+export class IntegerAttribute extends React.Component{
+  renderInput(){
+    let {revision, attribute, NumericInput, reviseDocument} = this.props;
     let input_props = {
       className: 'full_text',
       placeholder: attribute.placeholder,
+      defaultValue: revision,
       onChange: (value)=>{
-        reviseDocument(document, template, attribute, value);
-      },
-      defaultValue: (revision == null) ? '' : revision
+        this.props.reviseDocument(document, template, attribute, value);
+      }
     };
 
-    return <SlowTextInput {...input_props} />;
+    return <IntegerInput {...input_props} />;
   }
 
   render(){
     return(
       <div className='value'>
 
-        {(this.props.mode == 'edit') ? this.renderEdit() : this.props.value}
+        {this.props.mode == 'edit' ? this.renderInput() : this.props.value}
       </div>
     );
   }
@@ -42,7 +43,7 @@ const mapDispatchToProps = (dispatch, own_props)=>{
   };
 };
 
-export const AttributeContainer = ReactRedux.connect(
+export const IntegerAttributeContainer = ReactRedux.connect(
   mapStateToProps,
   mapDispatchToProps
-)(Attribute);
+)(IntegerAttribute);
