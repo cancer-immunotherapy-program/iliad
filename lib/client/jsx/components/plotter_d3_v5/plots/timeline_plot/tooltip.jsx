@@ -9,22 +9,26 @@ class Tooltip extends Component {
     let transform_text = 'translate('+ width / 2 + ',' + 18 +')';
     let transform_arrow = '';
 
-    let {tooltip, bg_style, text_style, x_value} = this.props;
+    let {tooltip, bg_style, text_style, x_value1, x_value2} = this.props;
     let {data} = tooltip; 
     let values;
+    let data_count;
  
     if(tooltip.display === true){
       let {x, y} = tooltip.location;
       let increment = 0;
       visibility = 'visible';
       values = data.value ? JSON.parse(data.value).data : null;
-
       values.forEach( obj => {
         let str = obj.name + obj.value;
         if( str.length > 52) {increment++}
       });
-    
-      height = values ? (values.length + increment) * 18 + 65 : 80;
+
+      data_count = Object.values(data).filter(
+        (s) => {  return s === 0 ? true : s }).length;
+          
+      height = values ? 
+      ((values.length + increment) + data_count) * 18 : 80;
     
       if(height < y - 18){
         transform='translate(' + (x - width / 2) + 
@@ -41,7 +45,6 @@ class Tooltip extends Component {
           ','+ 0 +') rotate(180, 20, 0)';
       }
     }
-
 
     let rec_props = {
       className: bg_style,
@@ -102,10 +105,22 @@ class Tooltip extends Component {
         <rect {...rec_props}/>
         <polygon {...polygon_props}/>
         <text {...text_props}>
-        
-          <tspan {...tspan_props}>{x_value +': '+ data.type}</tspan>
-          <tspan {...tspan_props} dy='18'>{'Start: '+ data.start}</tspan>
-          <tspan {...tspan_props} dy='18'>{'End: '+ data.end}</tspan>
+          {
+           data['patient-id'] &&
+             <tspan {...tspan_props}>{x_value1 +': '+ data['patient-id']}</tspan>
+          }
+          {
+           data.type && 
+            <tspan {...tspan_props} dy='18'>{x_value2 +': '+ data.type}</tspan>
+          }
+          {
+            data.start && 
+            <tspan {...tspan_props} dy='18'>{'Start: '+ data.start}</tspan>
+          }
+          {
+           data.end && 
+             <tspan {...tspan_props} dy='18'>{'End: '+ data.end}</tspan>
+          }
           {values && displayValues(values)}
         </text>
       </g>

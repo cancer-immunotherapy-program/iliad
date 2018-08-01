@@ -298,7 +298,7 @@ const mapStateToProps = (state = {}, own_props)=>{
 
     let patients_data = [
       diagnostic_data, 
-      // treatment_data
+      treatment_data
     ];
     
     let ae_patient_data = [

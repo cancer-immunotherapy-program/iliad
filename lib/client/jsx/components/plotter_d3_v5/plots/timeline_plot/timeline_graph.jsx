@@ -83,6 +83,7 @@ class TimelineGraph extends Component {
       tooltip:{
         display:true,
         data: {
+          'patient-id':target.getAttribute('data-patient-id'),
           type: target.getAttribute('data-type'),
           start: target.getAttribute('data-start'),
           end: target.getAttribute('data-end'),
@@ -150,8 +151,7 @@ class TimelineGraph extends Component {
       orient: 'Left',
       scale: yScale,
       translate: `translate(${margins.left}, 0)`,
-      tickSize: svg_dimensions.width - margins.left - margins.right,
-      string_search: '::'
+      tickSize: svg_dimensions.width - margins.left - margins.right
     };
 
     let events_props = {
@@ -171,7 +171,8 @@ class TimelineGraph extends Component {
       tooltip: tooltip, 
       text_style: 'tooltip-text',
       bg_style: 'tooltip-bg',
-      x_value: 'Type', 
+      x_value1: 'Patient ID',
+      x_value2: 'Type', 
       y_value: 'Value'
     };
 

@@ -11,8 +11,8 @@ class TimelineEvents extends Component {
   }
 
   updateD3(props) {
-    const {scales, data, zoom_transform} = props;
-    const {xScale, yScale} = scales;
+    const {scales, zoom_transform} = props;
+    const {xScale} = scales;
 
     if (zoom_transform) {
       xScale.domain(zoom_transform.rescaleX(xScale).domain());
@@ -29,7 +29,9 @@ class TimelineEvents extends Component {
     let {xScale, yScale} = scales;
 
     const events = data.map((datum, index) => {
+
       let text_props = {
+        key: `text-${datum.event_id}_${index}`,
         className: 'label-text',
         alignmentBaseline: 'middle',
         x: '0',
@@ -51,12 +53,13 @@ class TimelineEvents extends Component {
           onMouseOver: showToolTip,
           onMouseOut: hideToolTip,
           'data-value':  JSON.stringify(datum),
-          'data-type': datum.event_id,
+          'data-patient-id': datum.patient_id,
+          'data-type': datum.type,
           'data-start': datum.start || '',
           'data-end': datum.end || ''
         };
         return( 
-          <g>
+          <g key={`rect-group_${index}`}>
             <text {...text_props}>{`${datum.patient_id} ${datum.type}`}</text>
             <rect {...rect_props}/>
           </g>
@@ -73,12 +76,13 @@ class TimelineEvents extends Component {
           onMouseOver: showToolTip,
           onMouseOut: hideToolTip,
           'data-value': JSON.stringify(datum),
-          'data-type': datum.label,
+          'data-patient-id': datum.patient_id,
+          'data-type': datum.type,
           'data-start': datum.start || '',
           'data-end': datum.end || ''
         };
         return(
-          <g>
+          <g key={`cir-group_${index}`}>
             <text {...text_props} >{`${datum.patient_id} ${datum.type}`}</text>
             <circle {...cir_props}/>
           </g>
