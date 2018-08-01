@@ -377,3 +377,15 @@
 #timeline_group_chart .resize-wrapper {
   margin-right: 100px;
 }
+
+.tooltip-bg{
+  fill: #ccc;
+  pointer-events: none;
+}
+
+.tooltip-text{
+  display: inline;
+  font-family: "Open Sans", arial, x-locale-body, sans-serif;
+  font-size: 11px;
+  fill: black;
+}
