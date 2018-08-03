@@ -368,22 +368,29 @@
   display: none;
 }
 
-.clip_path_obj {
+.clip_path_obj{
   clip-path: url(#clip);
 }
 
-#timeline_group_chart .resize-wrapper {
+#timeline_group_chart .resize-wrapper{
   margin-right: 100px;
 }
 
 .tooltip-bg{
-  fill: #ccc;
+  stroke: $dark-grey;
+  stroke-width: 1px;
+  fill: $med-grey-2;
+  pointer-events: none;
+}
+
+.tooltip-arrow{
+  fill: $med-grey-2;
   pointer-events: none;
 }
 
 .tooltip-text{
   display: inline;
-  font-family: "Open Sans", arial, x-locale-body, sans-serif;
-  font-size: 11px;
-  fill: black;
+  font-size: 0.8em;
+  fill: $light-grey;
+  font-family: $main-font;
 }

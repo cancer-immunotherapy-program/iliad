@@ -1,14 +1,14 @@
-import React, {Component} from 'react';
+import * as React from 'react';
 import * as d3 from 'd3';
 import Axis from '../../axis';
 import TimelineEvents from './timeline_events';
-import Tooltip from './tooltip';
+import {Tooltip} from './tooltip';
 
-class TimelineGraph extends Component {
-  constructor(props) {
+class TimelineGraph extends React.Component{
+  constructor(props){
     super(props);
     this.state = {
-      timeDomain:[],
+      time_domain:[],
       data: [],
       tooltip: {display: false, data: {key: '',value: ''}},
       zoom_transform: null
@@ -16,113 +16,112 @@ class TimelineGraph extends Component {
 
     this.timeScale = d3.scaleTime();
     this.bandScale = d3.scaleBand();
-    this.showToolTip = this.showToolTip.bind(this);
-    this.hideToolTip = this.hideToolTip.bind(this);
     this.zoom = d3.zoom();
   }
 
   static getDerivedStateFromProps(next_props, prev_state){
-    if(next_props.all_events.length <= 0 ) return null;
-    
+    if(next_props.all_events.length <= 0) return null;
+
     // Set start and end date for timeline axis.
-    let min =  next_props.all_events[0].start ? 
-      new Date(next_props.all_events[0].start) : null;
+    let min = null;
+    if(next_props.all_events[0].start){
+      min = new Date(next_props.all_events[0].start);
+    }
 
-    let max =  next_props.all_events[0].end ? 
-      new Date(next_props.all_events[0].end) : min;
+    let max = null;
+    if(next_props.all_events[0].end){
+      max = new Date(next_props.all_events[0].end);
+    }
 
-    for(let i = 1; i < next_props.all_events.length; i++) {
-      let start_time = next_props.all_events[i].start ? 
-        new Date (next_props.all_events[i].start) : null;
+    for(let a = 1; a < next_props.all_events.length; ++a){
+      let start_time = null
+      if(next_props.all_events[a].start){
+        start_time = new Date (next_props.all_events[a].start);
+      }
 
-      let end_time = next_props.all_events[i].end ? 
-        new Date(next_props.all_events[i].end) : start_time;
+      let end_time = null;
+      if(next_props.all_events[a].end){
+        end_time = new Date(next_props.all_events[a].end);
+      }
 
-      if(start_time < min){min = start_time;} 
-      if(end_time > max){max = end_time;}
+      if(start_time < min) min = start_time;
+      if(end_time > max) max = end_time;
     }
 
     let current_date = new Date();
-    if(max > current_date){
-      max = current_date;
-    }
+    if(max > current_date) max = current_date;
 
     return {
-      timeDomain: [min, max],
+      time_domain: [min, max],
       data: next_props.all_events
     };
   }
 
-  componentDidMount() {
+  componentDidMount(){
     d3.select(this.refs.svg)
       .call(this.zoom);
   }
-  componentDidUpdate() {
+
+  componentDidUpdate(){
     d3.select(this.refs.svg)
       .call(this.zoom);
   }
-  zoomed() {
-    this.setState({ 
+
+  zoomed(){
+    this.setState({
       zoom_transform: d3.event.transform
     });
   }
 
-  showToolTip(event) {
-    let {target} = event;
+  processTooltipData(datum){
+    return Object.keys(datum).map((key)=>{
+      return `${key}: ${datum[key]}`;
+    });
+  }
 
-    let rec_x = parseFloat(target.getAttribute('width')) / 2 + 
-      parseFloat(target.getAttribute('x'));
+  showToolTip(event, datum, config){
+    let rec_x = (parseFloat(config.width) / 2) + parseFloat(config.x);
+    let rec_y = parseFloat(config.y) + (parseFloat(config.height) / 2);
 
-    let rec_y = parseFloat(target.getAttribute('y')) + 
-      parseFloat(target.getAttribute('height')) / 2;
-
-    let cir_x = parseFloat(target.getAttribute('cx'));
-    let cir_y = parseFloat(target.getAttribute('cy'));
+    let cir_x = parseFloat(config.cx);
+    let cir_y = parseFloat(config.cy);
 
     this.setState({
       tooltip:{
         display:true,
-        data: {
-          'patient-id':target.getAttribute('data-patient-id'),
-          type: target.getAttribute('data-type'),
-          start: target.getAttribute('data-start'),
-          end: target.getAttribute('data-end'),
-          value: target.getAttribute('data-value') || null
-        },
-        location:{ 
-          x: target.getAttribute('x') ? rec_x : cir_x,
-          y: target.getAttribute('y') ? rec_y : cir_y
-        } 
-      }
-    });
-  }
-
-  hideToolTip() {
-    this.setState({
-      tooltip:{ 
-        display:false,
-        data:{
-          type:'',value:''
+        data: this.processTooltipData(datum),
+        location: {
+          x: config.x ? rec_x : cir_x,
+          y: config.y ? rec_y : cir_y
         }
       }
     });
   }
 
-  render() {
-    if(this.state.timeDomain.length < 1) return null;
-    let {timeDomain, data, tooltip, zoom_transform} = this.state;
+  hideToolTip(event, datum, config){
+    this.setState({
+      tooltip:{
+        display:false,
+        data: []
+      }
+    });
+  }
+
+  render(){
+    if(this.state.time_domain.length < 1) return null;
+    let {time_domain, data, tooltip, zoom_transform} = this.state;
     let margins = {top: 41, right: 5, bottom: 100, left: 150};
-    let svg_dimensions = { 
+    let svg_dimensions = {
       width: Math.max(this.props.parent_width, 500),
       height: data.length * 24 + 481
     };
-    
+
     //Create time scale.
     let xScale = this.timeScale
-      .domain(timeDomain)
+      .domain(time_domain)
       .range([margins.left, svg_dimensions.width - margins.right])
       .nice();
-    
+
     let yScale = this.bandScale
       .padding(0.5)
       .domain(data.map(datum => datum.event_id))
@@ -130,14 +129,14 @@ class TimelineGraph extends Component {
 
     this.zoom.scaleExtent([1, 100])
       .translateExtent([
-        [0, 0], 
+        [0, 0],
         [svg_dimensions.width, svg_dimensions.height]
       ])
       .extent([
-        [0, 0], 
+        [0, 0],
         [svg_dimensions.width, svg_dimensions.height]
       ])
-      .on("zoom", this.zoomed.bind(this));
+      .on('zoom', this.zoomed.bind(this));
 
     let xProps = {
       orient: 'Bottom',
@@ -146,7 +145,7 @@ class TimelineGraph extends Component {
       tickSize: svg_dimensions.height - margins.top - margins.bottom,
       timeformat: "%b '%y"
     };
-    
+
     let yProps = {
       orient: 'Left',
       scale: yScale,
@@ -159,39 +158,42 @@ class TimelineGraph extends Component {
       margins,
       data,
       svg_dimensions,
-      showToolTip: this.showToolTip,
-      hideToolTip: this.hideToolTip,
+      showToolTip: this.showToolTip.bind(this),
+      hideToolTip: this.hideToolTip.bind(this),
       color: this.props.color,
       zoom_transform,
       x: 0,
       y: 0
     };
-
+/*
     let tooltip_props = {
-      tooltip: tooltip, 
+      tooltip: tooltip,
       text_style: 'tooltip-text',
       bg_style: 'tooltip-bg',
       x_value1: 'Patient ID',
-      x_value2: 'Type', 
+      x_value2: 'Type',
       y_value: 'Value'
     };
+*/
 
     let rect_props = {
       className: 'zoom',
       width: svg_dimensions.width - margins.right - margins.left,
       height: svg_dimensions.height,
-      transform: `translate(${margins.left}, ${margins.top})`,
-    }
+      transform: `translate(${margins.left}, ${margins.top})`
+    };
 
     return(
-      <svg {...svg_dimensions} ref='svg' >
+      <svg {...svg_dimensions} ref='svg'>
+
         <Axis {...xProps} />
         <Axis {...yProps} />
         <clipPath id='clip'>
+
           <rect {...rect_props}  />
         </clipPath>
         <TimelineEvents {...events_props} />
-        <Tooltip {...tooltip_props}/>
+        <Tooltip {...this.state.tooltip} />
       </svg>
     );
   }
