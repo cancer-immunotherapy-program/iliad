@@ -15,6 +15,7 @@ export class AppNav extends React.Component{
     if(this.props.project == '') return null;
 
     let tabs = {
+      PLOT: Routes.plots_path(this.props.project),
       MANIFEST: Routes.manifests_path(this.props.project),
       MAP: Routes.map_path(this.props.project),
       SEARCH: Routes.search_path(this.props.project),

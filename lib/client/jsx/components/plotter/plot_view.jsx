@@ -81,6 +81,10 @@ export class PlotView extends React.Component{
     let {selected_plot} = this.state;
     if(selected_plot.id > 0) this.props.savePlot(selected_plot);
 
+    // selected_plot.name = 'fadsljfaldsjf';
+    selected_plot.manifest_id ='188';
+    // selected_plot.plot_type = "scatter";
+
     if(selected_plot.id == 0){
 
       // Check that there is minimum data.
@@ -91,7 +95,8 @@ export class PlotView extends React.Component{
         selected_plot.plot_type == null ||
         selected_plot.plot_type == ''
       ){
-        alert('You must enter a name, select a manifest, and select a plot');
+        console.log('selected_plot', selected_plot)
+        alert('xxx You must enter a name, select a manifest, and select a plot');
         return;
       }
 
@@ -308,7 +313,7 @@ export class PlotView extends React.Component{
     };
 
     return(
-      <div className='potter-manifest-select-group'>
+      <div className='plotter-manifest-select-group'>
 
         {'Manifest Select : '}
         <select {...selector_props} data-field='manifest_id'>
@@ -342,7 +347,7 @@ export class PlotView extends React.Component{
     };
 
     return(
-      <div className='potter-manifest-select-group'>
+      <div className='plotter-manifest-select-group'>
 
         {'Plot Select : '}
         <select {...selector_props} data-field='plot_type'>

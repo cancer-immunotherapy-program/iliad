@@ -25,6 +25,7 @@ import {AppNavContainer as AppNav} from './components/general/app_nav';
 import {ManifestsContainer as Manifests} from './components/manifest/manifests';
 import {BrowserContainer as Browser} from './components/browser/browser';
 import {PlotterContainer as Plotter} from './components/plotter/plotter';
+//import {PlotterContainer as Plotter} from './components/plotter_d3_v5/plotter';
 import {HomePageContainer as HomePage} from './components/home_page';
 import {SettingsContainer as Settings} from './components/settings/settings';
 import {SearchContainer as Search} from './components/search/search';

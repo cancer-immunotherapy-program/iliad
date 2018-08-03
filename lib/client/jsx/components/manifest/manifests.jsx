@@ -35,7 +35,7 @@ export class Manifests extends React.Component{
      * allows the manifest selector to properly set the current user on a new
      * manifest.
      */
-    this.props.addTokenUser();
+    //this.props.addTokenUser();
     this.props.requestManifests();
   }
 
