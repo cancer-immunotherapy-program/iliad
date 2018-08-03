@@ -51,6 +51,9 @@ class TimelineGraph extends React.Component{
     let current_date = new Date();
     if(max > current_date) max = current_date;
 
+    if(max) max.setMonth(max.getMonth() + 3);
+    if(min) min.setMonth(min.getMonth() - 3);
+
     return {
       time_domain: [min, max],
       data: next_props.all_events

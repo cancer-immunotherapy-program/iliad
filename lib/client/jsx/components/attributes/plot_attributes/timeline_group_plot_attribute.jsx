@@ -102,8 +102,11 @@ const selectColor = (type)=>{
       return colors[1];
     case 'treatments':
       return colors[2];
-    default:
+    case 'adverse_events':
+    case 'prior_adverse_events':
       return colors[3];
+    default:
+      return colors[0];
   }
 }
 
@@ -170,6 +173,28 @@ const processData = (consignment_data)=>{
           records.push(flattenDataSet(processed_data[key][uid], key));
         }
 
+        break;
+      case 'prior_adverse_events':
+      case 'adverse_events':
+        consignment_data[key].rows.forEach((row, index)=>{
+          let ae_obj = {
+            name: key,
+            label: `AE (${row[4]})`,
+            group: row[4],
+            patient_id: row[4],
+            start: new Date(row[2]).toUTCString(),
+            meddra_code: row[0],
+            color: selectColor(key),
+            event_id: `ae-${key}-${index}`,
+            type: key
+          };
+
+          if(row[3] != null){
+            ae_obj['end'] = new Date(row[3]).toUTCString();
+          }
+
+          records.push(ae_obj);
+        });
         break;
     }
   }
