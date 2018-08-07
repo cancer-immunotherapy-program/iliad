@@ -4,7 +4,6 @@ import ConsignmentResult from './consignment_result';
 export default class ConsignmentView extends React.Component{
   renderData(consignment){
     let elems = Object.keys(consignment).map((name, index)=>{
-      if(consignment[name] == 'macro') return null;
       return(
         <div key={index} className='consignment-result-group'>
 
@@ -14,7 +13,7 @@ export default class ConsignmentView extends React.Component{
       );
     });
 
-    return elems.filter(_=>_);
+    return elems;
   }
 
   render(){

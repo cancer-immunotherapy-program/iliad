@@ -1,7 +1,10 @@
 // Framework libraries.
 import * as React from 'react';
-import {downloadCSV} from '../../utils/csv';
+
 import ConsignmentTable from './consignment_table';
+import ConsignmentResult from './consignment_result';
+import {isPrimitiveType} from '../../utils/types';
+import {downloadCSV} from '../../utils/csv';
 
 class MatrixResult extends React.Component{
   constructor(props) {
@@ -31,12 +34,16 @@ class MatrixResult extends React.Component{
     );
   }
 
-  table() {
-    let { matrix } = this.props;
-    let headers = [ 'Row Names', ...matrix.col_names ];
-    let rows = matrix.map('row', (row, index, row_name)=>[ row_name, ...row ]);
+  table(){
+    let {matrix} = this.props;
+    let headers = ['Row Names', ...matrix.col_names];
 
-    return <ConsignmentTable headers={ headers } rows={ rows }/>
+    let rows = vector.map((label, value)=>[
+      label,
+      isPrimitiveType(value) ? value : <ConsignmentResult data={value} />
+    ]);
+
+    return <ConsignmentTable headers={headers} rows={rows} />
   }
 
   render(){
@@ -44,19 +51,22 @@ class MatrixResult extends React.Component{
     let {hidden} = this.state;
     return(
       <div className='consignment-matrix'>
-        <i className='fas fa-table'/>
+
+        <i className='fas fa-table' />
 
         {` ${matrix.num_rows} rows x ${matrix.num_cols} cols`}
 
         <button className='consignment-btn' onClick={this.downloadMatrix.bind(this)}>
+
           <i className='fas fa-download' aria-hidden='true' ></i>
           {'DOWNLOAD'}
         </button>
         <button className='consignment-btn' onClick={this.toggle.bind(this)}>
+
           <i className='fas fa-table' aria-hidden='true'></i>
-          { hidden ? 'SHOW' : 'HIDE'}
+          {hidden ? 'SHOW' : 'HIDE'}
         </button>
-        { !hidden && this.table() }
+        {!hidden && this.table()}
       </div>
     );
   }

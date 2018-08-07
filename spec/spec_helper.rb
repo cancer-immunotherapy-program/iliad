@@ -30,10 +30,10 @@ AUTH_USERS = {
     email: 'hera@olympus.org', first: 'Hera', perm: 'a:labors'
   },
   editor: {
-    email: 'eurystheus@twelve-labors.org', first: 'Eurystheus', perm: 'e:labors' 
+    email: 'eurystheus@twelve-labors.org', first: 'Eurystheus', perm: 'e:labors'
   },
   viewer: {
-    email: 'hercules@twelve-labors.org', first: 'Hercules', perm: 'v:labors' 
+    email: 'hercules@twelve-labors.org', first: 'Hercules', perm: 'v:labors'
   },
   non_user: {
     email: 'nessus@centaurs.org', first: 'Nessus', perm: ''
@@ -68,23 +68,16 @@ RSpec.configure do |config|
   end
 end
 
-
-def run_script script
-<<<<<<< HEAD
-  txt = script.map do |name, exp|
-    "@#{name} = #{exp}"
-  end.join("\n")
-=======
+def run_script(script)
   txt = script
->>>>>>> a37e00656d14eff2844408aa5596c7a134041e05
 
   manifest = Archimedes::Manifest.new(
     'xyzzy',
-    'iliad',
+    'timur',
     txt
   )
   manifest.payload
-  manifest.instance_variable_get('@vars')
+  manifest.instance_variable_get('@return_vars')
 end
 
 FactoryBot.define do

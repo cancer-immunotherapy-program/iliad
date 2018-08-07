@@ -1,12 +1,15 @@
 // Framework libraries.
 import * as React from 'react';
-import {downloadCSV} from '../../utils/csv';
+
 import ConsignmentTable from './consignment_table';
+import ConsignmentResult from './consignment_result';
+import {isPrimitiveType} from '../../utils/types';
+import {downloadCSV} from '../../utils/csv';
 
 class MatrixResult extends React.Component{
   constructor(props){
     super(props);
-    this.state = { hidden: true };
+    this.state = {hidden: true};
   }
 
   toggle(){
@@ -32,11 +35,24 @@ class MatrixResult extends React.Component{
   }
 
   table(){
-    let { matrix } = this.props;
-    let headers = [ 'Row Names', ...matrix.col_names ];
-    let rows = matrix.map('row', (row, index, row_name)=>[ row_name, ...row ]);
+    let {matrix} = this.props;
+    let headers = ['Row Names', ...matrix.col_names];
+    let rows = matrix.map('row', (row, index, row_name)=>{
+      return [
+        row_name,
+        ...row.map((value)=>{
+          if(isPrimitiveType(value)){
+            return value;
+          }
+          else{
+            console.log(value);
+            return <ConsignmentResult data={value} />;
+          }
+        })
+      ]
+    });
 
-    return <ConsignmentTable headers={ headers } rows={ rows }/>
+    return <ConsignmentTable headers={headers} rows={rows} />
   }
 
   render(){

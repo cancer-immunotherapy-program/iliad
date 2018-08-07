@@ -19,8 +19,8 @@ module Archimedes
     production(:assignment) do
       # An assignment
       clause('VAR .IDENT ASSIGN .e') do |i,e|
-        @variable = i
         @vars[i] = e
+        @return_vars[i] = e unless e.is_a?(Archimedes::Macro)
       end
     end
 
@@ -76,7 +76,7 @@ module Archimedes
       clause('VAR .IDENT LPAREN .args RPAREN') { |i, args| macro(i, args) }
 
       # Function calling
-      clause('.IDENT LPAREN .args RPAREN') { |ident, args| 
+      clause('.IDENT LPAREN .args RPAREN') { |ident, args|
         # User token and project_name are required if the function needs to
         # call Magma
         Archimedes::Function.call(@token, @project_name, ident, args)
