@@ -139,7 +139,13 @@ export class Browser extends React.Component{
          * If the attributes required from the tab are NOT present in the
          * model's document then we need to request that data.
          */
-        requestDocuments(model_name, record_name, tab_attr);
+        requestDocuments(
+          model_name,
+          record_name,
+          tab_attr,
+          this.browseMode.bind(this)
+        );
+
         break tab_check_loop;
       }
     }
@@ -200,12 +206,8 @@ export class Browser extends React.Component{
       tab
     };
 
-    // Set at 'skin' on the browser styling.
-    let skin = 'browser';
-    if(this.state.mode == 'browse') skin = 'browser '+this.props.model_name;
-
     return(
-      <div className={skin}>
+      <div className='browser'>
 
         <Header {...header_props}>
 
@@ -273,13 +275,14 @@ const mapDispatchToProps = (dispatch, own_props)=>{
       ));
     },
 
-    requestDocuments: (model_name, record_name, attribute_names)=>{
+    requestDocuments: (model_name, record_name, attribute_names, success)=>{
       let exchange_name = `${model_name} ${record_name}`;
       dispatch(requestDocuments({
         model_name,
         exchange_name,
         record_names: [record_name],
-        attribute_names
+        attribute_names,
+        success
       }));
     },
 
