@@ -63,7 +63,7 @@ export class Browser extends React.Component{
       model_name,
       record_name,
       'overview',
-      onSuccess.bind(this)
+      this.tabSelectionHandler.bind(this, 0)
     );
   }
 
@@ -73,41 +73,43 @@ export class Browser extends React.Component{
     }).replace(/\s+/g, '');
   }
 
-  headerHandler(action){
+  setMode(mode){
+    this.setState({mode});
+  }
 
-    let {
-      revision,
-      record_name,
-      model_name,
-      discardRevision,
-      sendRevisions
-    } = this.props;
+  browseMode(){
+    this.setMode('browse');
+  }
 
-    switch(action){
-      case 'cancel':
-        this.setState({mode: 'browse'});
-        discardRevision({record_name, model_name});
-        return;
-      case 'approve':
-        if(this.props.has_revisions){
-          this.setState({mode: 'submit'});
-          sendRevisions({
-            model_name,
-            revisions: {[record_name] : revision},
-            success: ()=>this.setState({mode: 'browse'}),
-            error: ()=>this.setState({mode: 'browse'})
-          });
-        }
-        else{
-          this.setState({mode: 'browse'});
-          discardRevision({record_name, model_name});
-        }
-        return;
-      case 'edit':
+  editMode(){
+    this.setMode('edit');
+  }
 
-        this.setState({mode: 'edit'});
-        return;
+  approveEdits(){
+    let {revision, model_name, record_name} = this.props;
+    if(Object.keys(revision).length > 0){
+      this.postEdits();
     }
+    else{
+      this.cancelEdits();
+    }
+  }
+
+  cancelEdits(){
+    let {discardRevision, record_name, model_name} = this.props;
+    this.browseMode();
+    discardRevision(record_name, model_name);
+  }
+
+  postEdits(){
+    let {revision, model_name, record_name, sendRevisions} = this.props;
+    this.setMode('submit');
+    sendRevisions({
+      model_name,
+      revisions: {[record_name] : revision},
+      success: this.browseMode.bind(this),
+      error: this.editMode.bind(this)
+    });
   }
 
   tabSelectionHandler(index_order){
@@ -167,10 +169,11 @@ export class Browser extends React.Component{
     if(!view || !template || !doc) return this.renderEmpytView();
 
     let header_props = {
-      mode,
-      can_edit,
-      handler: this.headerHandler.bind(this)
-    };
+      onEdit: (mode == 'browse' && can_edit && this.editMode.bind(this)),
+      onApprove: (mode == 'edit' && this.approveEdits.bind(this)),
+      onCancel: (mode == 'edit' && this.cancelEdits.bind(this)),
+      onLoad: (mode=='submit')
+    }
 
     let tab_bar_props = {
       mode,

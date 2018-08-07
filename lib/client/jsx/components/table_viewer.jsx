@@ -42,17 +42,6 @@ const TableRow = (template, documents, attribute_names)=>{
 };
 
 class TableViewer extends React.Component{
-
-/*
-  downloadTSV(event){
-    this.props.requestTSV(
-      this.props.model_name,
-      null,
-      this.props.record_names
-    );
-  }
-*/
-
   downloadMatrix(){
     let data = Object.keys(this.props.documents).map((id)=>{
       return this.props.documents[id];
@@ -75,7 +64,7 @@ class TableViewer extends React.Component{
       current_page
     } = this.props;
 
-    if (!record_names.length) null;
+    if(!record_names.length) null;
 
     record_names = record_names.slice(
       page_size * current_page,
@@ -198,10 +187,19 @@ const mapStateToProps = (state = {}, own_props)=>{
   let attribute_names = null;
   if(template){
     attribute_names = Object.keys(template.attributes).filter((attr_name)=>{
-
       let attr = template.attributes[attr_name];
       return (attr.shown && attr.attribute_class != 'Magma::TableAttribute');
     });
+
+    /*
+     * If we have an identifier in the attributes then adjust the attribute to
+     * create a link.
+     */
+    if(template.identifier in template.attributes){
+      let ident_attr = template.attributes[template.identifier]
+      ident_attr['model_name'] = template.name;
+      ident_attr['attribute_class'] = 'Magma::ForeignKeyAttribute';
+    }
   }
 
   return {

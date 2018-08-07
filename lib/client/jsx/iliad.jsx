@@ -18,6 +18,7 @@ import manifests from './reducers/manifests_reducer';
 import consignments from './reducers/consignments_reducer';
 import exchanges from './reducers/exchanges_reducer';
 import predicates from './reducers/predicates_reducer';
+import location from './reducers/location_reducer';
 
 // Components.
 import {MessengerContainer as Messenger} from './components/general/messenger';
@@ -74,7 +75,8 @@ class IliadApplication{
       manifests,
       consignments,
       exchanges,
-      predicates
+      predicates,
+      location
     });
 
     let middlewares = [

@@ -1,6 +1,8 @@
 // Framework libraries.
 import * as React from 'react';
 
+import Link from './link';
+
 export default class MagmaLink extends React.Component{
 
   render(){
@@ -11,15 +13,11 @@ export default class MagmaLink extends React.Component{
     ];
 
     let link_props = {
-      'className': 'link',
-      'href': Routes.browse_model_path(...route_args)
+      className: 'link',
+      link: Routes.browse_model_path(...route_args),
+      name: this.props.link
     };
 
-    return(
-      <a {...link_props}>
-
-        {this.props.link}
-      </a>
-    );
+    return <Link {...link_props} />;
   }
 }

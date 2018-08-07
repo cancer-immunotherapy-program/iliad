@@ -2,16 +2,9 @@ import * as React from 'react';
 import * as ReactRedux from 'react-redux';
 
 // Module imports.
-import {
-  selectUserPermissions
-} from '../selectors/app_selector';
+import {selectUserPermissions} from '../selectors/app_selector';
 
 export class HomePage extends React.Component{
-  constructor(props){
-    super(props);
-    this.state = {};
-  }
-
   renderProjects(){
     if(this.props.permissions.length <= 0){
       return <span>{'No available projects.'}</span>;
@@ -57,11 +50,7 @@ const mapStateToProps = (state = {}, own_props)=>{
   };
 };
 
-const mapDispatchToProps = (dispatch, own_props)=>{
-  return {};
-};
-
 export const HomePageContainer = ReactRedux.connect(
   mapStateToProps,
-  mapDispatchToProps
+  null
 )(HomePage);

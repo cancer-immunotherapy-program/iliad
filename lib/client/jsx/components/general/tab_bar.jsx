@@ -15,9 +15,7 @@ export class TabBar extends React.Component{
   }
 
   renderTabs(){
-    let self = this;
     let {view, current_tab_index, revised, clickTab} = this.props;
-
     let tabs = Object.keys(view.tabs).map((tab_name, index)=>{
 
       // Render a selected tab.
@@ -25,7 +23,7 @@ export class TabBar extends React.Component{
         return(
           <div className='selected tab' key={index}>
 
-            {self.formatName(tab_name)}
+            {this.formatName(tab_name)}
           </div>
         );
       }
@@ -39,7 +37,7 @@ export class TabBar extends React.Component{
         }
       };
 
-      return <div {...tab_props}>{self.formatName(tab_name)}</div>;
+      return <div {...tab_props}>{this.formatName(tab_name)}</div>;
     });
 
     return tabs;

@@ -1,18 +1,8 @@
-/*
- * TODO! The <Header /> component has been disabled here. The <Header />
- * component is used to render the bulk edit buttons and events. Editing is
- * presently not working on this 'tab'. We either need to fix the editing
- * feature OR remove the editing feature. Presently the code for editing still
- * exists in this component but has been disabled by removing the <Header />
- * component from the render.
- */
-
  // Framework libraries.
  import * as React from 'react';
  import * as ReactRedux from 'react-redux';
 
 import SelectInput from '../inputs/select_input';
-import Header from '../general/header';
 import {SearchTableContainer as SearchTable} from './search_table';
 import Pager from '../general/pager';
 
