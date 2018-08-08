@@ -1,5 +1,4 @@
-@import 'globals';
-
+/* Search page specific CSS */
 #search-group{
   padding-left: 20px;
   padding-right: 10px;
@@ -7,12 +6,18 @@
 }
 
 .search-table-container{
-  overflow: auto;
+  overflow: scroll;
   position: absolute;
   top: 185px;
   left: 20px;
   bottom: 10px;
   right: 10px;
+  border: 1px solid $dark-color;
+  background: $light-grey-2;
+}
+
+#search-table-locked-header{
+  position: absolute;
 }
 
 .search-table-summary{
@@ -31,30 +36,6 @@
   color: $med-grey-1;
 }
 
-.table-viewer-group,
-.search-table{
-  font-family: $main-font;
-  padding-right: 10px;
-}
-
-.search-table{
-  table-layout: fixed;
-  margin-bottom: 20px;
-  padding: 5px;
-  border: 1px solid $dark-color;
-  border-collapse: collapse;
-}
-
-.table-viewer-group table{
-  table-layout: fixed;
-  width: 100%;
-  margin-top: 10px;
-  margin-bottom: 20px;
-  padding: 5px;
-  border: 1px solid $dark-color;
-  border-collapse: collapse;
-}
-
 .search-table-filter-input{
   text-indent: 5px;
   border: none;
@@ -64,39 +45,56 @@
   margin-top: 1px;
 }
 
-.table-viewer-header,
-.table-viewer-cell,
-.search-table-header,
-.search-table-cell{
+/* The general table elements, used on all tables. ****************************/
+.table-view{
+  table-layout: fixed;
+  padding: 5px;
+  border-collapse: collapse;
+}
+
+.table-view tbody tr:last-child td{
+  border-bottom: 1px solid $med-grey-2;
+}
+
+.table-view tbody tr td:first-child,
+.table-view thead tr th:first-child{
+  border-left: 1px solid $med-grey-2;
+}
+
+.table-view-header{
   text-align: left;
   padding: 5px;
   border-right: 1px solid $med-grey-2;
   overflow: hidden;
-}
-
-.table-viewer-header,
-.search-table-header{
+  min-width: 150px;
+  max-width: 150px;
   border-bottom: 1px solid $med-grey-2;
   background: $dark-color;
   color: $white;
+  word-wrap: none;
 }
 
-.table-viewer-cell .value,
-.search-table-cell{
-  font-family: $main-font !important;
-  border-left: none !important;
-  white-space: nowrap;
-}
-
-.table-viewer-cell,
-.search-table-cell{
+.table-view-cell{
+  text-align: left;
+  padding: 5px;
+  border-right: 1px solid $med-grey-2;
+  overflow: hidden;
+  min-width: 150px;
+  max-width: 150px;
+  background: $white;
   border-bottom: 1px solid $light-grey;
 }
 
-/******************************************************************************/
+.table-view-cell .value{
+  font-family: $main-font !important;
+  border-left: none !important;
+}
+
+/* The pager CSS **************************************************************/
 
 .pager-group{
   display: inline-block;
+  margin-bottom: 10px;
 }
 
 .pager-nav-report,
@@ -155,84 +153,3 @@
   font-size: 1em;
   height: 19px;
 }
-
-/*
-.table {
-  display: table;
-  table-layout: fixed;
-  width: 100%;
-  border-collapse: collapse;
-  position: relative;
-  .pager {
-    padding: 2px 4px;
-    background-color: rgba(forestgreen,0.1);
-    color: midnightblue;
-    display: table-caption;
-    border-right: 1px solid rgba(forestgreen,0.5);
-    .report {
-      display: inline-block;
-      width: 160px;
-      text-align: center;
-    }
-    .page_edit {
-      display: inline-block;
-      width: 30px;
-      border: 1px solid forestgreen;
-      font-family: $body_font;
-    }
-    .turner {
-      color: forestgreen;
-      display: inline;
-      cursor: pointer;
-    }
-    .search {
-      cursor: pointer;
-      display: inline-block;
-      font-size: 20px;
-      padding-left: 5px;
-      padding-right: 5px;
-    }
-  }
-  .filter {
-    border: 0px none black;
-    border-top: 1px solid forestgreen;
-    border-left: 1px solid forestgreen;
-    box-shadow: 2px 2px 3px 1px #ddd inset;
-    width: 300px;
-  }
-  .export {
-    @include green_button;
-  }
-  .table_row {
-    display: table-row;
-    &:not(:first-child) {
-      border-bottom: 1px solid rgba(midnightblue,0.1);
-    }
-    .table_cell {
-      display: table-cell;
-      padding: 2px;
-      border-right: 1px solid rgba(forestgreen,0.5);
-    }
-    .table_header {
-      @extend .table_cell;
-      background-color: rgba(forestgreen,0.1);
-      overflow: hidden;
-    }
-    .table_data {
-      @extend .table_cell;
-      max-width: 150px;
-      .value {
-        border-left: none;
-        padding: 0px;
-        overflow: hidden;
-      }
-    }
-  }
-}
-*/
-/* NEW TABLE CSS **************************************************************/
-/*
-.table .table_row .table_data .value{
-  border-left: none !important;
-}
-*/

@@ -50,7 +50,7 @@ export class SearchTable extends React.Component{
   renderRows(){
     return this.props.record_names.map((record_name, index)=>{
       return(
-        <tr className='search-table-row' key={index}>
+        <tr className='table-view-row' key={index}>
 
           {this.renderCells(
             this.props.documents[record_name],
@@ -63,10 +63,64 @@ export class SearchTable extends React.Component{
 
   renderHeader(){
     return this.props.attribute_names.map((attr_name, index)=>{
-      return <th className='search-table-header' key={index}>{attr_name}</th>;
+      return(
+        <th className='table-view-header' key={index}>
+
+          <div>{attr_name}</div>
+        </th>
+      );
     });
   }
 
+  renderLockHeader(){
+    let table_props = {
+      id: 'search-table-locked-header',
+      className: 'table-view',
+      style: {top: `${this.props.scroll_pos.y}px`}
+    };
+
+    return(
+      <table {...table_props}>
+
+        <thead>
+
+          <tr>
+
+            {this.renderHeader()}
+          </tr>
+        </thead>
+      </table>
+    )
+  }
+
+  renderMainTable(){
+    return(
+      <table className='table-view'>
+
+        <thead>
+
+          <tr>
+
+            {this.renderHeader()}
+          </tr>
+        </thead>
+        <tbody>
+
+          {this.renderRows()}
+        </tbody>
+      </table>
+    );
+  }
+
+  render(){
+    if (!this.props.record_names) return null;
+    return [
+      this.renderLockHeader(),
+      this.renderMainTable()
+    ]
+  }
+
+/*
   render(){
     let {record_names, documents, template, attribute_names, mode} = this.props;
     if (!record_names) return null;
@@ -87,6 +141,7 @@ export class SearchTable extends React.Component{
       </table>
     );
   }
+*/
 }
 
 const mapStateToProps = (state = {}, own_props)=>{

@@ -26,7 +26,7 @@ export default class SearchTableCell extends React.Component{
     }
 
     return(
-      <td className='table-viewer-cell'>
+      <td className='table-view-cell'>
 
         {attr_viewer}
       </td>

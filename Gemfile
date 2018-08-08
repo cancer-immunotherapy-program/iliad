@@ -33,3 +33,5 @@ end
 group :test, :production do
   gem 'omniauth-shibboleth'
 end
+
+gem 'pry'

@@ -22,7 +22,7 @@ const TableCell = (template, document)=>{
     };
 
     return(
-      <td className='table-viewer-cell' key={attr_name}>
+      <td className='table-view-cell' key={attr_name}>
 
         <AttributeViewer {...attr_props} />
       </td>
@@ -33,7 +33,7 @@ const TableCell = (template, document)=>{
 const TableRow = (template, documents, attribute_names)=>{
   return (record_name)=>{
     return(
-      <tr key={record_name} className='table-viewer-row'>
+      <tr key={record_name} className='table-view-row'>
 
         {attribute_names.map(TableCell(template, documents[record_name]))}
       </tr>
@@ -88,11 +88,11 @@ class TableViewer extends React.Component{
   renderHeader(){
     if(!this.props.attribute_names) return null;
     return(
-      <tr className='table-viewer-row'>
+      <tr>
 
         {this.props.attribute_names.map((attr_name, index)=>{
           return(
-            <th key={index} className='table-viewer-header'>{attr_name}</th>
+            <th key={index} className='table-view-header'>{attr_name}</th>
           );
         })}
       </tr>
@@ -167,7 +167,7 @@ class TableViewer extends React.Component{
       <div className='table-viewer-group'>
 
         {this.renderPager()}
-        <table>
+        <table className='table-view'>
           <thead>
 
             {this.renderHeader()}
