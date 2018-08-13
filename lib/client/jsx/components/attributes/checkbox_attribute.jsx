@@ -5,29 +5,18 @@ import * as ReactRedux from 'react-redux';
 import {reviseDocument} from '../../actions/magma_actions';
 
 export class CheckboxAttribute extends React.Component{
-  revise(e) {
-    let { document, template, attribute, reviseDocument } = this.props;
-
-    reviseDocument(
-      document,
-      template,
-      attribute,
-      e.target.checked ? true : false
-    );
-  }
-
   renderEdit(){
     let {document, template, attribute, reviseDocument} = this.props;
     let input_props = {
       type: 'checkbox',
       className: 'text_box',
       onChange:function(event){
-        reviseDocument({
+        reviseDocument(
            document,
            template,
            attribute,
-           revised_value: event.target.checked ? true : false
-        })
+           (event.target.checked ? true : false)
+        );
       },
       defaultChecked: this.props.revision
     };
@@ -57,8 +46,8 @@ const mapStateToProps = (dispatch, own_props)=>{
 
 const mapDispatchToProps = (dispatch, own_props)=>{
   return {
-    reviseDocument: (args)=>{
-      dispatch(reviseDocument(args));
+    reviseDocument: (doc, tmplt, attr, rev_val)=>{
+      dispatch(reviseDocument(doc, tmplt, attr, rev_val));
     }
   };
 };

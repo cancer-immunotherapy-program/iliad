@@ -2,8 +2,8 @@
 import * as React from 'react';
 import * as ReactRedux from 'react-redux';
 
-import * as MagmaActions from '../../actions/magma_actions';
-import MagmaLink from '../magma_link';
+import {reviseDocument} from '../../actions/magma_actions';
+import MagmaLink from '../general/magma_link';
 import ListInput from '../inputs/list_input';
 import SlowTextInput from '../inputs/slow_text_input';
 
@@ -17,7 +17,7 @@ export default class CollectionAttribute extends React.Component{
         {links.map((link)=>{
             return(
               <div key={link} className='collection_item'>
-                
+
                 <MagmaLink link={link} model={attribute.model_name} />
               </div>
             );
@@ -43,12 +43,7 @@ export default class CollectionAttribute extends React.Component{
       values: revision || [],
       itemInput: SlowTextInput,
       onChange: (new_links)=>{
-        reviseDocument({
-          document,
-          template,
-          attribute,
-          revised_value: new_links
-        });
+        reviseDocument(document, template, attribute, new_links);
       }
     };
 
@@ -67,8 +62,8 @@ const mapStateToProps = (dispatch, own_props)=>{
 
 const mapDispatchToProps = (dispatch, own_props)=>{
   return {
-    reviseDocument: (args)=>{
-      dispatch(MagmaActions.reviseDocument(args));
+    reviseDocument: (doc, tmplt, attr, rev_val)=>{
+      dispatch(reviseDocument(doc, tmplt, attr, rev_val));
     }
   };
 };

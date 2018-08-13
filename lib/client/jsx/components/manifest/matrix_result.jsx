@@ -1,6 +1,6 @@
 // Framework libraries.
 import * as React from 'react';
-import * as TSV from '../../utils/tsv';
+import {downloadCSV} from '../../utils/csv';
 import ConsignmentTable from './consignment_table';
 
 class MatrixResult extends React.Component{
@@ -24,7 +24,7 @@ class MatrixResult extends React.Component{
       );
     });
 
-    TSV.downloadTSV(
+    downloadCSV(
       matrix_map,
       ['row_names'].concat(matrix.col_names),
       name

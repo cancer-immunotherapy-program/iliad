@@ -1,89 +1,120 @@
-import React, {Component} from 'react';
-import {connect} from 'react-redux';
-import SearchTableColumnHeader from './search_table_column_header';
-import SearchTableRow from './search_table_row';
+// Framework libraries.
+import * as React from 'react';
+import * as ReactRedux from 'react-redux';
+
+import SearchTableCell from './search_table_cell';
 
 import {
   selectModelDocuments,
   selectModelTemplate
 } from '../../selectors/magma_selector';
 
-// exclude things not shown and tables
-const displayedAttributes = (template) =>
-  Object.keys(template.attributes).filter(
-    (attribute_name) =>
-    template.attributes[attribute_name].shown
-    && template.attributes[attribute_name].attribute_class != 'Magma::TableAttribute'
-  )
+// Exclude things not shown and tables.
+const displayedAttributes = (template)=>{
+  return Object.keys(template.attributes).filter((attribute_name)=>{
+    return(
+      template.attributes[attribute_name].shown &&
+      template.attributes[attribute_name].attribute_class != 'Magma::TableAttribute'
+    );
+  });
+};
 
-class SearchTable extends Component {
-  constructor(props) {
-    super(props)
-    this.state = {}
+export class SearchTable extends React.Component{
+  constructor(props){
+    super(props);
+    this.state = {};
   }
 
-  focusCell(row, column) {
-    if (column == null) return (row == this.state.focus_row)
-    if (row == null) return (column == this.state.focus_col)
-    this.setState({ focus_row: row, focus_col: column })
+  focusCell(row, column){
+    if(column == null) return (row == this.state.focus_row);
+    if(row == null) return (column == this.state.focus_col);
+    //this.setState({focus_row: row, focus_col: column});
   }
 
-  render() {
-    let { record_names, documents, template, attribute_names, mode } = this.props
+  renderCells(document, record_name){
+    return this.props.attribute_names.map((attr_name, index)=>{
 
-    if (!record_names) return <div className='table'></div>
+      let table_cell_props = {
+        key: attr_name,
+        attr_name,
+        document,
+        template: this.props.template,
+        record_name,
+        mode: this.props.mode
+      };
 
-    return <div className='table'>
-              <div className='table_row'>
-              {
-                attribute_names.map((att_name,i) =>
-                  <SearchTableColumnHeader key={att_name} 
-                    column={ att_name }
-                    focused={ this.focusCell( null, att_name ) }
-                  />
-                )
-              }
-              </div>
-              {
-                record_names.map((record_name) =>
-                  <SearchTableRow 
-                    key={ record_name }
-                    mode={ mode }
-                    attribute_names={ attribute_names }
-                    document={ documents[record_name] }
-                    template={template}
-                    record_name={ record_name }
-                    focusCell={ this.focusCell.bind(this) }
-                  />
-                )
-              }
-             </div>
+      return <SearchTableCell {...table_cell_props} />;
+    });
+  }
+
+  renderRows(){
+    return this.props.record_names.map((record_name, index)=>{
+      return(
+        <tr className='search-table-row' key={index}>
+
+          {this.renderCells(
+            this.props.documents[record_name],
+            record_name
+          )}
+        </tr>
+      );
+    });
+  }
+
+  renderHeader(){
+    return this.props.attribute_names.map((attr_name, index)=>{
+      return <th className='search-table-header' key={index}>{attr_name}</th>;
+    });
+  }
+
+  render(){
+    let {record_names, documents, template, attribute_names, mode} = this.props;
+    if (!record_names) return null;
+    return(
+      <table className='search-table'>
+
+        <thead>
+
+          <tr>
+
+            {this.renderHeader()}
+          </tr>
+        </thead>
+        <tbody>
+
+          {this.renderRows()}
+        </tbody>
+      </table>
+    );
   }
 }
 
-export default connect(
-  function(state, props){
-    if(!props.model_name) return {};
+const mapStateToProps = (state = {}, own_props)=>{
+  if(!own_props.model_name) return {};
 
-    let documents = selectModelDocuments(
-      state,
-      APP_CONFIG.project_name,
-      props.model_name,
-      props.record_names
-    );
+  let documents = selectModelDocuments(
+    state,
+    APP_CONFIG.project_name,
+    own_props.model_name,
+    own_props.record_names
+  );
 
-    let template = selectModelTemplate(
-      state,
-      APP_CONFIG.project_name,
-      props.model_name
-    );
+  let template = selectModelTemplate(
+    state,
+    APP_CONFIG.project_name,
+    own_props.model_name
+  );
 
-    let attribute_names = displayedAttributes(template);
+  let attribute_names = displayedAttributes(template);
 
-    return {
-      template,
-      attribute_names,
-      documents
-    };
-  }
-)(SearchTable)
+  return {
+    template,
+    attribute_names,
+    documents
+  };
+};
+
+export const SearchTableContainer = ReactRedux.connect(
+  mapStateToProps,
+  {}
+)(SearchTable);

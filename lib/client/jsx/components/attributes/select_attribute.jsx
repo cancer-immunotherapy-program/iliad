@@ -6,28 +6,12 @@ import SelectInput from '../inputs/select_input';
 import {reviseDocument} from '../../actions/magma_actions';
 
 export class SelectAttribute extends React.Component{
-  revise(value) {
-    let { document, template, attribute, reviseDocument } = this.props;
-
-    reviseDocument(
-      document,
-      template,
-      attribute,
-      value
-    )
-  }
-
   renderEdit(){
     let {value, document, template, attribute, reviseDocument} = this.props;
     let input_props = {
       className: 'selection',
       onChange: function(value){
-        reviseDocument({
-          document,
-          template,
-          attribute,
-          revised_value: value
-        });
+        reviseDocument(document, template, attribute, value);
       },
       defaultValue: value,
       showNone: 'disabled',
@@ -54,8 +38,8 @@ const mapStateToProps = (dispatch, own_props)=>{
 
 const mapDispatchToProps = (dispatch, own_props)=>{
   return {
-    reviseDocument: (args)=>{
-      dispatch(reviseDocument(args));
+    reviseDocument: (doc, tmplt, attr, rev_val)=>{
+      dispatch(reviseDocument(doc, tmplt, attr, rev_val));
     }
   };
 };

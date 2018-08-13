@@ -4,7 +4,7 @@
 	}
 	> .value {
 		color: #33333c;
-		font-family: $value_font;
+		font-family: $monospace-font;
 
 		.delete_link {
                   &.empty {
@@ -35,7 +35,7 @@
 		.selection {
 			border: 1px solid forestgreen;
 			color: #33333c;
-			font-family: $value_font;
+			font-family: $monospace-font;
 			font-size: 16px;
 			background: transparent;
 		}

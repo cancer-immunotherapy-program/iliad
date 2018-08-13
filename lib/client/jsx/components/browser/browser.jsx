@@ -15,7 +15,6 @@ import * as ReactRedux from 'react-redux';
 
 // Class imports.
 import Header from '../general/header';
-import {HelpContainer as Help} from '../help';
 import {TabBarContainer as TabBar} from '../general/tab_bar';
 import BrowserTab from './browser_tab';
 
@@ -212,7 +211,6 @@ export class Browser extends React.Component{
             <span>{`${this.camelize(this.props.model_name)} : `}</span>
             {this.props.record_name}
           </div>
-          <Help info='edit' />
         </Header>
         <TabBar {...tab_bar_props} />
         <BrowserTab {...browser_tab_props} />
@@ -286,8 +284,8 @@ const mapDispatchToProps = (dispatch, own_props)=>{
       dispatch(discardRevision(record_name, model_name));
     },
 
-    sendRevisions: (model_name, revisions, success, error)=>{
-      dispatch(sendRevisions({model_name, revisions, success, error}));
+    sendRevisions: (args)=>{
+      dispatch(sendRevisions(args));
     }
   };
 };

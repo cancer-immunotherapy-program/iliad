@@ -14,12 +14,7 @@ export class IntegerAttribute extends React.Component{
       placeholder: attribute.placeholder,
       defaultValue: revision,
       onChange: (value)=>{
-        reviseDocument({
-          document,
-          template,
-          attribute,
-          revised_value: value
-        });
+        this.props.reviseDocument(document, template, attribute, value);
       }
     };
 
@@ -42,8 +37,8 @@ const mapStateToProps = (dispatch, own_props)=>{
 
 const mapDispatchToProps = (dispatch, own_props)=>{
   return {
-    reviseDocument: (args)=>{
-      dispatch(reviseDocument(args));
+    reviseDocument: (doc, tmplt, attr, rev_val)=>{
+      dispatch(reviseDocument(doc, tmplt, attr, rev_val));
     }
   };
 };

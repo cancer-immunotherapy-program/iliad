@@ -4,27 +4,12 @@ import * as ReactRedux from 'react-redux';
 
 import {reviseDocument} from '../../actions/magma_actions';
 
-class DocumentAttribute extends React.Component{
-  revise(e) {
-    let { document, template, attribute, reviseDocument } = this.props;
-
-    reviseDocument(
-      document,
-      template,
-      attribute,
-      e.target.files[0]
-    )
-  }
+export class DocumentAttribute extends React.Component{
   renderEdit(){
     let {document, template, attribute, reviseDocument} = this.props;
     let input_props = {
       onChange: function(event){
-        reviseDocument({
-          document,
-          template,
-          attribute,
-          revised_value: event.target.files[0]
-        });
+        reviseDocument(document, template, attribute, event.target.files[0]);
       },
       type: 'file'
     };
@@ -70,13 +55,13 @@ const mapStateToProps = (dispatch, own_props)=>{
 
 const mapDispatchToProps = (dispatch, own_props)=>{
   return {
-    reviseDocument: (args)=>{
-      dispatch(MagmaActions.reviseDocument(args));
+    reviseDocument: (doc, tmplt, attr, rev_val)=>{
+      dispatch(reviseDocument(doc, tmplt, attr, rev_val));
     }
   };
 };
 
-export default ReactRedux.connect(
+export const DocumentAttributeContainer = ReactRedux.connect(
   mapStateToProps,
   mapDispatchToProps
 )(DocumentAttribute);

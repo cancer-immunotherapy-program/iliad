@@ -2,7 +2,7 @@
 import * as React from 'react';
 import * as ReactRedux from 'react-redux';
 
-import {IdentifierSearchContainer as IdentifierSearch} from '../identifier_search';
+import {IdentifierSearchContainer as IdentifierSearch} from './identifier_search';
 import {toggleConfig} from '../../actions/app_actions';
 
 export class AppNav extends React.Component{
@@ -12,8 +12,9 @@ export class AppNav extends React.Component{
   }
 
   renderTabs(){
+    if(this.props.project == '') return null;
+
     let tabs = {
-      PLOT: Routes.plots_path(this.props.project),
       MANIFEST: Routes.manifests_path(this.props.project),
       MAP: Routes.map_path(this.props.project),
       SEARCH: Routes.search_path(this.props.project),
@@ -76,13 +77,6 @@ export class AppNav extends React.Component{
         </div>
 
         <div id='nav-menu'>
-
-          <a className='nav-menu-btn' id='login'>
-
-            {`${this.props.user.first} ${this.props.user.last}`}
-          </a>
-
-          {this.props.mode !== 'home' && <IdentifierSearch />}
           {this.props.mode !== 'home' && this.renderTabs()}
         </div>
         <div className='logo-group'>

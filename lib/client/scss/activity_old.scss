@@ -1,7 +1,5 @@
-@import "globals";
-
 #activities {
-	font-family: $body_font;
+	font-family: $main-font;
 	font-size: 18px;
 	color: midnightblue;
 	padding: 10px;
@@ -19,14 +17,14 @@
 		}
 		.date {
 			display: inline-block;
-			font-family: $value_font;
+			font-family: $monospace-font;
 			color: royalblue;
 		}
 		.at {
 			color: teal;
 		}
 		.time {
-			font-family: $value_font;
+			font-family: $monospace-font;
 			display: inline-block;
 			padding-right: 10px;
 			color: royalblue;

@@ -2,19 +2,14 @@
 import * as React from 'react';
 import * as ReactRedux from 'react-redux';
 
-import * as MagmaActions from '../../actions/magma_actions';
+import {reviseDocument} from '../../actions/magma_actions';
 
 export default class ImageAttribute extends React.Component{
   renderEdit(){
     let {document, template, attribute, reviseDocument} = this.props;
     let input_props = {
       onChange: (event)=>{
-        reviseDocument({
-          document,
-          template,
-          attribute,
-          revised_value: e.target.files[0]
-        })
+        reviseDocument(document, template, attribute, e.target.files[0]);
       },
       type: 'file'
     };
@@ -61,8 +56,8 @@ const mapStateToProps = (dispatch, own_props)=>{
 
 const mapDispatchToProps = (dispatch, own_props)=>{
   return {
-    reviseDocument: (args)=>{
-      dispatch(MagmaActions.reviseDocument(args));
+    reviseDocument: (doc, tmplt, attr, rev_val)=>{
+      dispatch(reviseDocument(doc, tmplt, attr, rev_val));
     }
   };
 };

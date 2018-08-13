@@ -1,4 +1,3 @@
-
 /*
  * TODO! The <Header /> component has been disabled here. The <Header />
  * component is used to render the bulk edit buttons and events. Editing is
@@ -8,15 +7,14 @@
  * component from the render.
  */
 
-import React, {Component} from 'react';
-import {connect} from 'react-redux';
+ // Framework libraries.
+ import * as React from 'react';
+ import * as ReactRedux from 'react-redux';
 
 import SelectInput from '../inputs/select_input';
-import SearchQuery from './search_query';
 import Header from '../general/header';
-import SearchTable from './search_table';
-import SearchQuestion from './search_question';
-import Pager from '../pager';
+import {SearchTableContainer as SearchTable} from './search_table';
+import Pager from '../general/pager';
 
 import {selectSearchCache} from '../../selectors/search_cache';
 import {selectModelNames} from '../../selectors/magma_selector';
@@ -31,14 +29,17 @@ import {
   requestDocuments
 } from '../../actions/magma_actions';
 
-class Search extends Component {
+export class Search extends React.Component{
   constructor(props) {
     super(props)
-    this.state = { mode: 'search', page_size: 10 }
+    this.state = {
+      mode: 'search',
+      page_size: 10
+    };
   }
 
-  getPage(page, newSearch=false) {
-    if (!this.pageCached(page) || newSearch) {
+  getPage(page, newSearch=false){
+    if(!this.pageCached(page) || newSearch){
       this.props.requestDocuments({
         model_name: this.state.selected_model,
         record_names: 'all',
@@ -48,119 +49,201 @@ class Search extends Component {
         page_size: this.state.page_size,
         collapse_tables: true,
         exchange_name: `request-${this.state.selected_model}`,
-        success: this.makePageCache.bind(this, page,
-          newSearch ? this.state.page_size : null)
+        success: this.makePageCache.bind(
+          this,
+          page,
+          newSearch ? this.state.page_size : null
+        )
       })
     }
-    this.props.setSearchPage(page)
+    this.props.setSearchPage(page);
   }
 
-  pageCached(page) {
-    return this.props.page_cache.isCached(page.toString())
+  pageCached(page){
+    return this.props.page_cache.isCached(page.toString());
   }
 
-  componentDidMount() {
-    this.props.requestModels()
+  componentDidMount(){
+    this.props.requestModels();
   }
 
-  makePageCache(page, page_size, payload) {
-    let model = payload.models[this.state.selected_model]
-    if (model.count) this.setState({ results: model.count })
-    if (page_size) this.props.setSearchPageSize(page_size)
+  makePageCache(page, page_size, payload){
+    let model = payload.models[this.state.selected_model];
+    if(model.count) this.setState({ results: model.count });
+    if(page_size) this.props.setSearchPageSize(page_size);
     this.props.cacheSearchPage(
       page,
       this.state.selected_model,
       Object.keys(model.documents),
       page == 1
-    )
+    );
   }
 
-  renderQuery() {
-    return <div className='query'>
-      <span className='label'>Show table</span>
-      <SelectInput name='model'
-        values={ this.props.model_names }
-        onChange={ (model_name) => this.setState({ selected_model: model_name }) }
-        showNone='enabled'/>
+  renderQuery(){
 
-      <span className='label'>Page size</span>
-      <SelectInput
-        values={ [ 10, 25, 50, 200 ] }
-        defaultValue={ this.state.page_size }
-        onChange={ (page_size) => this.setState({ page_size }) }
-        showNone='disabled'/>
-      <input type='text' className='filter'
-        placeholder='filter query'
-        onChange={ (e) => this.setState({ current_filter: e.target.value }) }/>
+    let table_sel_props = {
+      name: 'model',
+      values: this.props.model_names,
+      onChange: (model_name)=>{
+        this.setState({selected_model: model_name});
+      },
+      showNone: 'enabled'
+    };
 
-      <input type='button' className='button' value='Search'
-        disabled={ !this.state.selected_model }
-        onClick={
-          () => this.getPage(1, true)
-        } />
-      <input className='button'
-        type='button'
-        value={'\u21af TSV'}
-        disabled={ !this.state.selected_model }
-        onClick={ () => this.props.requestTSV(this.state.selected_model,
-          this.state.current_filter) }/>
-    </div>
+    let page_size_props = {
+      values: [10, 25, 50, 200],
+      defaultValue: this.state.page_size,
+      onChange: (page_size)=>{
+        this.setState({page_size});
+      },
+      showNone: 'disabled'
+    };
+
+    let input_filter_props = {
+      type: 'text',
+      className: 'search-table-filter-input',
+      placeholder: 'filter query',
+      onChange: (e)=>{
+        this.setState({current_filter: e.target.value});
+      }
+    };
+
+    let search_btn_props = {
+      className: 'pager-filter-btn',
+      value: 'Search',
+      disabled: !this.state.selected_model,
+      onClick: ()=>{
+        this.getPage(1, true);
+      }
+    };
+
+    let dwnld_btn_props = {
+      className: 'pager-export-btn',
+      disabled: !this.state.selected_model,
+      onClick: ()=>{
+        this.props.requestTSV(
+          this.state.selected_model,
+          this.state.current_filter
+        );
+      }
+    };
+
+    return(
+      <div className='search-table-query-group'>
+
+        <span className='label'>Show table</span>
+        <SelectInput {...table_sel_props} />
+        &nbsp;&nbsp;
+        <span className='label'>Page size</span>
+        <SelectInput {...page_size_props} />
+        &nbsp;&nbsp;
+        <input {...input_filter_props} />
+        <button {...search_btn_props} >
+
+          <span className='fas fa-search'></span>
+          &nbsp;{'SEARCH'}
+        </button>
+        <button {...dwnld_btn_props} >
+
+          <span className='fas fa-download'></span>
+          &nbsp;{'DOWNLOAD'}
+        </button>
+      </div>
+    );
   }
 
-  render() {
-    var pages = this.props.model_name ? Math.ceil(this.state.results / this.props.page_size) : null
+  render(){
+    if(this.state.mode != 'search') return null;
 
-    return <div id='search'>
-        { this.state.mode == 'search' ?
-          <div className='control'>
-            {
-              this.renderQuery()
-            }
-            {
-              pages != null ?
-                <div className='pages'>
-                  <div className='results'>
-                    Found { this.state.results } records in <span className='model_name'>{ this.props.model_name }</span>
-                  </div>
-                <Pager pages={ pages }
-                  current_page={ this.props.current_page }
-                  set_page={ this.getPage.bind(this) } >
-                </Pager>
-                </div>: null
-            }
-          </div> : null
-        }
-        {
-          this.props.model_name ? <div className='documents'>
-            <SearchTable
-              mode={ this.state.mode }
-              model_name={ this.props.model_name }
-              record_names={ this.props.record_names }
-            />
-          </div> : null
-        }
-    </div>
+    let pages = null;
+    let page_elems = null;
+    let table_docs = null;
+
+    if(this.props.model_name){
+      pages = Math.ceil(this.state.results / this.props.page_size);
+      page_elems = (
+        <div className='search-table-page-group'>
+
+          <div className='search-table-summary'>
+
+            Found
+            <span> {this.state.results} </span>
+            records in table
+            <span> {this.props.model_name} </span>
+          </div>
+          &nbsp;&nbsp;
+          <Pager pages={pages} current_page={this.props.current_page} setPage={this.getPage.bind(this)} />
+        </div>
+      );
+
+      table_docs = (
+        <div className='search-table-container'>
+
+          <SearchTable mode={this.state.mode} model_name={this.props.model_name} record_names={this.props.record_names } />
+        </div>
+      );
+    }
+
+    return(
+      <div id='search-group'>
+
+        <div className='control'>
+
+          {this.renderQuery()}
+          {page_elems}
+        </div>
+        {table_docs}
+      </div>
+    );
   }
 }
 
-export default connect(
-  function(state, props) {
-    var cache = selectSearchCache(state);
-    return {
-      model_names: selectModelNames(state, APP_CONFIG.project_name),
-      page_cache: cache,
-      current_page: cache.current_page,
-      page_size: cache.page_size,
-      model_name: cache.model_name,
-      record_names: cache.record_names
+const mapStateToProps = (state = {}, own_props)=>{
+  let cache = selectSearchCache(state);
+  return {
+    model_names: selectModelNames(state, APP_CONFIG.project_name),
+    page_cache: cache,
+    current_page: cache.current_page,
+    page_size: cache.page_size,
+    model_name: cache.model_name,
+    record_names: cache.record_names
+  };
+};
+
+const mapDispatchToProps = (dispatch, own_props)=>{
+  return {
+    requestModels: ()=>{
+      dispatch(requestModels());
+    },
+
+    cacheSearchPage: (page, selected_model, document_keys, page_number)=>{
+      dispatch(cacheSearchPage(
+        page,
+        selected_model,
+        document_keys,
+        page_number
+      ));
+    },
+
+    setSearchPage: (page)=>{
+      dispatch(setSearchPage(page));
+    },
+
+    setSearchPageSize: (page_size)=>{
+      dispatch(setSearchPageSize(page_size));
+    },
+
+    requestDocuments: (args)=>{
+      dispatch(requestDocuments(args));
+    },
+
+    requestTSV: (model_name, filter, record_names)=>{
+      dispatch(requestTSV(model_name, filter, record_names));
     }
-  },
-  {
-    requestModels,
-    cacheSearchPage,
-    setSearchPage,
-    setSearchPageSize,
-    requestDocuments,
-    requestTSV,
-  }
-)(Search)
+  };
+};
+
+export const SearchContainer = ReactRedux.connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(Search);
