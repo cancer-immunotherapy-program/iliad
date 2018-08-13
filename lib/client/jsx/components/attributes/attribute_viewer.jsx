@@ -72,6 +72,7 @@ export default class AttributeViewer extends React.Component{
 
       case 'Magma::ForeignKeyAttribute':
       case 'Magma::ChildAttribute':
+      case 'LinkAttribute':
         return <LinkAttribute {...this.props} />;
       case 'Magma::TableAttribute':
         return <TableAttribute {...this.props} />;

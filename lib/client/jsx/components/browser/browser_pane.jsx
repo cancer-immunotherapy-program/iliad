@@ -35,7 +35,21 @@ export default class BrowserPane extends React.Component{
     return null;
   }
 
-  renderAttributes(){
+  renderAttribute(attr_props){
+    let attr_name = attr_props.attribute.name;
+    let attr_val = attr_props.document[attr_name];
+
+    // If there is no data for this attribute then we render a '-'.
+    if(attr_val == null || attr_val.length == 0){
+      attr_props.attribute['attribute_class'] = 'Magma::Attribute';
+      attr_props.attribute['type'] = 'String';
+      attr_props.value = '-';
+    }
+
+    return <AttributeViewer {...attr_props} />;
+  }
+
+  renderBrowserAttributes(){
     let {template, doc, revision, pane, mode} = this.props;
     let display = Object.keys(pane.attributes).map((attr_name, index)=>{
 
@@ -61,26 +75,24 @@ export default class BrowserPane extends React.Component{
         template,
         value,
         mode,
-        attribute: pane.attributes[attr_name],
+        attribute: attr,
         document: doc,
         revision: revised_value
       };
 
       return(
-        <div key={attr_name} className='attribute'>
+        <div className='browser-attribute'>
 
-          <div className={revised ? 'name revised' : 'name'} title={attr.desc}>
+          <div className='browser-name'>
 
             {(attr.display_name == null) ? attr.title : attr.display_name}
           </div>
-          <AttributeViewer {...attr_viewer_props} />
+          <div className='browser-value'>
+
+            {this.renderAttribute(attr_viewer_props)}
+          </div>
         </div>
       );
-    });
-
-    // Compact.
-    display = display.filter((item)=>{
-      return (item == undefined || item == null) ? false : true;
     });
 
     return display;
@@ -92,12 +104,12 @@ export default class BrowserPane extends React.Component{
     }
 
     return(
-      <div className='pane'>
+      <div className='browser-pane'>
 
         {this.renderTitle()}
-        <div className='attributes'>
+        <div className='browser-attributes'>
 
-          {this.renderAttributes()}
+          {this.renderBrowserAttributes()}
         </div>
       </div>
     );

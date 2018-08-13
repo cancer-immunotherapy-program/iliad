@@ -1,0 +1,108 @@
+#browse{
+  padding-left: 150px;
+}
+
+#browser-tab{
+  margin-top: 15px;
+}
+
+.browser-pane{
+  margin-right: 15px;
+}
+
+.browser-attributes{
+  position: relative;
+}
+
+.browser-name{
+  position: absolute;
+  width: 170px;
+  text-align: right
+}
+
+.browser-value{
+  position: relative;
+  margin-left: 185px;
+  padding-left: 15px;
+  padding-bottom: 15px;
+  border-left: 1px solid $dark-color;
+  min-height: 25px;
+}
+
+/******************************************************************************/
+
+.browser-tab-bar{
+  font-family: $main-font;
+  display: flex;
+}
+
+.browser-tab-bar .spacer1{
+  padding: 5px;
+  padding-left: 10px;
+  border-bottom: 1px solid $dark-color;
+}
+
+.browser-tab-bar .spacer2{
+  flex-grow: 1;
+  border-bottom: 1px solid $dark-color;
+}
+
+.browser-tab-bar .tab{
+  color: $dark-grey;
+  border: 1px solid $dark-color;
+  display: inline-block;
+  margin-right: -1px;
+  padding: 5px 20px;
+  cursor: pointer;
+}
+
+.browser-tab-bar .revised{
+  background-color: rgba(pink, 0.3);
+}
+
+.browser-tab-bar .selected{
+  color: $white;
+  background-color: $med-color;
+  cursor: default;
+  border-bottom: none;
+}
+
+/******************************************************************************/
+
+.browser .header{
+  padding: 0;
+  margin-left: 15px;
+}
+
+.browser .header .inline{
+  display: inline-block;
+}
+
+.header-edit-btn{
+  display: inline-block;
+  vertical-align: top;
+  font-family: $main-font;
+  margin-left: 10px;
+  cursor: pointer;
+  padding:5px;
+  border: 1px solid $dark-grey;
+  outline: none;
+  background: $light-grey;
+  font-size: 0.6em;
+}
+
+.header-edit-btn:hover:enabled{
+  color: $white;
+  background: $med-color;
+  border: 1px solid $med-color;
+}
+
+.header-edit-btn:disabled{
+  cursor: default;
+  border: 1px solid $light-grey-2;
+}
+
+/******************************************************************************/
+#loader-group{
+  margin-left: 15px;
+}

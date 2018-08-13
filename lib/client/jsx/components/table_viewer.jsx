@@ -14,15 +14,23 @@ import {
 
 const TableCell = (template, document)=>{
   return (attr_name)=>{
+
+    // If the attribute is an 'identifier' we make it a link.
+    let attr = template.attributes[attr_name];
+    if(template.identifier == attr_name){
+      attr['attribute_class'] = 'LinkAttribute';
+      attr['model_name'] = template.name;
+    }
+
     let attr_props = {
       template,
       document,
       value: document[attr_name],
-      attribute: template.attributes[attr_name]
+      attribute: attr
     };
 
     return(
-      <td className='table-viewer-cell' key={attr_name}>
+      <td className='table-view-cell' key={attr_name}>
 
         <AttributeViewer {...attr_props} />
       </td>
@@ -33,7 +41,7 @@ const TableCell = (template, document)=>{
 const TableRow = (template, documents, attribute_names)=>{
   return (record_name)=>{
     return(
-      <tr key={record_name} className='table-viewer-row'>
+      <tr key={record_name} className='table-view-row'>
 
         {attribute_names.map(TableCell(template, documents[record_name]))}
       </tr>
@@ -88,11 +96,11 @@ class TableViewer extends React.Component{
   renderHeader(){
     if(!this.props.attribute_names) return null;
     return(
-      <tr className='table-viewer-row'>
+      <tr>
 
         {this.props.attribute_names.map((attr_name, index)=>{
           return(
-            <th key={index} className='table-viewer-header'>{attr_name}</th>
+            <th key={index} className='table-view-header'>{attr_name}</th>
           );
         })}
       </tr>
@@ -163,22 +171,22 @@ class TableViewer extends React.Component{
 
   render(){
     if(!this.props) return null;
-    return(
-      <div className='table-viewer-group'>
+    return[
+        this.renderPager(),
+        <div className='table-view-group'>
 
-        {this.renderPager()}
-        <table>
-          <thead>
+          <table className='table-view'>
+            <thead>
 
-            {this.renderHeader()}
-          </thead>
-          <tbody>
+              {this.renderHeader()}
+            </thead>
+            <tbody>
 
-            {this.renderRecords()}
-          </tbody>
-        </table>
-      </div>
-    );
+              {this.renderRecords()}
+            </tbody>
+          </table>
+        </div>
+    ];
   }
 }
 

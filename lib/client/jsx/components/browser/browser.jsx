@@ -147,7 +147,7 @@ export class Browser extends React.Component{
     return(
       <div className='browser'>
 
-        <div id='loader-container'>
+        <div id='loader-group'>
 
           <div className='loader'>
 

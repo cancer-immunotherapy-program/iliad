@@ -1,21 +1,14 @@
-/*
- * TODO! The <Header /> component has been disabled here. The <Header />
- * component is used to render the bulk edit buttons and events. Editing is
- * presently not working on this 'tab'. We either need to fix the editing
- * feature OR remove the editing feature. Presently the code for editing still
- * exists in this component but has been disabled by removing the <Header />
- * component from the render.
- */
-
- // Framework libraries.
- import * as React from 'react';
- import * as ReactRedux from 'react-redux';
+// Framework libraries.
+import * as React from 'react';
+import * as ReactDOM from 'react-dom';
+import * as ReactRedux from 'react-redux';
 
 import SelectInput from '../inputs/select_input';
 import Header from '../general/header';
 import {SearchTableContainer as SearchTable} from './search_table';
 import Pager from '../general/pager';
 
+import {debounce} from 'lodash';
 import {selectSearchCache} from '../../selectors/search_cache';
 import {selectModelNames} from '../../selectors/magma_selector';
 import {
@@ -30,12 +23,22 @@ import {
 } from '../../actions/magma_actions';
 
 export class Search extends React.Component{
-  constructor(props) {
-    super(props)
+  constructor(props){
+    super(props);
     this.state = {
       mode: 'search',
-      page_size: 10
+      page_size: 10,
+      scroll_pos: {
+        x: 0,
+        y: 0
+      },
     };
+
+    // Captures the scroll and position reset of the table header.
+    this.debounceScroll = debounce(()=>{
+      let elem = ReactDOM.findDOMNode(this.refs['search-table-container']);
+      this.setState({scroll_pos: {y: elem.scrollTop}});
+    }, 500);
   }
 
   getPage(page, newSearch=false){
@@ -176,16 +179,29 @@ export class Search extends React.Component{
         </div>
       );
 
-      table_docs = (
-        <div className='search-table-container'>
+      let table_cont_props = {
+        className: 'search-table-container',
+        ref: 'search-table-container',
+        onScroll: this.debounceScroll.bind(this)
+      };
 
-          <SearchTable mode={this.state.mode} model_name={this.props.model_name} record_names={this.props.record_names } />
+      let table_props = {
+        mode: this.state.mode,
+        model_name: this.props.model_name,
+        record_names: this.props.record_names,
+        scroll_pos: this.state.scroll_pos
+      };
+
+      table_docs = (
+        <div {...table_cont_props}>
+
+          <SearchTable  {...table_props} />
         </div>
       );
     }
 
     return(
-      <div id='search-group'>
+      <div id='search-group' >
 
         <div className='control'>
 

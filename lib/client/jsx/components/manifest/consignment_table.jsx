@@ -6,9 +6,10 @@ class ConsignmentTable extends React.Component{
     let {headers} = this.props;
 
     return(
-      <tr className='consignment-row'>
+      <tr>
+
         {headers.map((col_name, index)=>{
-          return <th className='consignment-header' key={index}>{col_name}</th>;
+          return <th className='table-view-header' key={index}>{col_name}</th>;
         })}
       </tr>
     );
@@ -19,11 +20,11 @@ class ConsignmentTable extends React.Component{
     return rows.map((row, i)=>{
 
       return(
-        <tr className='consignment-row' key={i}>
+        <tr className='table-view-row' key={i}>
 
           {row.map((data, j)=>{
             return(
-              <td className='consignment-cell' key={j}>
+              <td className='table-view-cell' key={j}>
 
                 {String(data)}
               </td>
@@ -38,7 +39,7 @@ class ConsignmentTable extends React.Component{
     return(
       <div className='consignment-result-group'>
 
-        <table className='consignment-table'>
+        <table className='table-view'>
 
           <thead>
 
