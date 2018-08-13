@@ -46,6 +46,12 @@
 }
 
 /* The general table elements, used on all tables. ****************************/
+.table-view-group{
+  overflow-x: scroll;
+  border: 1px solid $dark-color;
+  background: $light-grey-2;
+}
+
 .table-view{
   table-layout: fixed;
   padding: 5px;

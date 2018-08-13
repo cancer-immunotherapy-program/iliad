@@ -119,29 +119,6 @@ export class SearchTable extends React.Component{
       this.renderMainTable()
     ]
   }
-
-/*
-  render(){
-    let {record_names, documents, template, attribute_names, mode} = this.props;
-    if (!record_names) return null;
-    return(
-      <table className='search-table'>
-
-        <thead>
-
-          <tr>
-
-            {this.renderHeader()}
-          </tr>
-        </thead>
-        <tbody>
-
-          {this.renderRows()}
-        </tbody>
-      </table>
-    );
-  }
-*/
 }
 
 const mapStateToProps = (state = {}, own_props)=>{
@@ -171,5 +148,5 @@ const mapStateToProps = (state = {}, own_props)=>{
 
 export const SearchTableContainer = ReactRedux.connect(
   mapStateToProps,
-  {}
+  null
 )(SearchTable);

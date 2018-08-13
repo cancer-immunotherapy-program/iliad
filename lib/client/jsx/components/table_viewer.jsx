@@ -14,11 +14,19 @@ import {
 
 const TableCell = (template, document)=>{
   return (attr_name)=>{
+
+    // If the attribute is an 'identifier' we make it a link.
+    let attr = template.attributes[attr_name];
+    if(template.identifier == attr_name){
+      attr['attribute_class'] = 'LinkAttribute';
+      attr['model_name'] = template.name;
+    }
+
     let attr_props = {
       template,
       document,
       value: document[attr_name],
-      attribute: template.attributes[attr_name]
+      attribute: attr
     };
 
     return(
@@ -163,22 +171,22 @@ class TableViewer extends React.Component{
 
   render(){
     if(!this.props) return null;
-    return(
-      <div className='table-viewer-group'>
+    return[
+        this.renderPager(),
+        <div className='table-view-group'>
 
-        {this.renderPager()}
-        <table className='table-view'>
-          <thead>
+          <table className='table-view'>
+            <thead>
 
-            {this.renderHeader()}
-          </thead>
-          <tbody>
+              {this.renderHeader()}
+            </thead>
+            <tbody>
 
-            {this.renderRecords()}
-          </tbody>
-        </table>
-      </div>
-    );
+              {this.renderRecords()}
+            </tbody>
+          </table>
+        </div>
+    ];
   }
 }
 
