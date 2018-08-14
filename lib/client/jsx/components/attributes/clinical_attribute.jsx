@@ -498,8 +498,8 @@ export class ClinicalAttribute extends React.Component{
     return(
       <div className='clinical-group'>
 
-        {this.renderData()}
         {this.renderEditButtons()}
+        {this.renderData()}
       </div>
     );
   }

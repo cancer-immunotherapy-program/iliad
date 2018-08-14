@@ -1,5 +1,4 @@
 .clinical-group{
-  margin-left: 10px;
   min-width: 600px;
   font-family: $main-font;
 }
@@ -8,7 +7,7 @@
   padding-top: 10px;
   padding-bottom: 10px;
   padding-right: 10px;
-  border-top: 1px solid #333;
+  border-bottom: 1px solid $light-grey;
   font-size: 0.9em;
 }
 
@@ -86,9 +85,9 @@
 }
 
 .clinical-record-edit-group{
-  padding: 10px;
-  height: 23px;
-  background: #24a684;
+  height: 32px;
+  background: $dark-color;
+  border-bottom: 1px solid $med-grey-2;
 }
 
 .clinical-record-rm-btn,
