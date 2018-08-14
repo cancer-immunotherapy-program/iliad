@@ -13,7 +13,7 @@ import {
 } from '../selectors/magma_selector';
 
 const TableCell = (template, document)=>{
-  return (attr_name)=>{
+  return (attr_name, index)=>{
 
     // If the attribute is an 'identifier' we make it a link.
     let attr = template.attributes[attr_name];
@@ -30,7 +30,7 @@ const TableCell = (template, document)=>{
     };
 
     return(
-      <td className='table-view-cell' key={attr_name}>
+      <td className='table-view-cell' key={`${attr_name}-${index}`}>
 
         <AttributeViewer {...attr_props} />
       </td>
@@ -39,9 +39,9 @@ const TableCell = (template, document)=>{
 };
 
 const TableRow = (template, documents, attribute_names)=>{
-  return (record_name)=>{
+  return (record_name, index)=>{
     return(
-      <tr key={record_name} className='table-view-row'>
+      <tr key={`${record_name}-${index}`} className='table-view-row'>
 
         {attribute_names.map(TableCell(template, documents[record_name]))}
       </tr>
@@ -50,17 +50,6 @@ const TableRow = (template, documents, attribute_names)=>{
 };
 
 class TableViewer extends React.Component{
-
-/*
-  downloadTSV(event){
-    this.props.requestTSV(
-      this.props.model_name,
-      null,
-      this.props.record_names
-    );
-  }
-*/
-
   downloadMatrix(){
     let data = Object.keys(this.props.documents).map((id)=>{
       return this.props.documents[id];
@@ -105,6 +94,20 @@ class TableViewer extends React.Component{
         })}
       </tr>
     )
+  }
+
+  // Output the size of the table attribute.
+  renderCounts(){
+    let {documents, attribute_names} = this.props;
+    let row_count = Object.keys(documents).length;
+    let col_count = (attribute_names) ? attribute_names.length : 0;
+    return(
+      <div className='table-view-size'>
+
+        <i className='fas fa-table'/>
+        &nbsp;&nbsp;{`${row_count} rows x ${col_count} cols`}
+      </div>
+    );
   }
 
   renderPager(){
@@ -172,6 +175,7 @@ class TableViewer extends React.Component{
   render(){
     if(!this.props) return null;
     return[
+        this.renderCounts(),
         this.renderPager(),
         <div className='table-view-group'>
 
@@ -206,7 +210,6 @@ const mapStateToProps = (state = {}, own_props)=>{
   let attribute_names = null;
   if(template){
     attribute_names = Object.keys(template.attributes).filter((attr_name)=>{
-
       let attr = template.attributes[attr_name];
       return (attr.shown && attr.attribute_class != 'Magma::TableAttribute');
     });

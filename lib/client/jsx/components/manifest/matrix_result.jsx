@@ -47,7 +47,7 @@ class MatrixResult extends React.Component{
 
         <div className='consignment-table-size'>
 
-          <i className='fas fa-table'/>
+          <i className='fas fa-table' />
           &nbsp;&nbsp;{`${matrix.num_rows} rows x ${matrix.num_cols} cols`}
         </div>
         <button className='consignment-btn' onClick={this.downloadMatrix.bind(this)}>
