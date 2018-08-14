@@ -9,14 +9,6 @@ export default class BrowserPane extends React.Component{
     super(props);
   }
 
-/*
-  renderTitle(){
-    let {title, name} = this.props.pane;
-    if(title) return <div className='title' title={name}>{title}</div>;
-    return null;
-  }
-*/
-
   renderTitle(){
     let {title, name} = this.props.pane;
 
@@ -77,11 +69,12 @@ export default class BrowserPane extends React.Component{
         mode,
         attribute: attr,
         document: doc,
-        revision: revised_value
+        revision: revised_value,
+        key: `browser-value-${index}`
       };
 
       return(
-        <div className='browser-attribute'>
+        <div className='browser-attribute' key={`browser-attribute-${index}`}>
 
           <div className='browser-name'>
 
