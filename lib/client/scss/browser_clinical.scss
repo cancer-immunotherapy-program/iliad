@@ -1,13 +1,12 @@
 .clinical-group{
   min-width: 600px;
   font-family: $main-font;
+  border-bottom: 1px solid $med-grey-2;
 }
 
 .clinical-group > .clinical-record-group{
-  padding-top: 10px;
-  padding-bottom: 10px;
   padding-right: 10px;
-  border-bottom: 1px solid $light-grey;
+  border-top: 1px solid $light-grey-2;
   font-size: 0.9em;
 }
 
@@ -64,17 +63,23 @@
 .clinical-record-date,
 .clinical-record-input{
   height: 18px;
+  margin-top: 10px;
+  margin-bottom: 10px;
 }
 
 .clinical-record-selector{
   outline: 1px solid #999;
   height: 24px;
   width: 233px;
+  margin-top: 10px;
+  margin-bottom: 10px;
 }
 
+/*
 .clinical-record-group .clinical-record-group{
   margin-top: 10px;
 }
+*/
 
 .clinical-record-checkbox-grouping{
   /*border: 1px solid #0000ff;*/
@@ -83,13 +88,52 @@
   overflow: hidden;
   margin-bottom: 3px;
 }
-
-.clinical-record-edit-group{
+.clinical-group-header-bar{
   height: 32px;
   background: $dark-color;
   border-bottom: 1px solid $med-grey-2;
 }
 
+.clinical-record-btn,
+.clinical-remove-btn{
+  display: inline-block;
+  vertical-align: top;
+  font-family: $main-font;
+  margin-left: 10px;
+  cursor: pointer;
+  padding:5px;
+  border: 1px solid $dark-grey;
+  outline: none;
+  background: $light-grey;
+  font-size: 0.6em;
+}
+
+.clinical-remove-btn{
+  display: none;
+  float: right;
+  font-size: 0.7em;
+  margin-right: 10px;
+  margin-top: 8px;
+}
+
+.clinical-record-group:hover .clinical-remove-btn{
+  display: inline-block;
+}
+
+.clinical-record-btn:hover:enabled,
+.clinical-remove-btn:hover:enabled{
+  color: $white;
+  background: $med-color;
+  border: 1px solid $med-color;
+}
+
+.clinical-record-btn:disabled,
+.clinical-remove-btn:disabled{
+  cursor: default;
+  border: 1px solid $light-grey-2;
+}
+
+/*
 .clinical-record-rm-btn,
 .clinical-record-btn{
   display: none;
@@ -118,6 +162,7 @@
 .clinical-record-rm-btn i{
   font-size: 1.1em;
 }
+*/
 
 /******************************************************************************/
 

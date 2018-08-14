@@ -104,7 +104,6 @@ export class Browser extends React.Component{
         }
         return;
       case 'edit':
-
         this.setState({mode: 'edit'});
         return;
     }

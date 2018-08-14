@@ -358,14 +358,12 @@ export class ClinicalAttribute extends React.Component{
   }
 
   renderRemoveBtn(is_parent){
+    if(this.props.mode != 'edit') return null;
     if(!is_parent) return null;
 
     let remove_btn_props = {
-      className: 'clinical-record-rm-btn',
+      className: 'clinical-remove-btn',
       title: 'Remove record.',
-      style: {
-        display: (this.props.mode == 'edit') ? '' : 'none'
-      },
       onClick: (event)=>{
         console.log(event);
       }
@@ -374,9 +372,12 @@ export class ClinicalAttribute extends React.Component{
     let remove_btn = (
       <button {...remove_btn_props}>
 
-        <i className='fa fa-times'></i>
+        <i className='far fa-times-circle'></i>
+        &nbsp;{'REMOVE'}
       </button>
     );
+
+    return remove_btn;
   }
 
   renderRecord(uid_set, is_parent){
@@ -454,6 +455,7 @@ export class ClinicalAttribute extends React.Component{
   }
 
   renderEditButtons(){
+    if(this.props.mode != 'edit') return null;
     let {records, dictionary} = this.state;
 
     // Check that all the required data to render is present.
@@ -461,47 +463,77 @@ export class ClinicalAttribute extends React.Component{
       Object.keys(records).length <= 0 ||
       Object.keys(dictionary).length <= 0 ||
       Object.keys(dictionary.definitions).length <= 0
-    ) return null;
+    ) return <div className='clinical-record-edit-group' />;
 
-    let display = (this.props.mode == 'edit') ? 'block' : 'none';
     let add_btn_props = {
       className: 'clinical-record-btn',
-      style: {display},
       onClick: this.addRecord.bind(this)
     };
 
     let save_btn_props = {
       className: 'clinical-record-btn',
-      //style: {display},
-      style: {display: 'none'},
       onClick: this.sendRevisionIntermediate.bind(this)
     };
 
+    return [
+      <button {...add_btn_props}>
+
+        <i className='fas fa-plus'></i>
+        &nbsp;{'ADD'}
+      </button>,
+      <button {...save_btn_props}>
+
+        <i className='fas fa-check'></i>
+        &nbsp;{'SAVE'}
+      </button>
+    ];
+  }
+
+  renderDownload(){
+
+    let export_props = {
+      className: 'pager-export-btn',
+      type: 'button'
+    };
+
     return(
-      <div className='clinical-record-edit-group'>
+      <div className='pager-group'>
 
-        <button {...add_btn_props}>
+        <button {...export_props}>
 
-          <i className='fa fa-plus'></i>
-          {' ADD'}
-        </button>
-        <button {...save_btn_props}>
-
-          <i className='fa fa-plus'></i>
-          {' SAVE'}
+          <i className='fas fa-download' aria-hidden='true' ></i>
+          &nbsp;{'DOWNLOAD'}
         </button>
       </div>
     );
   }
 
-  render(){
-    return(
-      <div className='clinical-group'>
+  renderCount(){
+    let row_count = 0;
+    if(this.state.records){
+      row_count = Object.keys(this.state.records).length;
+    }
 
-        {this.renderEditButtons()}
-        {this.renderData()}
+    return(
+      <div className='table-view-size'>
+
+        <i className='far fa-list-alt'></i>
+        &nbsp;&nbsp;{`${row_count} rows`}
       </div>
     );
+  }
+
+  render(){
+    return[
+      this.renderCount(),
+      this.renderDownload(),
+      this.renderEditButtons(),
+      <div className='clinical-group'>
+
+        <div className='clinical-group-header-bar' />
+        {this.renderData()}
+      </div>
+    ];
   }
 }
 

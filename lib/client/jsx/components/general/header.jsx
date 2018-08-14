@@ -15,7 +15,7 @@ class HeaderApprove extends React.Component{
         <button className='header-edit-btn' onClick={handler.bind(null, 'approve')}>
 
           <span className='fas fa-check'></span>
-          &nbsp;{'APPROVE'}
+          &nbsp;{'SAVE'}
         </button>
       </div>
     );
@@ -87,6 +87,14 @@ class Header extends React.Component{
       <div className='header'>
 
         {children}
+        <div className='inline'>
+
+          <button className='header-edit-btn'>
+
+            <i className='fas fa-download' aria-hidden='true' ></i>
+            &nbsp;{'DOWNLOAD ALL'}
+          </button>
+        </div>
         {elem}
         {can_close ? <HeaderClose handler={handler} /> : null}
       </div>
