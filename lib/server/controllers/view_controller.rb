@@ -35,7 +35,7 @@ class ViewController < App::Controller
       model: @params[:model_name]
     }
 
-    view_tabs = ViewTab.where().all
+    view_tabs = ViewTab.where(query_params).all
     view_tabs.each {|tab| tab.remove}
 
     query_params[:model] = 'all'
@@ -67,7 +67,7 @@ class ViewController < App::Controller
       view_tabs.each do |tab|
         mdl_nm = tab[:model]
 
-        # For each tab we check to see if it's parent view has already been 
+        # For each tab we check to see if it's parent view has already been
         # set.
         if !views[:views].key?(mdl_nm)
           views[:views][mdl_nm] = {
@@ -77,7 +77,7 @@ class ViewController < App::Controller
           }
         end
 
-        # Next we check the tab object for the view and set the tab object if 
+        # Next we check the tab object for the view and set the tab object if
         # it is not present.
         if !views[:views][mdl_nm][:tabs].key?(tab.name)
           views[:views][mdl_nm][:tabs][tab.name] = tab.to_hash
