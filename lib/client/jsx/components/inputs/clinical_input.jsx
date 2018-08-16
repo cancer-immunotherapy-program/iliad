@@ -32,8 +32,14 @@ export default class ClinicalInput extends React.Component{
     let random_uid = Math.random().toString(16).slice(2, -1);
     input_props['list'] = `list-${random_uid}`;
     input_props['className'] = 'search-dropdown-input';
+
+    let group_props = {className: 'search-dropdown-group'};
+    if(input_props.disabled){
+      group_props['className'] += ' search-dropdown-group-disabled';
+    }
+
     return(
-      <div className='search-dropdown-group'>
+      <div {...group_props}>
 
         <input {...input_props} />
         <datalist id={`list-${random_uid}`}>

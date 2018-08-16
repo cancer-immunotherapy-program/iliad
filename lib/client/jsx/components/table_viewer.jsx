@@ -178,9 +178,18 @@ class TableViewer extends React.Component{
       <Pager {...pager_props}>
 
         {download_elem}
+      </Pager>
+    );
+
+/*
+    return(
+      <Pager {...pager_props}>
+
+        {download_elem}
         {(this.props.mode == 'edit') ? upload_elem : null}
       </Pager>
     );
+*/
   }
 
   render(){

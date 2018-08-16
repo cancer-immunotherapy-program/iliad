@@ -87,7 +87,7 @@ class Header extends React.Component{
       <div className='header'>
 
         {children}
-        <div className='inline'>
+        <div className='inline' style={{display: 'none'}}>
 
           <button className='header-edit-btn'>
 

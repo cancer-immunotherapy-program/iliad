@@ -23,6 +23,19 @@ export class ClinicalAttribute extends React.Component{
   constructor(props){
     super(props);
 
+    /*
+     * There are three main data structures in the Clinical Attribute that keep
+     * the data organized. The 'records' is the data from the DB in a fairly
+     * flat object. The 'dictionary' is the data object that helps set the
+     * validation on the possible values the records can take. The 'nested_uid'
+     * is a mapping of the 'records' and 'dictionary'. The 'nested_uid' object
+     * contains only the keys from the 'record' and 'dictionary'.
+     *
+     * 'records' can be nested and can have a hierarchy and this can be
+     * difficult to work with. The 'nested_uid' data structure holds the
+     * relations of the 'records' and the mappings of the 'dictionary'
+     * validations.
+     */
     this.state = {
       records: {},
       dictionary: {},
@@ -116,41 +129,41 @@ export class ClinicalAttribute extends React.Component{
   }
 
   setNestedUidRevision(rev_uid, revision, nested_uids){
-    for(let uid in nested_uids){
-      if(rev_uid == uid){
-        nested_uids[uid] = Object.assign({}, nested_uids[uid], revision);
+    nested_uids.forEach((nested_uid, index)=>{
+      if(rev_uid == nested_uid.uid){
+        nested_uids[index] = Object.assign({}, nested_uid, revision);
       }
 
-      if('children' in nested_uids[uid]){
-        nested_uids[uid].children = this.setNestedUidRevision(
+      if('children' in nested_uid){
+        nested_uid.children = this.setNestedUidRevision(
           rev_uid,
           revision,
-          nested_uids[uid].children
+          nested_uids[index].children
         );
       }
-    }
+    });
 
     return nested_uids;
   }
 
   nestedUidHasChildren(orig_uid, nested_uids){
-    let hasChildren = false;
-    for(let uid in nested_uids){
+    let has_children = false;
+    nested_uids.forEach((nested_uid)=>{
 
-      if(Object.keys(nested_uids[uid].children).length > 0){
-        if(orig_uid == uid){
+      if(nested_uid.children.length > 0){
+        if(orig_uid == nested_uid.uid){
           return true;
         }
         else{
-          hasChildren = this.nestedUidHasChildren(
+          has_children = this.nestedUidHasChildren(
             orig_uid,
-            nested_uids[uid].children
+            nested_uid.children
           );
         }
       }
-    }
+    });
 
-    return hasChildren;
+    return has_children;
   }
 
   setRecordRevision(uid, revision, records){
@@ -159,8 +172,8 @@ export class ClinicalAttribute extends React.Component{
   }
 
   setChildren(def_parent_uid, rec_parent_uid){
-    let child_recs = {};
-    let child_defs = {};
+    let child_recs = [];
+    let child_defs = [];
     let child_siblings = [];
     let defs = this.state.dictionary.definitions;
 
@@ -173,24 +186,24 @@ export class ClinicalAttribute extends React.Component{
         // For each unique named definition we add a child record.
         if(!(defs[def_uid].name in child_defs)){
 
-          let random_uid = Math.random().toString(16).slice(2, -1);
+          let random_uid = `new-${Math.random().toString(16).slice(2, -1)}`
 
           // Set initial child nested ids.
           child_defs[defs[def_uid].name] = {
             uid: random_uid,
             definition: null,
             definitions: [def_uid],
-            children: {}
+            children: []
           };
 
           // Set unique child record.
-          child_recs[random_uid] = {
+          child_recs.push({
             uid: random_uid,
             parent_uid: rec_parent_uid,
             name: defs[def_uid].name,
             revised: true,
             value: null
-          };
+          });
         }
         else{
 
@@ -200,18 +213,17 @@ export class ClinicalAttribute extends React.Component{
       }
     }
 
-    // Remap the child_defs to make the uid the key.
-    let new_child_defs = {}
+    // Add the siblings and definitions to the child node.
+    let new_child_defs = []
     for(let name in child_defs){
-      new_child_defs[child_defs[name].uid] = child_defs[name];
-      new_child_defs[child_defs[name].uid].siblings = child_siblings;
+      child_defs[name]['siblings'] = child_siblings;
+      new_child_defs.push(child_defs[name]);
     }
 
     let child_uids = {
       uid: rec_parent_uid,
       children: new_child_defs
     };
-
     return [child_recs, child_uids];
   }
 
@@ -231,19 +243,20 @@ export class ClinicalAttribute extends React.Component{
       ) return defs[uid];
     });
 
-    // Make sure the definition is properly set.
+    // Make sure the definition is properly set on the revision.
     let revision_uids = {
       uid: event.target.dataset.uid,
       definition: def[0],
     }
 
-    // The basic data to update.
+    // Update the actual record.
     let records = this.setRecordRevision(
       event.target.dataset.uid,
       revision_records,
       this.state.records
     );
 
+    // Update the nested_uid object.
     let nested_uids = this.setNestedUidRevision(
       event.target.dataset.uid,
       revision_uids,
@@ -259,7 +272,17 @@ export class ClinicalAttribute extends React.Component{
       let child_uids = children[1];
 
       if(!this.nestedUidHasChildren(child_uids.uid, nested_uids)){
-        records = Object.assign(records, child_records);
+
+        /*
+         * If we have child records to add loop them and assign them to the main
+         * record object by uid.
+         */
+        child_records.forEach((child_record)=>{
+          records = Object.assign(
+            records,
+            {[child_record.uid]: child_record}
+          );
+        });
 
         nested_uids = this.setNestedUidRevision(
           event.target.dataset.uid,
@@ -272,6 +295,10 @@ export class ClinicalAttribute extends React.Component{
     this.setState({records, nested_uids});
   }
 
+  /*
+   * The individual entries are made of key/record pairs. Here we set the key
+   * which should set the definition for the value (which allows validation).
+   */
   reviseKey(event){
 
     let {records, nested_uids} = this.state;
@@ -296,7 +323,8 @@ export class ClinicalAttribute extends React.Component{
      * If there is a single definition it means that this is not a multi-select.
      * Which also means we can set the sub children.
      */
-    let child_records, child_uids;
+    let child_records = [];
+    let child_uids = {};
     if(revision_uids.definitions.length == 1){
       revision_uids.definition = revision_uids.definitions[0];
 
@@ -321,7 +349,17 @@ export class ClinicalAttribute extends React.Component{
       this.state.nested_uids
     );
 
-    if(child_records) records = Object.assign(records, child_records);
+    /*
+     * If we have child records to add loop them and assign them to the main
+     * record object by uid.
+     */
+    child_records.forEach((child_record)=>{
+      records = Object.assign(
+        records,
+        {[child_record.uid]: child_record}
+      );
+    });
+
     if(child_uids){
       nested_uids = this.setNestedUidRevision(
         event.target.dataset.uid,
@@ -334,7 +372,7 @@ export class ClinicalAttribute extends React.Component{
   }
 
   addRecord(){
-    let random_uid = Math.random().toString(16).slice(2, -1);
+    let random_uid = `new-${Math.random().toString(16).slice(2, -1)}`;
 
     let records = this.state.records;
     records[random_uid] = {
@@ -346,13 +384,13 @@ export class ClinicalAttribute extends React.Component{
     };
 
     let nested_uids = this.state.nested_uids;
-    nested_uids[random_uid] = {
+    nested_uids.unshift({
       uid: random_uid,
       siblings: this.selectSiblings(null),
       definitions: [],
       definition: null,
-      children: {}
-    }
+      children: []
+    });
 
     this.setState({records, nested_uids});
   }
@@ -380,11 +418,15 @@ export class ClinicalAttribute extends React.Component{
     return remove_btn;
   }
 
+  /*
+   * This function takes the 'nested_uid' data structue. We iterate over this
+   * structure and select out the definition or record by the uid.
+   */
   renderRecord(uid_set, is_parent){
     let child_elements = [];
-    for(let uid in uid_set.children){
-      child_elements.push(this.renderRecord(uid_set.children[uid], false));
-    }
+    uid_set.children.forEach((child)=>{
+      child_elements.push(this.renderRecord(child, false));
+    });
 
     let record = this.props.records[uid_set.uid];
     let definition = this.props.dictionary.definitions[uid_set.definition];
@@ -394,6 +436,7 @@ export class ClinicalAttribute extends React.Component{
     }
 
     let multi_select = ['regex', 'dropdown', 'select', 'boolean'];
+
     let input_value_props = {
       uid: uid_set.uid,
       name: record.name,
@@ -447,9 +490,9 @@ export class ClinicalAttribute extends React.Component{
 
     // Loop the records and render them by group.
     let elements = [];
-    for(let uid in nested_uids){
-      elements.push(this.renderRecord(nested_uids[uid], true))
-    };
+    nested_uids.forEach((nested_uid)=>{
+      elements.push(this.renderRecord(nested_uid, true));
+    })
 
     return elements;
   }
@@ -475,6 +518,15 @@ export class ClinicalAttribute extends React.Component{
       onClick: this.sendRevisionIntermediate.bind(this)
     };
 
+    return(
+      <button {...add_btn_props}>
+
+        <i className='fas fa-plus'></i>
+        &nbsp;{'ADD'}
+      </button>
+    );
+
+/*
     return [
       <button {...add_btn_props}>
 
@@ -487,9 +539,11 @@ export class ClinicalAttribute extends React.Component{
         &nbsp;{'SAVE'}
       </button>
     ];
+*/
   }
 
   renderDownload(){
+    return null; // Disabling this button until we can hook up the events.
 
     let export_props = {
       className: 'pager-export-btn',
@@ -564,6 +618,7 @@ const mapStateToProps = (state, own_props)=>{
   let uid_set = setDefinitionUids(records, dictionary , {});
   uid_set = setSiblingUids(records, dictionary, uid_set);
   uid_set = nestDataset(uid_set, 'uid', 'parent_uid');
+  uid_set = Object.keys(uid_set).map((key)=>uid_set[key]);
 
   return {
     records: records,
