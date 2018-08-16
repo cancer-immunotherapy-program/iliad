@@ -395,16 +395,29 @@ export class ClinicalAttribute extends React.Component{
     this.setState({records, nested_uids});
   }
 
-  renderRemoveBtn(is_parent){
+  removeRecord(uid){
+    let records = this.state.records;
+    let nested_uids = this.state.nested_uids;
+    if(uid in records && uid.includes('new')){
+      if(confirm('This record has not beens saved. Remove it?')){
+        delete records[uid];
+        nested_uids.forEach((nested_uid, index)=>{
+          if(nested_uid.uid == uid) nested_uids.splice(index, 1);
+        });
+      }
+    }
+
+    this.setState({records, nested_uids});
+  }
+
+  renderRemoveBtn(is_parent, uid){
     if(this.props.mode != 'edit') return null;
     if(!is_parent) return null;
 
     let remove_btn_props = {
       className: 'clinical-remove-btn',
       title: 'Remove record.',
-      onClick: (event)=>{
-        console.log(event);
-      }
+      onClick: this.removeRecord.bind(this, uid)
     };
 
     let remove_btn = (
@@ -472,7 +485,7 @@ export class ClinicalAttribute extends React.Component{
 
         <ClinicalInput {...input_name_props} />
         <ClinicalInput {...input_value_props} />
-        {this.renderRemoveBtn(is_parent)}
+        {this.renderRemoveBtn(is_parent, uid_set.uid)}
         {child_elements}
       </div>
     );
