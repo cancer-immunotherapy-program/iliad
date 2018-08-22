@@ -56,10 +56,6 @@ export default class CollectionAttribute extends React.Component{
   }
 }
 
-const mapStateToProps = (dispatch, own_props)=>{
-  return {};
-};
-
 const mapDispatchToProps = (dispatch, own_props)=>{
   return {
     reviseDocument: (doc, tmplt, attr, rev_val)=>{
@@ -69,6 +65,6 @@ const mapDispatchToProps = (dispatch, own_props)=>{
 };
 
 export const CollectionAttributeContainer = ReactRedux.connect(
-  mapStateToProps,
+  null,
   mapDispatchToProps
 )(CollectionAttribute);

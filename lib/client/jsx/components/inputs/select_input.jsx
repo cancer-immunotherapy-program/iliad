@@ -10,7 +10,7 @@ const NoneOption = (showNone)=>{
     );
   }
   else{
-    return null
+    return null;
   }
 };
 
@@ -25,7 +25,7 @@ const Option = (val, index)=>{
 
 // This is an input to select one from a list of options.
 export default class SelectInput extends React.Component{
-  onChange(evt) {
+  onChange(evt){
     let index = evt.target.value;
     let {onChange, values} = this.props;
     let value = values[parseInt(index)];
@@ -37,15 +37,21 @@ export default class SelectInput extends React.Component{
       'value' in value
     ) value = value.value;
 
-    if(onChange) onChange( value == '' ? null : value );
+    if(onChange) onChange(value == '' ? null : value);
   }
 
   render(){
     let {children, values, showNone, defaultValue} = this.props;
     defaultValue = defaultValue || (showNone ? '' : null);
 
+    let select_props = {
+      className: 'general-select',
+      defaultValue: defaultValue,
+      onChange: this.onChange.bind(this)
+    };
+
     return(
-      <select className='general-select' defaultValue={defaultValue} onChange={this.onChange.bind(this)}>
+      <select {...select_props}>
 
         {children }
         {NoneOption(showNone)}

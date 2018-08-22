@@ -1,7 +1,8 @@
-import React, { Component } from 'react';
+// Framework libraries.
+import * as React from 'react';
 
-export default class DateTimeInput extends Component {
-  constructor() {
+export default class DateTimeInput extends React.Component{
+  constructor(){
     super();
     this.state = {
       date: null
@@ -14,7 +15,6 @@ export default class DateTimeInput extends Component {
   }
 
   render(){
-
     let date_props = {
       onChange: this.changeDateTime.bind(this),
       type: 'date',
@@ -26,6 +26,6 @@ export default class DateTimeInput extends Component {
 
         <input {...date_props} />
       </div>
-    )
+    );
   }
 }
