@@ -11,12 +11,14 @@ class ViewTab < Sequel::Model
           title: '',
           description: '',
           index_order: 0,
+          download: false,
           panes: {
             default: {
               name: 'default',
               title: '',
               description: '',
               index_order: 0,
+              download: false,
               attributes: {
                 # Here we should return the default attributes for the model.
               }
@@ -40,7 +42,8 @@ class ViewTab < Sequel::Model
     update_query = {
       title: tab_data[:title].to_s,
       description: tab_data[:description].to_s,
-      index_order: tab_data[:index_order].to_i
+      index_order: tab_data[:index_order].to_i,
+      download: (tab_data[:download].to_s == 'true')
     }
 
     update_query = find_query.merge(update_query)
@@ -72,6 +75,7 @@ class ViewTab < Sequel::Model
       title: title,
       description: description,
       index_order: index_order,
+      download: download,
       panes: Hash[view_panes.map {|p| [p.name, p.to_hash] }]
     }
   end

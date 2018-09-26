@@ -11,6 +11,7 @@
 
 // Framework libraries.
 import * as React from 'react';
+import * as Redux from 'redux';
 import * as ReactRedux from 'react-redux';
 
 // Class imports.
@@ -19,9 +20,15 @@ import {TabBarContainer as TabBar} from '../general/tab_bar';
 import BrowserTab from './browser_tab';
 
 // Module imports.
+import {getState} from 'redux';
 import {requestManifests} from '../../actions/manifest_actions';
 import {requestPlots} from '../../actions/plot_actions';
-import {requestView} from '../../actions/app_actions';
+import {downloadTab} from '../../selectors/download_selector';
+
+import {
+  requestView,
+  requestDownload
+} from '../../actions/app_actions';
 
 import{
   requestDocuments,
@@ -76,11 +83,14 @@ export class Browser extends React.Component{
   headerHandler(action){
 
     let {
+      store,
+      doc,
       revision,
       record_name,
       model_name,
       discardRevision,
-      sendRevisions
+      sendRevisions,
+      requestDownload
     } = this.props;
 
     switch(action){
@@ -106,13 +116,21 @@ export class Browser extends React.Component{
       case 'edit':
         this.setState({mode: 'edit'});
         return;
+      case 'download':
+        let tab = getTabByIndexOrder(
+          this.props.view.tabs,
+          this.state.current_tab_index
+        );
+        //let attributes = getAttributes(tab);
+        requestDownload(store, model_name, tab);
+        return;
     }
   }
 
   tabSelectionHandler(index_order){
 
     let {requestDocuments, model_name, record_name, view, doc} = this.props;
-
+attributes
     // Set the new requested tab state.
     this.setState({current_tab_index: index_order});
 
@@ -165,12 +183,6 @@ export class Browser extends React.Component{
     // Render an empty view if there is no view data yet.
     if(!view || !template || !doc) return this.renderEmpytView();
 
-    let header_props = {
-      mode,
-      can_edit,
-      handler: this.headerHandler.bind(this)
-    };
-
     let tab_bar_props = {
       mode,
       revision,
@@ -194,6 +206,13 @@ export class Browser extends React.Component{
       revision,
       mode,
       tab
+    };
+
+    let header_props = {
+      mode,
+      can_edit,
+      download: browser_tab_props.tab.download,
+      handler: this.headerHandler.bind(this),
     };
 
     // Set at 'skin' on the browser styling.
@@ -246,7 +265,8 @@ const mapStateToProps = (state = {}, own_props)=>{
     model_name: model,
     record_name: record,
     doc: doc[record],
-    has_revisions: (Object.keys(revision).length > 0)
+    has_revisions: (Object.keys(revision).length > 0),
+    store: state
   };
 };
 
@@ -285,6 +305,11 @@ const mapDispatchToProps = (dispatch, own_props)=>{
 
     sendRevisions: (args)=>{
       dispatch(sendRevisions(args));
+    },
+
+    // Proxy the data request from the store to a document download.
+    requestDownload: (store, model_name, tab)=>{
+      dispatch(requestDownload(store, model_name, tab));
     }
   };
 };

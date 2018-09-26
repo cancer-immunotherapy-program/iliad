@@ -13,7 +13,8 @@ class ViewPane < Sequel::Model
 
     update_query = {
       title: pane_data[:title].to_s,
-      index_order: pane_data[:index_order].to_i
+      index_order: pane_data[:index_order].to_i,
+      download: (pane_data[:download].to_s == 'true')
     }
 
     update_query = find_query.merge(update_query)
@@ -38,6 +39,7 @@ class ViewPane < Sequel::Model
       name: name,
       title: title,
       index_order: index_order,
+      download: download,
       attributes: Hash[ view_attributes.map{|a| [a.name, a.to_hash] }]
     }
   end
