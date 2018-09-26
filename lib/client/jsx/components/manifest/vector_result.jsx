@@ -3,6 +3,9 @@ import * as React from 'react';
 import {downloadCSV} from '../../utils/csv';
 import {isPrimitiveType} from '../../utils/types';
 import ConsignmentTable from './consignment_table';
+import ConsignmentResult from './consignment_result';
+import {isPrimitiveType} from '../../utils/types';
+import {downloadCSV} from '../../utils/csv';
 
 class VectorResult extends React.Component{
   constructor(props){

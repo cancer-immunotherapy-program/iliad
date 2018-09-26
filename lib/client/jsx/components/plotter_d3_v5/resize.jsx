@@ -23,7 +23,7 @@ class Resize extends Component{
   fitParentContainer(){
     let {container_width} = this.state;
     let current_container_width = this.chartContainer
-      .getBoundingClientRect().width;  
+      .getBoundingClientRect().width;
 
     let should_resize = container_width !== current_container_width;
 

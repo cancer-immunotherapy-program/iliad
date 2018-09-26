@@ -20,13 +20,15 @@ import {
 export class TimelineGroupPlotAttribute extends GenericPlotAttribute{
   constructor(props){
     super(props);
-    this.state = {records: []};
+    this.state = {
+      records: null
+    };
   }
 
   static getDerivedStateFromProps(next_props, prev_state){
     if(
-        Object.keys(next_props).length <= 0 ||
-        next_props.selected_consignment === null
+      Object.keys(next_props).length <= 0 ||
+      next_props.selected_consignment === null
     ) return null;
 
     return {
@@ -35,48 +37,81 @@ export class TimelineGroupPlotAttribute extends GenericPlotAttribute{
   }
 
   render(){
-    if(this.state.records.length < 2) return null;
-
-    let plot_props = {
-      all_events: this.state.records,
-      color:'#24a684'
+    let plot_props = {all_events: this.state.records};
+    let plot_func = (width)=>{
+      return <TimelinePlot {...plot_props} parent_width={width} />;
     };
 
     return(
-      <div id='timeline_charts' className='value'>
-        {this.state.records && <Resize render={width  => (
-          <TimelinePlot {...plot_props} parent_width={width} />
-        )}/>}
+      <div id='timeline_group_chart' className='value'>
+        {
+          this.state.records &&
+          <Resize className='resize-component' render={plot_func} />
+        }
       </div>
-    )
+    );
   }
 }
 
-const processData = (matrix)=>{
-  let data_obj = {};
-  matrix.rows.forEach((row)=>{
-    data_obj[row[0]] = {
-      uid: row[0],
-      parent_uid: row[1],
-      name: row[2],
-      value: row[3],
-      patient_id: row[4]
-    };
-  });
+const start_date_names = [
+  'diagnosis_date',
+  'prior_treatment_start',
+  'study_treatment_start',
+  'start_date'
+];
 
-  return data_obj;
-};
+const end_date_names = [
+  'prior_treatment_end',
+  'study_treatment_end',
+  'end_date'
+];
 
-const flattenDataSet = (object)=>{
-  let data_obj = {
-    [object['name']]: object['value'],
-    patient_id: object['patient_id']
-  };
+const processValueForDate = (value)=>{
+  try{
+    value = new Date(value).toUTCString();
+    if(value == 'Invalid Date') date = null;
+  }
+  catch(error){
+    console.log(`For name: '${name}', value: '${value}' is not a date`);
+    value = null;
+  }
+
+  return value;
+}
+
+const selectColor = (type)=>{
+  let colors = [
+    '#24a684', // Iliad $dark-color, green
+    '#666699', // Janus $grey-purple, purple
+    '#3299bb', // CIP $med-blue, blue
+    '#680148'  // Polyphemus $maroon, maroon
+  ];
+
+  switch(type){
+    case 'diagnostics':
+      return colors[0];
+    case 'prior_treatments':
+      return colors[1];
+    case 'treatments':
+      return colors[2];
+    case 'adverse_events':
+    case 'prior_adverse_events':
+      return colors[3];
+    default:
+      return colors[0];
+  }
+}
+
+const flattenDataSet = (object, type)=>{
+  let data_obj = Object.assign(
+    {[object['name']]: object['value']},
+    object
+  );
 
   let child_obj = {};
   if('children' in object){
     for(let uid in object['children']){
-      child_obj = flattenDataSet(object['children'][uid]);
+      child_obj = flattenDataSet(object['children'][uid], type);
       data_obj = Object.assign(data_obj, child_obj);
     }
   }
@@ -84,12 +119,113 @@ const flattenDataSet = (object)=>{
   return data_obj;
 };
 
+// the D3 normalization happens here.
+const hashAndNormalizeMatrix = (matrix)=>{
+  let data_obj = {};
+
+  matrix.rows.forEach((row, row_index)=>{
+    data_obj[matrix.row_names[row_index]] = {};
+    row.forEach((datum, datum_index)=>{
+
+      let row_id = matrix.row_names[row_index];
+      data_obj[row_id][matrix.col_names[datum_index]] = datum;
+
+      if(start_date_names.indexOf(matrix.rows[row_index][datum_index]) > -1){
+
+        let date_index = matrix.col_names.indexOf('value');
+        data_obj[row_id]['start'] = processValueForDate(row[date_index]);
+      }
+
+      if(end_date_names.indexOf(matrix.rows[row_index][datum_index]) > -1){
+
+        let date_index = matrix.col_names.indexOf('value');
+        data_obj[row_id]['end'] = processValueForDate(row[date_index]);
+      }
+    });
+  });
+
+  return data_obj;
+};
+
+const processData = (consignment_data)=>{
+  let processed_data = {};
+  let records = [];
+
+  for(let key in consignment_data){
+    if(key == 'record_name') continue;
+
+    switch(key){
+      case 'diagnostics':
+      case 'prior_treatments':
+      case 'treatments':
+        // Extract the data objects from the consignment matrix.
+        processed_data[key] = hashAndNormalizeMatrix(consignment_data[key]);
+
+        // Group the data objects by their uids.
+        processed_data[key] = nestDataset(
+          processed_data[key],
+          'uid',
+          'parent_uid'
+        );
+
+        // Break out the objects into an array that D3 can use.
+        for(let uid in processed_data[key]){
+          processed_data[key][uid]['label'] = `${key} ${uid}`;
+          processed_data[key][uid]['event_id'] = `${key}-${uid}-${Math.random()}`;
+          processed_data[key][uid]['color'] = selectColor(key);
+          processed_data[key][uid]['type'] = key;
+
+          let flattened = flattenDataSet(processed_data[key][uid], key);
+          if(flattened['start'] == flattened['end']) delete flattened['end'];
+          records.push(flattened);
+        }
+
+        break;
+      case 'prior_adverse_events':
+      case 'adverse_events':
+
+        if(consignment_data[key].rows.length <= 0) break;
+
+        let data_obj = {};
+        consignment_data[key].rows.forEach((row, row_index)=>{
+
+          row.forEach((datum, datum_index)=>{
+
+            let col_name = consignment_data[key].col_names[datum_index];
+            data_obj[col_name] = datum;
+
+            if(start_date_names.indexOf(col_name) > -1){
+              data_obj['start'] = processValueForDate(datum);
+            }
+
+            if(end_date_names.indexOf(col_name) > -1){
+              data_obj['end'] = processValueForDate(datum);
+            }
+
+            if(data_obj['start'] == data_obj['end']){
+              delete data_obj['end'];
+            }
+          });
+
+        });
+
+        data_obj['label'] = `${key} ${Math.random()}`;
+        data_obj['event_id'] = `${key}-${Math.random()}-${Math.random()}`;
+        data_obj['color'] = selectColor(key);
+        data_obj['type'] = key;
+
+        records.push(data_obj);
+        break;
+    }
+  }
+
+  return records;
+};
+
 const mapStateToProps = (state = {}, own_props)=>{
-  let selected_plot, selected_manifest, selected_consignment = undefined;
-  let records;
+  let records, selected_plot, selected_manifest, selected_consignment=undefined;
 
   selected_manifest = state.manifests[own_props.attribute.manifest_id];
-
   if(selected_manifest != undefined){
     selected_consignment = selectConsignment(
       state,
@@ -100,82 +236,14 @@ const mapStateToProps = (state = {}, own_props)=>{
   let processed_data = {};
   let record_array = []
   if(selected_consignment){
-
-    for(let key in selected_consignment){
-      if(key == 'record_name') continue;
-      switch(key){
-        case 'study_treatment':
-
-          // Extract the data objects from the consignment matrix.
-          processed_data[key] = processData(selected_consignment[key]);
-
-          // Group the data objects by their uids.
-          processed_data[key] = nestDataset(
-            processed_data[key],
-            'uid',
-            'parent_uid'
-          );
-
-          // Flatten out the grouped objects.
-          for(let uid in processed_data[key]){
-            processed_data[key][uid] = flattenDataSet(
-              processed_data[key][uid]
-            );
-          }
-
-          for(let uid in processed_data[key]){
-
-            if(processed_data[key][uid][key+'_start'] == undefined) continue;
-
-            processed_data[key][uid]['uid'] = uid;
-            processed_data[key][uid]['name'] = key;
-            processed_data[key][uid]['label'] = processed_data[key][uid][key+'_type'] + ` (${processed_data[key][uid]['patient_id']})`;
-            processed_data[key][uid]['group'] = processed_data[key][uid]['patient_id'];
-
-            let start_str = processed_data[key][uid][key+'_start'];
-            start_str = new Date(start_str).toUTCString();
-            if(start_str != 'Invalid Date'){
-              processed_data[key][uid]['start'] = start_str;
-            }
-
-            let end_str = processed_data[key][uid][key+'_end'];
-            end_str = new Date(end_str).toUTCString();
-            if(end_str != 'Invalid Date'){
-              processed_data[key][uid]['end'] = end_str;
-            }
-
-            record_array.push(processed_data[key][uid]);
-          }
-          break;
-        case 'adverse_events':
-          selected_consignment[key].rows.forEach((row)=>{
-            let ae_obj = {
-              name: key,
-              label: `AE (${row[4]})`,
-              group: row[4],
-              patient_id: row[4],
-              start: new Date(row[2]).toUTCString(),
-              meddra_code: row[0]
-            };
-
-            if(row[3] != null){
-              ae_obj['end'] = new Date(row[3]).toUTCString();
-            }
-
-            record_array.push(ae_obj);
-          });
-          break;
-        default:
-          break;
-      }
-    }
+    records = processData(selected_consignment);
   }
 
   return {
     selected_consignment,
     selected_manifest,
-    records: record_array
-  }
+    records
+  };
 }
 
 const mapDispatchToProps = (dispatch, own_props)=>{

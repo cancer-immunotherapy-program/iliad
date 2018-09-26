@@ -1,7 +1,10 @@
 // Framework libraries.
 import * as React from 'react';
-import {downloadCSV} from '../../utils/csv';
+
 import ConsignmentTable from './consignment_table';
+import ConsignmentResult from './consignment_result';
+import {isPrimitiveType} from '../../utils/types';
+import {downloadCSV} from '../../utils/csv';
 
 class MatrixResult extends React.Component{
   constructor(props){

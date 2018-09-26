@@ -1,116 +1,65 @@
-import React, { Component } from 'react'
+import * as React from 'react';
 
-class Tooltip extends Component {
-  render() {
-    let visibility = 'hidden';
-    let transform = '';
-    let width = 290;
-    let height;
-    let transform_text = 'translate('+ width / 2 + ',' + 18 +')';
-    let transform_arrow = '';
+export class Tooltip extends React.Component{
 
-    let {tooltip, bg_style, text_style, x_value} = this.props;
-    let {data} = tooltip; 
-    let values;
- 
-    if(tooltip.display === true){
-      let {x, y} = tooltip.location;
-      let increment = 0;
-      visibility = 'visible';
-      values = data.value ? JSON.parse(data.value).data : null;
+  constructor(props){
+    super(props);
+    this.state = {
+      text_offset: 18
+    };
+  }
 
-      values.forEach( obj => {
-        let str = obj.name + obj.value;
-        if( str.length > 52) {increment++}
-      });
-    
-      height = values ? (values.length + increment) * 18 + 65 : 80;
-    
-      if(height < y - 18){
-        transform='translate(' + (x - width / 2) + 
-          ',' + (y - height - 20) + ')';
+  displayValues(){
+    return this.props.data.map((datum, index)=>{
+      let tspan_props = {
+        x: this.state.text_offset,
+        y: 3 + ((index + 1) * this.state.text_offset),
+        key: `data-${index}`,
+        className: 'tooltip-text',
+        textAnchor: 'start'
+      };
 
-        transform_arrow='translate('+ (width / 2 - 20) + 
-          ',' + (height - .2) +')';
-      }
-      else {
-        transform = 'translate(' + (x - width / 2) + ',' + 
-          (Math.round(y) + 20) + ')';
+      return <text {...tspan_props}>{datum}</text>;
+    });
+  }
 
-        transform_arrow = 'translate('+ (width / 2 - 20) +
-          ','+ 0 +') rotate(180, 20, 0)';
-      }
+  render(){
+    if(!this.props.display) return null;
+
+    let {data, location} = this.props;
+    let {x, y} = location;
+    let height = (data.length + 1) * this.state.text_offset;
+    let width = 280;
+
+    let x_val = (x - width / 2);
+    let y_val = (Math.round(y) + 20);
+    let transform_arrow = `translate(${width / 2 - 20}, 1) rotate(180, 20, 0)`;
+
+    if(height < y){
+      y_val = (y - height - 20);
+      transform_arrow = `translate(${width / 2 - 20}, ${height - 1})`;
     }
+    let transform = `translate(${x_val}, ${y_val})`;
 
-
-    let rec_props = {
-      className: bg_style,
-      width,
-      height,
-      rx: '5',
-      ry: '5',
-      visibility
+    let rect_props = {
+      className: 'tooltip-bg',
+      height: height,
+      width: width
     };
 
     let polygon_props = {
-      className: bg_style,
-      points: '10,0  30,0  20, 10',
-      transform: transform_arrow,
-      visibility
+      className: 'tooltip-arrow',
+      points: '10,0  30,0  20,10',
+      transform: transform_arrow
     };
 
-    let text_props = {
-      visibility,
-      transform: transform_text
-    };
-
-    let tspan_props = {
-      x:'-135',
-      className: text_style,
-      textAnchor: 'start'
-    };
-
-    let displayValues = (obj) => {
-      return obj.map( (el, index) => {
-        let str_len = `${el.name +': '+ el.value}`.length;
-        if(str_len < 54){
-          return (
-            <tspan {...tspan_props} key={index} dy='18'>
-
-              {el.name +': '+ el.value}
-            </tspan>
-          );
-        }
-        else {
-            return ([
-              <tspan {...tspan_props} key={index} dy='18'>
-
-                {el.name +' :'}
-              </tspan>, 
-              <tspan {...tspan_props} key={index+'shift'} dy='18'>
-
-                &#8627; {el.value}
-              </tspan>
-            ]);
-        }
-      })
-    };
-
-    return (
+    return(
       <g transform = {transform}>
 
-        <rect {...rec_props}/>
+        <rect {...rect_props} />
         <polygon {...polygon_props}/>
-        <text {...text_props}>
-        
-          <tspan {...tspan_props}>{x_value +': '+ data.type}</tspan>
-          <tspan {...tspan_props} dy='18'>{'Start: '+ data.start}</tspan>
-          <tspan {...tspan_props} dy='18'>{'End: '+ data.end}</tspan>
-          {values && displayValues(values)}
-        </text>
+        {this.displayValues()}
       </g>
     );
   }
 };
-
-export default Tooltip;

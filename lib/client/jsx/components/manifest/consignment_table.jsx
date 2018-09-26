@@ -26,7 +26,7 @@ class ConsignmentTable extends React.Component{
             return(
               <td className='table-view-cell' key={j}>
 
-                {String(data)}
+                {(data == null) ? '' : String(data)}
               </td>
             );
           })}

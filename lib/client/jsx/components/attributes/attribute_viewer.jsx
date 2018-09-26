@@ -53,12 +53,23 @@ export default class AttributeViewer extends React.Component{
       // case 'HistogramAttribute':
       //   return <HistogramAttribute {...this.props} />;
 
+<<<<<<< HEAD
       case 'ClinicalAttribute':
         return <ClinicalAttribute {...this.props} />;
+=======
+      case 'DemographicAttribute':
+      case 'DiagnosticAttribute':
+      case 'TreatmentAttribute':
+>>>>>>> em-d3-v5
       case 'AdverseEventAttribute':
         return <TableAttribute {...this.props} />;
       //  return <AdverseEventAttribute {...this.props} />;
 
+<<<<<<< HEAD
+=======
+      case 'BoxPlotAttribute':
+        return <BoxPlotAttribute {...this.props} />;
+>>>>>>> em-d3-v5
       case 'TextAttribute':
         return <TextAttribute {...this.props} />;
       case 'MarkdownAttribute':
