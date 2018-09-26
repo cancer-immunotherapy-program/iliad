@@ -12,12 +12,7 @@ export class Attribute extends React.Component{
       className: 'full_text',
       placeholder: attribute.placeholder,
       onChange: (value)=>{
-        reviseDocument({
-          document,
-          template,
-          attribute,
-          revised_value: value
-        });
+        reviseDocument(document, template, attribute, value);
       },
       defaultValue: (revision == null) ? '' : revision
     };
@@ -35,19 +30,15 @@ export class Attribute extends React.Component{
   }
 }
 
-const mapStateToProps = (dispatch, own_props)=>{
-  return {};
-};
-
 const mapDispatchToProps = (dispatch, own_props)=>{
   return {
-    reviseDocument: (args)=>{
-      dispatch(reviseDocument(args));
+    reviseDocument: (doc, tmplt, attr, rev_val)=>{
+      dispatch(reviseDocument(doc, tmplt, attr, rev_val));
     }
   };
 };
 
 export const AttributeContainer = ReactRedux.connect(
-  mapStateToProps,
+  null,
   mapDispatchToProps
 )(Attribute);

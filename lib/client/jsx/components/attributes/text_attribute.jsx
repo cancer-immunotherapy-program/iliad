@@ -2,7 +2,7 @@
 import * as React from 'react';
 import * as ReactRedux from 'react-redux';
 
-import * as MagmaActions from '../../actions/magma_actions';
+import {reviseDocument} from '../../actions/magma_actions';
 import TextAreaInput from '../inputs/text_area_input';
 
 export default class TextAttribute extends React.Component{
@@ -12,12 +12,7 @@ export default class TextAttribute extends React.Component{
       defaultValue: revision,
       className: 'text_box',
       onChange: (value)=>{
-        reviseDocument({
-          document,
-          template,
-          attribute,
-          revised_value: value
-        });
+        reviseDocument(document, template, attribute, value);
       }
     };
 
@@ -34,19 +29,15 @@ export default class TextAttribute extends React.Component{
   }
 }
 
-const mapStateToProps = (dispatch, own_props)=>{
-  return {};
-};
-
 const mapDispatchToProps = (dispatch, own_props)=>{
   return {
-    reviseDocument: (args)=>{
-      dispatch(MagmaActions.reviseDocument(args));
+    reviseDocument: (doc, tmplt, attr, rev_val)=>{
+      dispatch(reviseDocument(doc, tmplt, attr, rev_val));
     }
   };
 };
 
 export const TextAttributeContainer = ReactRedux.connect(
-  mapStateToProps,
+  null,
   mapDispatchToProps
 )(TextAttribute);

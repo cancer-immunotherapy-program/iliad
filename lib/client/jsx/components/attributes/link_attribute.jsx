@@ -3,7 +3,7 @@ import * as React from 'react';
 import * as ReactRedux from 'react-redux';
 
 import SlowTextInput from '../inputs/slow_text_input';
-import MagmaLink from '../magma_link';
+import MagmaLink from '../general/magma_link';
 import {reviseDocument} from '../../actions/magma_actions';
 
 export class LinkAttribute extends React.Component{
@@ -12,12 +12,7 @@ export class LinkAttribute extends React.Component{
     let link_props = {
       className: 'delete_link',
       onClick: function(event){
-        reviseDocument({
-          document,
-          template,
-          attribute,
-          revised_value: null
-        });
+        reviseDocument(document, template, attribute, null);
       }
     };
 
@@ -37,12 +32,7 @@ export class LinkAttribute extends React.Component{
       className: 'link_text',
       waitTime: 500,
       onChange: (value)=>{
-        reviseDocument({
-          document,
-          template,
-          attribute,
-          revised_value: value
-        })
+        reviseDocument(document, template, attribute, value);
       },
       placeholder:'New or existing ID',
       defaultValue: ''
@@ -73,19 +63,15 @@ export class LinkAttribute extends React.Component{
   }
 }
 
-const mapStateToProps = (dispatch, own_props)=>{
-  return {};
-};
-
 const mapDispatchToProps = (dispatch, own_props)=>{
   return {
-    reviseDocument: (args)=>{
-      dispatch(reviseDocument(args));
+    reviseDocument: (doc, tmplt, attr, rev_val)=>{
+      dispatch(reviseDocument(doc, tmplt, attr, rev_val));
     }
   };
 };
 
 export const LinkAttributeContainer = ReactRedux.connect(
-  mapStateToProps,
+  null,
   mapDispatchToProps
 )(LinkAttribute);

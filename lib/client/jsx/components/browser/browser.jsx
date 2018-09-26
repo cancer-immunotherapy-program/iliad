@@ -11,18 +11,24 @@
 
 // Framework libraries.
 import * as React from 'react';
+import * as Redux from 'redux';
 import * as ReactRedux from 'react-redux';
 
 // Class imports.
 import Header from '../general/header';
-import {HelpContainer as Help} from '../help';
 import {TabBarContainer as TabBar} from '../general/tab_bar';
 import BrowserTab from './browser_tab';
 
 // Module imports.
+import {getState} from 'redux';
 import {requestManifests} from '../../actions/manifest_actions';
 import {requestPlots} from '../../actions/plot_actions';
-import {requestView} from '../../actions/app_actions';
+import {downloadTab} from '../../selectors/download_selector';
+
+import {
+  requestView,
+  requestDownload
+} from '../../actions/app_actions';
 
 import{
   requestDocuments,
@@ -77,11 +83,14 @@ export class Browser extends React.Component{
   headerHandler(action){
 
     let {
+      store,
+      doc,
       revision,
       record_name,
       model_name,
       discardRevision,
-      sendRevisions
+      sendRevisions,
+      requestDownload
     } = this.props;
 
     switch(action){
@@ -105,8 +114,15 @@ export class Browser extends React.Component{
         }
         return;
       case 'edit':
-
         this.setState({mode: 'edit'});
+        return;
+      case 'download':
+        let tab = getTabByIndexOrder(
+          this.props.view.tabs,
+          this.state.current_tab_index
+        );
+        //let attributes = getAttributes(tab);
+        requestDownload(store, model_name, tab);
         return;
     }
   }
@@ -114,7 +130,7 @@ export class Browser extends React.Component{
   tabSelectionHandler(index_order){
 
     let {requestDocuments, model_name, record_name, view, doc} = this.props;
-
+attributes
     // Set the new requested tab state.
     this.setState({current_tab_index: index_order});
 
@@ -148,7 +164,7 @@ export class Browser extends React.Component{
     return(
       <div className='browser'>
 
-        <div id='loader-container'>
+        <div id='loader-group'>
 
           <div className='loader'>
 
@@ -166,12 +182,6 @@ export class Browser extends React.Component{
 
     // Render an empty view if there is no view data yet.
     if(!view || !template || !doc) return this.renderEmpytView();
-
-    let header_props = {
-      mode,
-      can_edit,
-      handler: this.headerHandler.bind(this)
-    };
 
     let tab_bar_props = {
       mode,
@@ -198,6 +208,13 @@ export class Browser extends React.Component{
       tab
     };
 
+    let header_props = {
+      mode,
+      can_edit,
+      download: browser_tab_props.tab.download,
+      handler: this.headerHandler.bind(this),
+    };
+
     // Set at 'skin' on the browser styling.
     let skin = 'browser';
     if(this.state.mode == 'browse') skin = 'browser '+this.props.model_name;
@@ -212,7 +229,6 @@ export class Browser extends React.Component{
             <span>{`${this.camelize(this.props.model_name)} : `}</span>
             {this.props.record_name}
           </div>
-          <Help info='edit' />
         </Header>
         <TabBar {...tab_bar_props} />
         <BrowserTab {...browser_tab_props} />
@@ -249,7 +265,8 @@ const mapStateToProps = (state = {}, own_props)=>{
     model_name: model,
     record_name: record,
     doc: doc[record],
-    has_revisions: (Object.keys(revision).length > 0)
+    has_revisions: (Object.keys(revision).length > 0),
+    store: state
   };
 };
 
@@ -286,8 +303,13 @@ const mapDispatchToProps = (dispatch, own_props)=>{
       dispatch(discardRevision(record_name, model_name));
     },
 
-    sendRevisions: (model_name, revisions, success, error)=>{
-      dispatch(sendRevisions({model_name, revisions, success, error}));
+    sendRevisions: (args)=>{
+      dispatch(sendRevisions(args));
+    },
+
+    // Proxy the data request from the store to a document download.
+    requestDownload: (store, model_name, tab)=>{
+      dispatch(requestDownload(store, model_name, tab));
     }
   };
 };

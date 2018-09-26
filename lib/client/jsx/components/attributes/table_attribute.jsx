@@ -8,8 +8,6 @@ export default class TableAttribute extends React.Component{
   }
 
   render(){
-    if(this.props.mode != 'browse') return <div className='value'></div>;
-
     let table_props = {
       page_size: 10,
       current_page: this.state.current_page,
@@ -21,7 +19,8 @@ export default class TableAttribute extends React.Component{
         this.setState({current_page: 0, filter});
       },
       model_name: this.props.attribute.model_name,
-      record_names: this.props.value
+      record_names: this.props.value,
+      mode: this.props.mode
     };
 
     return(

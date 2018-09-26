@@ -1,13 +1,14 @@
 /* NEW GLOBALS ****************************************************************/
-$font-path: '../fonts' !default;
-$main-font: 'gotham_bookregular';
-$main-font-bold: 'gotham_boldregular';
-$monospace_font: 'Courier New', Courier, monospace;
+$main-font: 'Nunito Sans', sans-serif;
+$main-font-bold: '';
+$monospace-font: 'Courier New', Courier, monospace;
 
-$body_font: 'Oxygen', sans-serif;
-$value_font: 'Cousine', monospace;
-$talk_font: 'Lora', serif;
-$quote_font: 'Crimson Text', serif;
+$extra-light: 200;
+$light: 300;
+$regular: 400;
+$semi-bold: 600;
+$bold: 700;
+$extra-bold: 800;
 
 $light-color: #a9d58e;
 $med-color: #22a778;
@@ -15,6 +16,7 @@ $dark-color: #24a684;
 $darkest-color: #19755d;
 
 $light-grey: #eeeeee;
+$light-grey-2: #cccccc;
 $med-grey-1: #999999;
 $med-grey-2: #666666;
 $dark-grey: #333333;
@@ -40,22 +42,42 @@ $black: #000000;
   outline: none;
 }
 
+input,
+button{
+  font-family: $main-font;
+}
+
+button{
+  font-weight: $semi-bold;
+}
+
 input:focus{
   outline-offset: 0px;
 }
 
 body{
   margin: 0px !important;
+  font-family: $main-font;
 }
 
-#main{
+#main {
   padding-left: 40px;
   padding-right: 40px;
 }
 
+/*
+#browse {
+  padding-left: 150px;
+}
+*/
+
 a{
   text-decoration: none;
-  color: olive;
+  color: $darkest-color;
+}
+
+a:visited{
+  color: $darkest-color;
 }
 
 a:hover{
@@ -74,7 +96,7 @@ a:hover{
   padding-top: 15px;
   display: block;
   font-size: 16px;
-  font-family: $body_font;
+  font-family: $main-font;
 }
 
 .home-page-project-link:hover{
@@ -89,7 +111,7 @@ a:hover{
 .page-detail-group{
   display: inline-block;
   height: 35px;
-  font-family: $body_font;
+  font-family: $main-font;
   font-size: 1.2em;
   text-transform: uppercase;
   color: $dark-grey;
@@ -153,7 +175,7 @@ a:hover{
   -webkit-appearance: none;
   -webkit-border-radius: 0px;
   outline: none;
-  height: 23px;
+  height: 25px;
 }
 
 .general-select:focus{
@@ -179,23 +201,18 @@ a:hover{
 
 /* OLD GLOBALS ****************************************************************/
 
-$body_font: 'Oxygen', sans-serif;
-$value_font: 'Cousine', monospace;
-$talk_font: 'Lora', serif;
-$quote_font: 'Crimson Text', serif;
-
 @mixin text_defaults {
   color: darkorchid;
   border: 0px none black;
   border-bottom: 1px solid $med-color;
-  font-family: $value_font;
+  font-family: $monospace-font;
   font-size: 16px;
   margin: 0;
   padding: 0;
 }
 
 @mixin text_box {
-  font-family: $value_font;
+  font-family: $monospace-font;
   font-size: 14px;
   border: 0px none black;
   border-top: 1px solid $med-color;
@@ -219,7 +236,7 @@ $quote_font: 'Crimson Text', serif;
 
 @mixin green_button {
   cursor: pointer;
-  font-family: $body_font;
+  font-family: $main-font;
   color: $med-color;
   margin-left: 4px;
   padding: 2px;

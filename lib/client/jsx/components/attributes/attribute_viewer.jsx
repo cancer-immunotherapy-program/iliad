@@ -53,9 +53,7 @@ export default class AttributeViewer extends React.Component{
       // case 'HistogramAttribute':
       //   return <HistogramAttribute {...this.props} />;
 
-      case 'DemographicAttribute':
-      case 'DiagnosticAttribute':
-      case 'TreatmentAttribute':
+      case 'ClinicalAttribute':
         return <ClinicalAttribute {...this.props} />;
       case 'AdverseEventAttribute':
         return <TableAttribute {...this.props} />;
@@ -73,6 +71,7 @@ export default class AttributeViewer extends React.Component{
 
       case 'Magma::ForeignKeyAttribute':
       case 'Magma::ChildAttribute':
+      case 'LinkAttribute':
         return <LinkAttribute {...this.props} />;
       case 'Magma::TableAttribute':
         return <TableAttribute {...this.props} />;

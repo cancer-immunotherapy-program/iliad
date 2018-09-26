@@ -1,65 +1,67 @@
 // Framework libraries.
 import * as React from 'react';
-import * as TSV from '../../utils/tsv';
+import {downloadCSV} from '../../utils/csv';
+import {isPrimitiveType} from '../../utils/types';
 import ConsignmentTable from './consignment_table';
 
-class MatrixResult extends React.Component{
-  constructor(props) {
+class VectorResult extends React.Component{
+  constructor(props){
     super(props);
-    this.state = { hidden: true };
+    this.state = {hidden: true};
   }
 
-  toggle() {
+  toggle(){
     this.setState({hidden: !this.state.hidden});
   }
 
-  downloadMatrix(){
-    let {name, matrix} = this.props;
-    let matrix_map = matrix.map('row', (row, _, row_name)=>{
-      return matrix.col_names.reduce(
-        (row_obj, col_name, i)=>{
-          return {...row_obj, [col_name]: row[i]};
-        },
-        {row_names: row_name}
-      );
+  downloadVector(){
+    let vectors = this.props.vector.map((label, value)=>{
+      return {label, value};
     });
 
-    TSV.downloadTSV(
-      matrix_map,
-      ['row_names'].concat(matrix.col_names),
-      name
+    downloadCSV(
+      vectors,
+      ['label', 'value'],
+      this.props.name
     );
   }
 
-  table() {
-    let { matrix } = this.props;
-    let headers = [ 'Row Names', ...matrix.col_names ];
-    let rows = matrix.map('row', (row, index, row_name)=>[ row_name, ...row ]);
+  table(){
+    let {vector} = this.props;
+    let headers = ['Labels', 'Values'];
+    let rows = vector.map((label, value)=>[
+      label,
+      isPrimitiveType(value) ? value : <ConsignmentResult data={value} />
+    ]);
 
-    return <ConsignmentTable headers={ headers } rows={ rows }/>
+    return <ConsignmentTable headers={headers} rows={rows} />;
   }
 
   render(){
-    let {matrix} = this.props;
+    let {vector} = this.props;
     let {hidden} = this.state;
     return(
-      <div className='consignment-matrix'>
-        <i className='fas fa-table'/>
+      <div className='consignment-vector-group'>
 
-        {` ${matrix.num_rows} rows x ${matrix.num_cols} cols`}
+        <div className='consignment-table-size'>
 
-        <button className='consignment-btn' onClick={this.downloadMatrix.bind(this)}>
+          <i className='fas fa-table' />
+          &nbsp;&nbsp;{`${vector.size} elements`}
+        </div>
+        <button className='consignment-btn' onClick={this.downloadVector.bind(this)}>
+
           <i className='fas fa-download' aria-hidden='true' ></i>
-          {'DOWNLOAD'}
+          &nbsp;{'DOWNLOAD'}
         </button>
         <button className='consignment-btn' onClick={this.toggle.bind(this)}>
+
           <i className='fas fa-table' aria-hidden='true'></i>
-          { hidden ? 'SHOW' : 'HIDE'}
+          &nbsp;{ hidden ? 'SHOW' : 'HIDE'}
         </button>
-        { !hidden && this.table() }
+        {!hidden && this.table()}
       </div>
     );
   }
 }
 
-export default MatrixResult;
+export default VectorResult;

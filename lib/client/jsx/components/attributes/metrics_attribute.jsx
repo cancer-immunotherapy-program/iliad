@@ -2,8 +2,8 @@
 import * as React from 'react';
 import * as ReactRedux from 'react-redux';
 
-import MagmaLink from '../magma_link';
-import * as MessageActions from '../../actions/message_actions';
+import MagmaLink from '../general/magma_link';
+import {showMessages} from '../../actions/app_actions';
 import * as ManifestActions from '../../actions/manifest_actions';
 import * as ConsignmentSelector from '../../selectors/consignment_selector';
 
@@ -157,7 +157,7 @@ const metricMapDispatchToProps = (dispatch, own_props)=>{
 
   return {
     showDetails: function(){
-      if(details.length) dispatch(MessageActions.showMessages(messages));
+      if(details.length) dispatch(showMessages(messages));
     }
   };
 };

@@ -3,26 +3,34 @@ import * as React from 'react';
 import * as ReactRedux from 'react-redux';
 
 import Pager from './general/pager';
-import {HelpContainer as Help} from './help';
 import AttributeViewer from './attributes/attribute_viewer';
 
 import {requestTSV} from '../actions/magma_actions';
+import {downloadCSV} from '../utils/csv';
 import {
   selectModelTemplate,
   selectModelDocuments
 } from '../selectors/magma_selector';
 
 const TableCell = (template, document)=>{
-  return (attr_name)=>{
+  return (attr_name, index)=>{
+
+    // If the attribute is an 'identifier' we make it a link.
+    let attr = template.attributes[attr_name];
+    if(template.identifier == attr_name){
+      attr['attribute_class'] = 'LinkAttribute';
+      attr['model_name'] = template.name;
+    }
+
     let attr_props = {
       template,
       document,
       value: document[attr_name],
-      attribute: template.attributes[attr_name]
+      attribute: attr
     };
 
     return(
-      <td className='table-viewer-cell' key={attr_name}>
+      <td className='table-view-cell' key={`${attr_name}-${index}`}>
 
         <AttributeViewer {...attr_props} />
       </td>
@@ -31,9 +39,9 @@ const TableCell = (template, document)=>{
 };
 
 const TableRow = (template, documents, attribute_names)=>{
-  return (record_name)=>{
+  return (record_name, index)=>{
     return(
-      <tr key={record_name} className='table-viewer-row'>
+      <tr key={`${record_name}-${index}`} className='table-view-row'>
 
         {attribute_names.map(TableCell(template, documents[record_name]))}
       </tr>
@@ -42,6 +50,18 @@ const TableRow = (template, documents, attribute_names)=>{
 };
 
 class TableViewer extends React.Component{
+  downloadMatrix(){
+    let data = Object.keys(this.props.documents).map((id)=>{
+      return this.props.documents[id];
+    });
+
+    downloadCSV(
+      data,
+      this.props.attribute_names,
+      `${APP_CONFIG.project_name}_${this.props.model_name}`
+    );
+  }
+
   renderRecords(){
     let {
       template,
@@ -63,15 +83,29 @@ class TableViewer extends React.Component{
   renderHeader(){
     if(!this.props.attribute_names) return null;
     return(
-      <tr className='table-viewer-row'>
+      <tr>
 
         {this.props.attribute_names.map((attr_name, index)=>{
           return(
-            <th key={index} className='table-viewer-header'>{attr_name}</th>
+            <th key={index} className='table-view-header'>{attr_name}</th>
           );
         })}
       </tr>
     )
+  }
+
+  // Output the size of the table attribute.
+  renderCounts(){
+    let {documents, attribute_names} = this.props;
+    let row_count = Object.keys(documents).length;
+    let col_count = (attribute_names) ? attribute_names.length : 0;
+    return(
+      <div className='table-view-size'>
+
+        <i className='fas fa-table'/>
+        &nbsp;&nbsp;{`${row_count} rows x ${col_count} cols`}
+      </div>
+    );
   }
 
   renderPager(){
@@ -101,34 +135,78 @@ class TableViewer extends React.Component{
     let export_props = {
       className: 'pager-export-btn',
       type: 'button',
-      onClick: ()=>{
-        requestTSV(model_name, record_names);
-      },
-      value: '\u21af TSV'
+      onClick: this.downloadMatrix.bind(this)
     };
+
+    let upload_props = {
+      className: 'pager-export-btn',
+      type: 'button'
+    };
+
+    /*
+     * This is not being included in the display until we can make sure the
+     * filtering works properly.
+     */
+    let filter_elem = (
+      <div className='pager-filter-group'>
+
+        <div className='pager-filter-search-icon'>
+
+          <span className='fas fa-search'></span>
+        </div>
+        <input {...filter_props} />
+      </div>
+    );
+
+/* Disabling the general table attribute download in lieu of a model level
+   download.
+
+    let download_elem = (
+      <button {...export_props}>
+
+        <i className='fas fa-download' aria-hidden='true'></i>
+        &nbsp;{'DOWNLOAD'}
+      </button>
+    );
+*/
+
+    let download_elem = null;
+
+    let upload_elem = (
+      <button {...upload_props}>
+
+        <i className='fas fa-upload' aria-hidden='true'></i>
+        &nbsp;{'UPLOAD'}
+      </button>
+    );
 
     return(
       <Pager {...pager_props}>
 
-        <button {...export_props}>
-
-          <i className='fas fa-download' aria-hidden='true' ></i>
-          &nbsp;{'DOWNLOAD'}
-        </button>
+        {download_elem}
       </Pager>
     );
+
+/*
+    return(
+      <Pager {...pager_props}>
+
+        {download_elem}
+        {(this.props.mode == 'edit') ? upload_elem : null}
+      </Pager>
+    );
+*/
   }
 
   render(){
-    if(!this.props) return null;
-    if(!this.props.record_names.length) return <div>{'No results.'}</div>;
-    if(this.props.record_names.length <= 0) return <div>{'No results.'}</div>;
+    if(Object.keys(this.props.documents).length == 0) return <div>{'-'}</div>;
 
-    return(
-      <div className='table-viewer-group'>
+    return[
+      this.renderCounts(),
+      this.renderPager(),
+      <div className='table-view-group'>
 
-        {this.renderPager()}
-        <table>
+        <table className='table-view'>
           <thead>
 
             {this.renderHeader()}
@@ -139,7 +217,7 @@ class TableViewer extends React.Component{
           </tbody>
         </table>
       </div>
-    );
+    ];
   }
 }
 
@@ -159,7 +237,6 @@ const mapStateToProps = (state = {}, own_props)=>{
   let attribute_names = null;
   if(template){
     attribute_names = Object.keys(template.attributes).filter((attr_name)=>{
-
       let attr = template.attributes[attr_name];
       return (attr.shown && attr.attribute_class != 'Magma::TableAttribute');
     });
@@ -176,8 +253,8 @@ const mapStateToProps = (state = {}, own_props)=>{
 
 const mapDispatchToProps = (dispatch, own_props)=>{
   return {
-    requestTSV: (model_names, record_names)=>{
-      dispatch(requestTSV(model_names, record_names));
+    requestTSV: (model_names, filter, record_names)=>{
+      dispatch(requestTSV(model_names, filter, record_names));
     }
   };
 };

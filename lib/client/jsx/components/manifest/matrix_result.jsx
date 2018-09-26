@@ -1,12 +1,12 @@
 // Framework libraries.
 import * as React from 'react';
-import * as TSV from '../../utils/tsv';
+import {downloadCSV} from '../../utils/csv';
 import ConsignmentTable from './consignment_table';
 
 class MatrixResult extends React.Component{
   constructor(props){
     super(props);
-    this.state = { hidden: true };
+    this.state = {hidden: true};
   }
 
   toggle(){
@@ -24,7 +24,7 @@ class MatrixResult extends React.Component{
       );
     });
 
-    TSV.downloadTSV(
+    downloadCSV(
       matrix_map,
       ['row_names'].concat(matrix.col_names),
       name
@@ -32,11 +32,11 @@ class MatrixResult extends React.Component{
   }
 
   table(){
-    let { matrix } = this.props;
-    let headers = [ 'Row Names', ...matrix.col_names ];
-    let rows = matrix.map('row', (row, index, row_name)=>[ row_name, ...row ]);
+    let {matrix} = this.props;
+    let headers = ['Row Names', ...matrix.col_names];
+    let rows = matrix.map('row', (row, index, row_name)=>[row_name, ...row]);
 
-    return <ConsignmentTable headers={ headers } rows={ rows }/>
+    return <ConsignmentTable headers={headers} rows={rows} />
   }
 
   render(){
@@ -47,7 +47,7 @@ class MatrixResult extends React.Component{
 
         <div className='consignment-table-size'>
 
-          <i className='fas fa-table'/>
+          <i className='fas fa-table' />
           &nbsp;&nbsp;{`${matrix.num_rows} rows x ${matrix.num_cols} cols`}
         </div>
         <button className='consignment-btn' onClick={this.downloadMatrix.bind(this)}>
@@ -58,7 +58,7 @@ class MatrixResult extends React.Component{
         <button className='consignment-btn' onClick={this.toggle.bind(this)}>
 
           <i className='fas fa-table' aria-hidden='true'></i>
-          &nbsp;{ hidden ? 'SHOW' : 'HIDE'}
+          &nbsp;{hidden ? 'SHOW' : 'HIDE'}
         </button>
         {!hidden && this.table()}
       </div>

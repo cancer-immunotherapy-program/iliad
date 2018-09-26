@@ -1,8 +1,6 @@
-@import 'globals';
-
 .plotter-group{
   position: relative;
-  font-family: $body_font;
+  font-family: $main-font;
 }
 
 .plotter-view-group{
@@ -160,9 +158,9 @@
 .plotter {
   position: relative;
   color: midnightblue;
-  font-family: $body_font;
+  font-family: $main-font;
   .header {
-    font-family: $body_font;
+    font-family: $main-font;
     @keyframes fade {
       0% { color: forestgreen; }
       50% { color: midnightblue; }
@@ -203,7 +201,7 @@
   select {
     border: 1px solid forestgreen;
     color: #33333c;
-    font-family: $value_font;
+    font-family: $monospace-font;
     font-size: 16px;
     background: white;
   }
@@ -315,53 +313,3 @@
   }
 }
 */
-
-.axis path,
-.axis line {
-  stroke: #E0E0E0;
-}
-
-.axis text {
-  font-size: 11px;
-  fill: black;
-}
-
-.axis-Bottom text, .axis-timeline-bottom text {
-  transform: rotate(-45deg);
-  text-anchor: end;
-}
-
-.box-group text {
-  visibility: hidden;
-}
-
-.box-group:hover text {
-  visibility: visible;
-  font-size: 8px;
-  alignment-baseline: middle;
-}
-
-.legend-container {
-  width: 75%;
-  margin-top: 25px;
-  margin-left: auto;
-}
-
-.category-group {
-  display: inline-block;
-  margin-right: 24px;
-  vertical-align: middle
-}
-
-.label-rect {
-  display: inline-block;
-  margin-right: 8px;
-  width: 16px;
-  height: 8px;
-  vertical-align: middle;
-}
-
-.label-text {
-  display: inline;
-  font-size: 12px;
-}

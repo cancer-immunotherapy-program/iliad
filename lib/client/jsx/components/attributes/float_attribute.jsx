@@ -14,12 +14,7 @@ export class FloatAttribute extends React.Component{
       placeholder: attribute.placeholder,
       defaultValue: revision,
       onChange: (value)=>{
-        reviseDocument({
-          document,
-          template,
-          attribute,
-          revised_value: value
-        });
+        reviseDocument(document, template, attribute, value);
       }
     };
 
@@ -36,19 +31,15 @@ export class FloatAttribute extends React.Component{
   }
 }
 
-const mapStateToProps = (dispatch, own_props)=>{
-  return {};
-};
-
 const mapDispatchToProps = (dispatch, own_props)=>{
   return {
-    reviseDocument: (args)=>{
-      dispatch(reviseDocument(args));
+    reviseDocument: (doc, tmplt, attr, rev_val)=>{
+      dispatch(reviseDocument(doc, tmplt, attr, rev_val));
     }
   };
 };
 
 export const FloatAttributeContainer = ReactRedux.connect(
-  mapStateToProps,
+  null,
   mapDispatchToProps
 )(FloatAttribute);

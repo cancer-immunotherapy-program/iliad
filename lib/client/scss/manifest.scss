@@ -1,5 +1,3 @@
-@import 'globals';
-
 .manifest-group{
   position: relative;
   font-family: $main-font;
@@ -140,7 +138,8 @@
 }
 
 .consignment-result-group{
-  padding-bottom: 10px;
+  margin-bottom: 10px;
+  margin-top: 10px;
   height: 30px;
   display: table-row;
 }
@@ -156,8 +155,10 @@
   color: $dark-color;
 }
 
-.consignment-matrix-group{
+.consignment-matrix-group,
+.consignment-vector-group{
   display: inline-block;
+  margin-bottom: 10px;
 }
 
 .consignment-table-size{
@@ -166,31 +167,13 @@
   color: $dark-color;
 }
 
-.consignment-table{
-  margin-top: 10px;
-  margin-bottom: 20px;
-  padding: 5px;
-  border: 1px solid $dark-color;
-  border-collapse: collapse;
-}
-
-.consignment-table thead tr th{
-  border-bottom: 1px solid $med-grey-2;
-}
-
-.consignment-header,
-.consignment-cell{
-  text-align: left;
-  padding: 5px;
-  border-right: 1px solid $med-grey-2;
-}
-
 .consignment-header{
   background: $dark-color;
   color: $white;
 }
 
 .consignment-btn{
+  margin-bottom: 10px;
   margin-left: 10px;
   cursor: pointer;
 }

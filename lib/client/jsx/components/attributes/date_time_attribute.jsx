@@ -12,12 +12,12 @@ export class DateTimeAttribute extends React.Component{
     let input_props = {
       defaultValue: this.props.revision,
       onChange: (new_date)=>{
-        reviseDocument({
+        reviseDocument(
           document,
           template,
           attribute,
-          revised_value: new_date && new_date.toISOString()
-        });
+          (new_date && new_date.toISOString())
+        );
       }
     };
 
@@ -39,19 +39,15 @@ export class DateTimeAttribute extends React.Component{
   }
 }
 
-const mapStateToProps = (dispatch, own_props)=>{
-  return {};
-};
-
 const mapDispatchToProps = (dispatch, own_props)=>{
   return {
-    reviseDocument: (args)=>{
-      dispatch(reviseDocument(args));
+    reviseDocument: (doc, tmplt, attr, rev_val)=>{
+      dispatch(reviseDocument(doc, tmplt, attr, rev_val));
     }
   };
 };
 
 export const DateTimeAttributeContainer = ReactRedux.connect(
-  mapStateToProps,
+  null,
   mapDispatchToProps
 )(DateTimeAttribute);

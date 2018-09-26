@@ -1,8 +1,6 @@
-@import 'globals';
-
 .settings-view-group{
   position: relative;
-  font-family: $body_font;
+  font-family: $main-font;
 }
 
 .settings-view-elements{
@@ -133,4 +131,3 @@
   box-sizing: border-box;         /* Opera/IE 8+ */
   resize: vertical;
 }
-  
