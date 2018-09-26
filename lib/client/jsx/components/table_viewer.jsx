@@ -158,6 +158,9 @@ class TableViewer extends React.Component{
       </div>
     );
 
+/* Disabling the general table attribute download in lieu of a model level
+   download.
+
     let download_elem = (
       <button {...export_props}>
 
@@ -165,6 +168,9 @@ class TableViewer extends React.Component{
         &nbsp;{'DOWNLOAD'}
       </button>
     );
+*/
+
+    let download_elem = null;
 
     let upload_elem = (
       <button {...upload_props}>
