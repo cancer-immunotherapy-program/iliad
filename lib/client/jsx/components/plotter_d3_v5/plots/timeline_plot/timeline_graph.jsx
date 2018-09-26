@@ -116,7 +116,7 @@ class TimelineGraph extends React.Component{
     let margins = {top: 41, right: 5, bottom: 100, left: 150};
     let svg_dimensions = {
       width: Math.max(this.props.parent_width, 500),
-      height: data.length * 24 + 481
+      height: data.length * 75
     };
 
     //Create time scale.
@@ -130,6 +130,7 @@ class TimelineGraph extends React.Component{
       .domain(data.map(datum => datum.event_id))
       .range([svg_dimensions.height - margins.bottom, margins.top]);
 
+/*
     this.zoom.scaleExtent([1, 100])
       .translateExtent([
         [0, 0],
@@ -140,6 +141,7 @@ class TimelineGraph extends React.Component{
         [svg_dimensions.width, svg_dimensions.height]
       ])
       .on('zoom', this.zoomed.bind(this));
+*/
 
     let xProps = {
       orient: 'Bottom',
@@ -168,16 +170,6 @@ class TimelineGraph extends React.Component{
       x: 0,
       y: 0
     };
-/*
-    let tooltip_props = {
-      tooltip: tooltip,
-      text_style: 'tooltip-text',
-      bg_style: 'tooltip-bg',
-      x_value1: 'Patient ID',
-      x_value2: 'Type',
-      y_value: 'Value'
-    };
-*/
 
     let rect_props = {
       className: 'zoom',

@@ -66,26 +66,18 @@ const end_date_names = [
   'end_date'
 ];
 
-const processNameForDate = (name)=>{
-  if(start_date_names.indexOf(name) > -1) return 'start';
-  if(end_date_names.indexOf(name) > -1) return 'end';
-  return name;
-};
-
-const processValueForDate = (name, value)=>{
-  if(name in start_date_names || name in end_date_names){
-    try{
-      value = new Date(value).toUTCString();
-      if(value == 'Invalid Date') date = null;
-    }
-    catch(error){
-      console.log(`For name: '${name}', value: '${value}' is not a date`);
-      value = null;
-    }
+const processValueForDate = (value)=>{
+  try{
+    value = new Date(value).toUTCString();
+    if(value == 'Invalid Date') date = null;
+  }
+  catch(error){
+    console.log(`For name: '${name}', value: '${value}' is not a date`);
+    value = null;
   }
 
   return value;
-};
+}
 
 const selectColor = (type)=>{
   let colors = [
@@ -111,13 +103,10 @@ const selectColor = (type)=>{
 }
 
 const flattenDataSet = (object, type)=>{
-  let data_obj = {
-    [object['name']]: object['value'],
-    patient_id: object['patient_id'],
-    type,
-    event_id: object.uid,
-    color: selectColor(type)
-  };
+  let data_obj = Object.assign(
+    {[object['name']]: object['value']},
+    object
+  );
 
   let child_obj = {};
   if('children' in object){
@@ -134,14 +123,25 @@ const flattenDataSet = (object, type)=>{
 const hashAndNormalizeMatrix = (matrix)=>{
   let data_obj = {};
 
-  matrix.rows.forEach((row, index)=>{
-    data_obj[matrix.row_names[index]] = {
-      uid: matrix.row_names[index],
-      parent_uid: row[0],
-      name: processNameForDate(row[1]),
-      value: processValueForDate(row[1], row[2]),
-      patient_id: row[3]
-    };
+  matrix.rows.forEach((row, row_index)=>{
+    data_obj[matrix.row_names[row_index]] = {};
+    row.forEach((datum, datum_index)=>{
+
+      let row_id = matrix.row_names[row_index];
+      data_obj[row_id][matrix.col_names[datum_index]] = datum;
+
+      if(start_date_names.indexOf(matrix.rows[row_index][datum_index]) > -1){
+
+        let date_index = matrix.col_names.indexOf('value');
+        data_obj[row_id]['start'] = processValueForDate(row[date_index]);
+      }
+
+      if(end_date_names.indexOf(matrix.rows[row_index][datum_index]) > -1){
+
+        let date_index = matrix.col_names.indexOf('value');
+        data_obj[row_id]['end'] = processValueForDate(row[date_index]);
+      }
+    });
   });
 
   return data_obj;
@@ -170,36 +170,56 @@ const processData = (consignment_data)=>{
 
         // Break out the objects into an array that D3 can use.
         for(let uid in processed_data[key]){
-          records.push(flattenDataSet(processed_data[key][uid], key));
+          processed_data[key][uid]['label'] = `${key} ${uid}`;
+          processed_data[key][uid]['event_id'] = `${key}-${uid}-${Math.random()}`;
+          processed_data[key][uid]['color'] = selectColor(key);
+          processed_data[key][uid]['type'] = key;
+
+          let flattened = flattenDataSet(processed_data[key][uid], key);
+          if(flattened['start'] == flattened['end']) delete flattened['end'];
+          records.push(flattened);
         }
 
         break;
       case 'prior_adverse_events':
       case 'adverse_events':
-        consignment_data[key].rows.forEach((row, index)=>{
-          let ae_obj = {
-            name: key,
-            label: `AE (${row[4]})`,
-            group: row[4],
-            patient_id: row[4],
-            start: new Date(row[2]).toUTCString(),
-            meddra_code: row[0],
-            color: selectColor(key),
-            event_id: `ae-${key}-${index}`,
-            type: key
-          };
 
-          if(row[3] != null){
-            ae_obj['end'] = new Date(row[3]).toUTCString();
-          }
+        if(consignment_data[key].rows.length <= 0) break;
 
-          records.push(ae_obj);
+        let data_obj = {};
+        consignment_data[key].rows.forEach((row, row_index)=>{
+
+          row.forEach((datum, datum_index)=>{
+
+            let col_name = consignment_data[key].col_names[datum_index];
+            data_obj[col_name] = datum;
+
+            if(start_date_names.indexOf(col_name) > -1){
+              data_obj['start'] = processValueForDate(datum);
+            }
+
+            if(end_date_names.indexOf(col_name) > -1){
+              data_obj['end'] = processValueForDate(datum);
+            }
+
+            if(data_obj['start'] == data_obj['end']){
+              delete data_obj['end'];
+            }
+          });
+
         });
+
+        data_obj['label'] = `${key} ${Math.random()}`;
+        data_obj['event_id'] = `${key}-${Math.random()}-${Math.random()}`;
+        data_obj['color'] = selectColor(key);
+        data_obj['type'] = key;
+
+        records.push(data_obj);
         break;
     }
   }
 
-  return records
+  return records;
 };
 
 const mapStateToProps = (state = {}, own_props)=>{
