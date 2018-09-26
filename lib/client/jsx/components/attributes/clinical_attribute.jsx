@@ -611,10 +611,10 @@ const mapStateToProps = (state, own_props)=>{
    * 2. Nest the documents in their proper hierarchy.
    */
   let args = [
-   state,
-   APP_CONFIG.project_name,
-   own_props.attribute.model_name,
-   'all'
+    state,
+    APP_CONFIG.project_name,
+    own_props.attribute.model_name,
+    'all'
   ];
 
   let dictionary = selectDictionaryByModel(...args);
