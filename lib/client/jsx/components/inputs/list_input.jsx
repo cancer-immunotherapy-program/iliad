@@ -1,6 +1,8 @@
 // Framework libraries.
 import * as React from 'react';
 
+import SlowTextInput from '../inputs/slow_text_input';
+
 // This is an input to create and edit a list of items.
 export default class ListInput extends React.Component{
   constructor(){
@@ -59,20 +61,20 @@ export default class ListInput extends React.Component{
     this.setState({edit_new_value: true});
   }
 
-  renderEdit(value, ItemInput, input_props){
+  renderEdit(value, input_props){
     let blur = ()=>this.setState({edit_new_value: false});
     input_props = Object.assign(
       input_props,
       {
         onChange: this.editValue.bind(this),
         onBlur: blur,
-        defaultValue: value
+        default_value: value
       }
     );
     return(
       <div className='list_item'>
 
-        <ItemInput {...inputProps} />
+        <SlowTextInput {...input_props} />
       </div>
     );
   }
@@ -89,7 +91,7 @@ export default class ListInput extends React.Component{
   }
 
   render(){
-    let {values, item_input, onChange, ...input_rops} = this.props;
+    let {values, ...input_props} = this.props;
     let {edit_new_value} = this.state;
     let new_value;
 
@@ -102,7 +104,7 @@ export default class ListInput extends React.Component{
       <div className='list_input'>
 
         {values.map(this.listItem.bind(this))}
-        {edit_new_value?this.renderEdit(new_value,item_input,input_props):null}
+        {edit_new_value ? this.renderEdit(new_value, input_props) : null}
         {this.renderAdd()}
       </div>
     );
