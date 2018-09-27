@@ -113,10 +113,10 @@ class TimelineGraph extends React.Component{
   render(){
     if(this.state.time_domain.length < 1) return null;
     let {time_domain, data, tooltip, zoom_transform} = this.state;
-    let margins = {top: 41, right: 5, bottom: 100, left: 150};
+    let margins = {top: 20, right: 5, bottom: 60, left: 150};
     let svg_dimensions = {
       width: Math.max(this.props.parent_width, 500),
-      height: data.length * 75
+      height: data.length * 40
     };
 
     //Create time scale.
