@@ -118,6 +118,8 @@ class TableViewer extends React.Component{
       record_names
     } = this.props;
 
+    if(pages <= 1) return null;
+
     let pager_props = {
       pages: pages,
       current_page: current_page + 1,
@@ -130,17 +132,6 @@ class TableViewer extends React.Component{
       onChange: (e)=>{
         onFilter(e.target.value);
       }
-    };
-
-    let export_props = {
-      className: 'pager-export-btn',
-      type: 'button',
-      onClick: this.downloadMatrix.bind(this)
-    };
-
-    let upload_props = {
-      className: 'pager-export-btn',
-      type: 'button'
     };
 
     /*
@@ -158,9 +149,26 @@ class TableViewer extends React.Component{
       </div>
     );
 
-/* Disabling the general table attribute download in lieu of a model level
-   download.
+    return <Pager {...pager_props} />;
+  }
 
+  renderButtons(){
+
+    let export_props = {
+      className: 'pager-export-btn',
+      type: 'button',
+      onClick: this.downloadMatrix.bind(this)
+    };
+
+    let upload_props = {
+      className: 'pager-export-btn',
+      type: 'button'
+    };
+
+    /*
+     * Disabling the general table attribute download in lieu of a model level
+     * download.
+     */
     let download_elem = (
       <button {...export_props}>
 
@@ -168,9 +176,6 @@ class TableViewer extends React.Component{
         &nbsp;{'DOWNLOAD'}
       </button>
     );
-*/
-
-    let download_elem = null;
 
     let upload_elem = (
       <button {...upload_props}>
@@ -180,30 +185,26 @@ class TableViewer extends React.Component{
       </button>
     );
 
+    /*
+        return(
+          <Pager {...pager_props}>
+
+            {download_elem}
+            {(this.props.mode == 'edit') ? upload_elem : null}
+          </Pager>
+        );
+    */
+
     return(
-      <Pager {...pager_props}>
+      <div style={{display: 'inline'}}>
 
-        {download_elem}
-      </Pager>
-    );
-
-/*
-    return(
-      <Pager {...pager_props}>
-
-        {download_elem}
         {(this.props.mode == 'edit') ? upload_elem : null}
-      </Pager>
+      </div>
     );
-*/
   }
 
-  render(){
-    if(Object.keys(this.props.documents).length == 0) return <div>{'-'}</div>;
-
-    return[
-      this.renderCounts(),
-      this.renderPager(),
+  renderTable(){
+    return(
       <div className='table-view-group'>
 
         <table className='table-view'>
@@ -217,7 +218,20 @@ class TableViewer extends React.Component{
           </tbody>
         </table>
       </div>
-    ];
+    );
+  }
+
+  render(){
+    let docs = this.props.documents;
+    return(
+      <div>
+
+        {this.renderCounts()}
+        {this.renderPager()}
+        {this.renderButtons()}
+        {(Object.keys(docs).length > 0) ? this.renderTable() : null}
+      </div>
+    );
   }
 }
 
