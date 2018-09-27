@@ -23,7 +23,6 @@ import BrowserTab from './browser_tab';
 import {getState} from 'redux';
 import {requestManifests} from '../../actions/manifest_actions';
 import {requestPlots} from '../../actions/plot_actions';
-import {downloadTab} from '../../selectors/download_selector';
 
 import {
   requestView,
