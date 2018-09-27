@@ -121,7 +121,6 @@ export class Browser extends React.Component{
           this.props.view.tabs,
           this.state.current_tab_index
         );
-        //let attributes = getAttributes(tab);
         requestDownload(store, model_name, tab);
         return;
     }
@@ -130,7 +129,7 @@ export class Browser extends React.Component{
   tabSelectionHandler(index_order){
 
     let {requestDocuments, model_name, record_name, view, doc} = this.props;
-attributes
+
     // Set the new requested tab state.
     this.setState({current_tab_index: index_order});
 

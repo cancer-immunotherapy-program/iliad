@@ -7,15 +7,9 @@ import TimelinePlot from '../../plotter_d3_v5/plots/timeline_plot/timeline_graph
 import Resize from '../../plotter_d3_v5/resize';
 
 // Module imports.
-import {
-  requestConsignmentsByManifestId
-} from '../../../actions/manifest_actions';
-import {
-  selectConsignment
-} from '../../../selectors/consignment_selector';
-import {
-  nestDataset
-} from '../../../selectors/selector_utils';
+import {requestConsignmentsByManifestId} from '../../../actions/manifest_actions';
+import {selectConsignment} from '../../../selectors/consignment_selector';
+import {nestDataset} from '../../../selectors/selector_utils';
 
 export class TimelineGroupPlotAttribute extends GenericPlotAttribute{
   constructor(props){
