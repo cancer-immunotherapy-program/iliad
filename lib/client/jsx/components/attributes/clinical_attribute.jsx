@@ -6,7 +6,10 @@ import * as ReactRedux from 'react-redux';
 import ClinicalInput from '../inputs/clinical_input';
 
 // Module imports.
-import {sendRevisions} from '../../actions/magma_actions';
+import {
+  sendRevisions,
+  reviseDocument
+} from '../../actions/magma_actions';
 
 import {
   selectModelDocuments,
@@ -37,9 +40,8 @@ export class ClinicalAttribute extends React.Component{
      * validations.
      */
     this.state = {
-      records: {},
       dictionary: {},
-      nested_uids: {}
+      nested_uids: []
     };
   }
 
@@ -52,7 +54,7 @@ export class ClinicalAttribute extends React.Component{
     ) return null;
 
     return {
-      records: next_props.records,
+      //records: next_props.records,
       dictionary: next_props.dictionary,
       nested_uids: next_props.nested_uids
     };
@@ -253,7 +255,7 @@ export class ClinicalAttribute extends React.Component{
     let records = this.setRecordRevision(
       event.target.dataset.uid,
       revision_records,
-      this.state.records
+      this.props.records
     );
 
     // Update the nested_uid object.
@@ -292,7 +294,13 @@ export class ClinicalAttribute extends React.Component{
       }
     }
 
-    this.setState({records, nested_uids});
+    this.setState({nested_uids});
+    reviseDocument(
+      this.props.document,
+      this.props.template,
+      this.props.attribute,
+      records
+    );
   }
 
   /*
@@ -300,8 +308,8 @@ export class ClinicalAttribute extends React.Component{
    * which should set the definition for the value (which allows validation).
    */
   reviseKey(event){
-
-    let {records, nested_uids} = this.state;
+    let {doucment, template, attribute, records} = this.props;
+    let {nested_uids} = this.state;
 
     // Set the name of the definition we chose.
     let revision_records = {
@@ -340,7 +348,7 @@ export class ClinicalAttribute extends React.Component{
     records = this.setRecordRevision(
       event.target.dataset.uid,
       revision_records,
-      this.state.records
+      this.props.records
     );
 
     nested_uids = this.setNestedUidRevision(
@@ -368,13 +376,14 @@ export class ClinicalAttribute extends React.Component{
       );
     }
 
-    this.setState({records, nested_uids});
+    this.setState({nested_uids});
+    reviseDocument(document, template, attribute, records);
   }
 
   addRecord(){
     let random_uid = `new-${Math.random().toString(16).slice(2, -1)}`;
+    let {doucment, template, attribute, records} = this.props;
 
-    let records = this.state.records;
     records[random_uid] = {
       uid: random_uid,
       name: null,
@@ -392,22 +401,25 @@ export class ClinicalAttribute extends React.Component{
       children: []
     });
 
-    this.setState({records, nested_uids});
+    this.setState({nested_uids});
+    reviseDocument(document, template, attribute, records);
   }
 
   removeRecord(uid){
-    let records = this.state.records;
+    if(!confirm('Are you sure you want to delete this record?')) return;
+
+    let {document, template, attribute, records} = this.props;
     let nested_uids = this.state.nested_uids;
-    if(uid in records && uid.includes('new')){
-      if(confirm('This record has not beens saved. Remove it?')){
-        delete records[uid];
-        nested_uids.forEach((nested_uid, index)=>{
-          if(nested_uid.uid == uid) nested_uids.splice(index, 1);
-        });
-      }
+
+    if(uid in records){
+      delete records[uid];
+      nested_uids.forEach((nested_uid, index)=>{
+        if(nested_uid.uid == uid) nested_uids.splice(index, 1);
+      });
     }
 
-    this.setState({records, nested_uids});
+    this.setState({nested_uids});
+    reviseDocument(document, template, attribute, records);
   }
 
   renderRemoveBtn(is_parent, uid){
@@ -492,7 +504,8 @@ export class ClinicalAttribute extends React.Component{
   }
 
   renderData(){
-    let {records, dictionary, nested_uids} = this.state;
+    let {records} = this.props;
+    let {dictionary, nested_uids} = this.state;
 
     // Check that all the required data to render is present.
     if(
@@ -512,24 +525,18 @@ export class ClinicalAttribute extends React.Component{
 
   renderEditButtons(){
     if(this.props.mode != 'edit') return null;
-    let {records, dictionary} = this.state;
-
-    // Check that all the required data to render is present.
-    if(
-      Object.keys(records).length <= 0 ||
-      Object.keys(dictionary).length <= 0 ||
-      Object.keys(dictionary.definitions).length <= 0
-    ) return <div className='clinical-record-edit-group' />;
 
     let add_btn_props = {
       className: 'clinical-record-btn',
       onClick: this.addRecord.bind(this)
     };
 
+/*
     let save_btn_props = {
       className: 'clinical-record-btn',
       onClick: this.sendRevisionIntermediate.bind(this)
     };
+*/
 
     return(
       <button {...add_btn_props}>
@@ -538,21 +545,6 @@ export class ClinicalAttribute extends React.Component{
         &nbsp;{'ADD'}
       </button>
     );
-
-/*
-    return [
-      <button {...add_btn_props}>
-
-        <i className='fas fa-plus'></i>
-        &nbsp;{'ADD'}
-      </button>,
-      <button {...save_btn_props}>
-
-        <i className='fas fa-check'></i>
-        &nbsp;{'SAVE'}
-      </button>
-    ];
-*/
   }
 
   renderDownload(){
@@ -576,10 +568,8 @@ export class ClinicalAttribute extends React.Component{
   }
 
   renderCount(){
-    let row_count = 0;
-    if(this.state.records){
-      row_count = Object.keys(this.state.records).length;
-    }
+    let {records} = this.props;
+    let row_count = (records) ? Object.keys(records).length : 0;
 
     return(
       <div className='table-view-size'>
@@ -591,16 +581,19 @@ export class ClinicalAttribute extends React.Component{
   }
 
   render(){
-    return[
-      this.renderCount(),
-      this.renderDownload(),
-      this.renderEditButtons(),
-      <div className='clinical-group'>
+    return(
+      <div>
 
-        <div className='clinical-group-header-bar' />
-        {this.renderData()}
+        {this.renderCount()}
+        {this.renderDownload()}
+        {this.renderEditButtons()}
+        <div className='clinical-group'>
+
+          <div className='clinical-group-header-bar' />
+          {this.renderData()}
+        </div>
       </div>
-    ];
+    );
   }
 }
 
