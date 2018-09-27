@@ -4,7 +4,6 @@ import * as ReactRedux from 'react-redux';
 
 import MagmaLink from '../general/magma_link';
 import ListInput from '../inputs/list_input';
-import SlowTextInput from '../inputs/slow_text_input';
 
 // Module imports.
 import {reviseDocument} from '../../actions/magma_actions';
@@ -43,7 +42,6 @@ export default class CollectionAttribute extends React.Component{
       placeholder: 'New or existing ID',
       className: 'link_text',
       values: revision || [],
-      itemInput: SlowTextInput,
       onChange: (new_links)=>{
         reviseDocument(document, template, attribute, new_links);
       }
