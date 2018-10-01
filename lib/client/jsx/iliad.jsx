@@ -29,7 +29,7 @@ import {HomePageContainer as HomePage} from './components/home_page';
 import {SettingsContainer as Settings} from './components/settings/settings';
 import {SearchContainer as Search} from './components/search/search';
 
-import ModelMap from './components/model_map';
+import ModelMap from './components/model_map/model_map';
 
 class IliadApplication{
   constructor(){

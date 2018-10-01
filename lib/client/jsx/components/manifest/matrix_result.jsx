@@ -6,7 +6,7 @@ import ConsignmentTable from './consignment_table';
 class MatrixResult extends React.Component{
   constructor(props){
     super(props);
-    this.state = { hidden: true };
+    this.state = {hidden: true};
   }
 
   toggle(){
@@ -32,11 +32,11 @@ class MatrixResult extends React.Component{
   }
 
   table(){
-    let { matrix } = this.props;
-    let headers = [ 'Row Names', ...matrix.col_names ];
-    let rows = matrix.map('row', (row, index, row_name)=>[ row_name, ...row ]);
+    let {matrix} = this.props;
+    let headers = ['Row Names', ...matrix.col_names];
+    let rows = matrix.map('row', (row, index, row_name)=>[row_name, ...row]);
 
-    return <ConsignmentTable headers={ headers } rows={ rows }/>
+    return <ConsignmentTable headers={headers} rows={rows} />
   }
 
   render(){
@@ -58,7 +58,7 @@ class MatrixResult extends React.Component{
         <button className='consignment-btn' onClick={this.toggle.bind(this)}>
 
           <i className='fas fa-table' aria-hidden='true'></i>
-          &nbsp;{ hidden ? 'SHOW' : 'HIDE'}
+          &nbsp;{hidden ? 'SHOW' : 'HIDE'}
         </button>
         {!hidden && this.table()}
       </div>

@@ -1,38 +1,42 @@
-import React, { Component } from 'react';
+// Framework libraries.
+import * as React from 'react';
+
 import debounce from '../../utils/debounce';
 
-// this is an input that debounces text input of some sort
-export default class TextAreaInput extends Component {
-  constructor() {
+// This is an input that debounces text input of some sort.
+export default class TextAreaInput extends React.Component{
+  constructor(){
     super();
     this.state = {};
   }
 
-  onChange(value) {
+  onChange(value){
     this.props.onChange(value);
   }
 
-  handleChange() {
+  handleChange(){
     let input_value = this.text_input.value;
-    this.setState({ input_value });
+    this.setState({input_value});
     this.onChange(input_value);
   }
 
-  componentWillMount() {
+  componentWillMount(){
     this.onChange = debounce(this.onChange, this.props.waitTime || 500);
   }
 
-  render() {
-    let { onChange, waitTime, defaultValue, ...inputProps } = this.props;
-    let { input_value } = this.state;
+  render(){
+    let {onChange, wait_time, default_value, ...input_props} = this.props;
+    let {input_value} = this.state;
 
-    return(
-      <textarea
-        ref={ (input) => this.text_input = input }
-        onChange={ this.handleChange.bind(this) }
-        value={ input_value == undefined ? defaultValue : input_value }
-        { ...inputProps }
-      />
+    input_props = Object.assets(
+      input_props,
+      {
+        ref: (input)=>(this.text_input = input),
+        onChange: this.handleChange.bind(this),
+        value: (input_value == undefined) ? default_value : input_value
+      }
     );
+
+    return <textarea {...input_props} />;
   }
 }

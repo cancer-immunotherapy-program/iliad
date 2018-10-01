@@ -72,8 +72,6 @@ class TableViewer extends React.Component{
       current_page
     } = this.props;
 
-    if (!record_names.length) null;
-
     record_names = record_names.slice(
       page_size * current_page,
       page_size * (current_page+1)
@@ -137,8 +135,12 @@ class TableViewer extends React.Component{
     let export_props = {
       className: 'pager-export-btn',
       type: 'button',
-      onClick: this.downloadMatrix.bind(this),
-      value: '\u21af TSV'
+      onClick: this.downloadMatrix.bind(this)
+    };
+
+    let upload_props = {
+      className: 'pager-export-btn',
+      type: 'button'
     };
 
     /*
@@ -156,11 +158,25 @@ class TableViewer extends React.Component{
       </div>
     );
 
+/* Disabling the general table attribute download in lieu of a model level
+   download.
+
     let download_elem = (
       <button {...export_props}>
 
-        <i className='fas fa-download' aria-hidden='true' ></i>
+        <i className='fas fa-download' aria-hidden='true'></i>
         &nbsp;{'DOWNLOAD'}
+      </button>
+    );
+*/
+
+    let download_elem = null;
+
+    let upload_elem = (
+      <button {...upload_props}>
+
+        <i className='fas fa-upload' aria-hidden='true'></i>
+        &nbsp;{'UPLOAD'}
       </button>
     );
 
@@ -170,26 +186,37 @@ class TableViewer extends React.Component{
         {download_elem}
       </Pager>
     );
+
+/*
+    return(
+      <Pager {...pager_props}>
+
+        {download_elem}
+        {(this.props.mode == 'edit') ? upload_elem : null}
+      </Pager>
+    );
+*/
   }
 
   render(){
-    if(!this.props) return null;
+    if(Object.keys(this.props.documents).length == 0) return <div>{'-'}</div>;
+
     return[
-        this.renderCounts(),
-        this.renderPager(),
-        <div className='table-view-group'>
+      this.renderCounts(),
+      this.renderPager(),
+      <div className='table-view-group'>
 
-          <table className='table-view'>
-            <thead>
+        <table className='table-view'>
+          <thead>
 
-              {this.renderHeader()}
-            </thead>
-            <tbody>
+            {this.renderHeader()}
+          </thead>
+          <tbody>
 
-              {this.renderRecords()}
-            </tbody>
-          </table>
-        </div>
+            {this.renderRecords()}
+          </tbody>
+        </table>
+      </div>
     ];
   }
 }

@@ -15,7 +15,7 @@ class HeaderApprove extends React.Component{
         <button className='header-edit-btn' onClick={handler.bind(null, 'approve')}>
 
           <span className='fas fa-check'></span>
-          &nbsp;{'APPROVE'}
+          &nbsp;{'SAVE'}
         </button>
       </div>
     );
@@ -68,26 +68,53 @@ class HeaderClose extends React.Component{
   }
 }
 
+class HeaderDownload extends React.Component{
+  render(){
+    let {handler} = this.props;
+    return(
+      <div className='inline'>
+
+        <button className='header-edit-btn' onClick={handler.bind(null, 'download')}>
+
+          <span className='fas fa-download'></span>
+          &nbsp;{'DOWNLOAD'}
+        </button>
+      </div>
+    );
+  };
+}
+
 class Header extends React.Component{
   render(){
-    let {mode, handler, can_edit, can_close, children} = this.props;
-    let elem = null;
+    let {mode, handler, can_edit, can_close, children, download} = this.props;
+    let edit_elem, dwlnd_elem = null;
 
     if(mode == 'edit'){
-      elem = <HeaderApprove handler={handler} />;
+      edit_elem = <HeaderApprove handler={handler} />;
     }
     else if(mode == 'submit'){
-      elem = <HeaderWaiting />;
+      edit_elem = <HeaderWaiting />;
     }
     else if(can_edit){
-      elem = <HeaderEdit handler = {handler} />
+      edit_elem = <HeaderEdit handler = {handler} />
     }
+
+    if(download) dwlnd_elem = <HeaderDownload handler = {handler} />
 
     return(
       <div className='header'>
 
         {children}
-        {elem}
+        <div className='inline' style={{display: 'none'}}>
+
+          <button className='header-edit-btn'>
+
+            <i className='fas fa-download' aria-hidden='true' ></i>
+            &nbsp;{'DOWNLOAD ALL'}
+          </button>
+        </div>
+        {edit_elem}
+        {dwlnd_elem}
         {can_close ? <HeaderClose handler={handler} /> : null}
       </div>
     );

@@ -15,7 +15,8 @@ class ViewAttribute < Sequel::Model
       attribute_class: attribute_data[:attribute_class].to_s,
       index_order: attribute_data[:index_order].to_i,
       plot_id: attribute_data[:plot_id],
-      manifest_id: attribute_data[:manifest_id]
+      manifest_id: attribute_data[:manifest_id],
+      download: (attribute_data[:download].to_s == 'true')
     }
 
     update_query = find_query.merge(update_query)
@@ -35,7 +36,8 @@ class ViewAttribute < Sequel::Model
       attribute_class: attribute_class,
       index_order: index_order,
       plot_id: plot_id,
-      manifest_id: manifest_id
+      manifest_id: manifest_id,
+      download: download
     }
   end
 end

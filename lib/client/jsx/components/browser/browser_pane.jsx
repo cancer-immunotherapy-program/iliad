@@ -32,11 +32,11 @@ export default class BrowserPane extends React.Component{
     let attr_val = attr_props.document[attr_name];
 
     // If there is no data for this attribute then we render a '-'.
-    if(attr_val == null || attr_val.length == 0){
-      attr_props.attribute['attribute_class'] = 'Magma::Attribute';
-      attr_props.attribute['type'] = 'String';
-      attr_props.value = '-';
-    }
+//    if(attr_val == null || attr_val.length == 0){
+//      attr_props.attribute['attribute_class'] = 'Magma::Attribute';
+//      attr_props.attribute['type'] = 'String';
+//      attr_props.value = '-';
+//    }
 
     return <AttributeViewer {...attr_props} />;
   }
@@ -46,9 +46,9 @@ export default class BrowserPane extends React.Component{
     let display = Object.keys(pane.attributes).map((attr_name, index)=>{
 
       // Return null if we are not to show the attribute.
-      if(pane.attributes[attr_name].shown === false) return null;
+      //if(pane.attributes[attr_name].shown === false) return null;
 
-      if (mode == 'edit' && !pane.attributes[attr_name].editable) return null;
+      //if (mode == 'edit' && !pane.attributes[attr_name].editable) return null;
 
       // The App view attribute.
       let attr = pane.attributes[attr_name];
