@@ -32,6 +32,7 @@ export default class ClinicalInput extends React.Component{
     let random_uid = Math.random().toString(16).slice(2, -1);
     input_props['list'] = `list-${random_uid}`;
     input_props['className'] = 'search-dropdown-input';
+    input_props['type'] = 'search';
 
     let group_props = {className: 'search-dropdown-group'};
     if(input_props.disabled){
@@ -75,7 +76,11 @@ export default class ClinicalInput extends React.Component{
       return <option {...option_props}>{choice.label}</option>;
     });
 
+    let random_uid = Math.random().toString(16).slice(2, -1);
     input_props['className'] = 'clinical-record-selector';
+    input_props['id'] = `list-${random_uid}`;
+    input_props['type'] = 'dropdown';
+
     return(
       <select {...input_props}>
 
