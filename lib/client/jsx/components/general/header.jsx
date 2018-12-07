@@ -38,6 +38,7 @@ class HeaderWaiting extends React.Component{
 
 class HeaderEdit extends React.Component{
   render(){
+    return null;
     let {handler} = this.props;
     return(
       <div className='inline'>
