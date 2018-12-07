@@ -44,7 +44,8 @@ import {
 import {
   selectModelDocuments,
   selectModelTemplate,
-  selectModelRevision
+  selectModelRevision,
+  selectAllRevisions
 } from '../../selectors/magma_selector';
 
 export class Browser extends React.Component{
@@ -85,6 +86,8 @@ export class Browser extends React.Component{
       store,
       doc,
       revision,
+      all_revisions,
+      has_revisions,
       record_name,
       model_name,
       discardRevision,
@@ -98,18 +101,20 @@ export class Browser extends React.Component{
         discardRevision({record_name, model_name});
         return;
       case 'approve':
-        if(this.props.has_revisions){
-          this.setState({mode: 'submit'});
-          sendRevisions({
-            model_name,
-            revisions: {[record_name] : revision},
-            success: ()=>this.setState({mode: 'browse'}),
-            error: ()=>this.setState({mode: 'browse'})
-          });
+        if(has_revisions){
+
+          for(let model_name in all_revisions.models){
+            sendRevisions({
+              model_name,
+              revisions: all_revisions.models[model_name].revisions,
+              success: ()=>this.setState({mode: 'browse'}),
+              error: ()=>this.setState({mode: 'browse'})
+            });
+          }
         }
         else{
-          this.setState({mode: 'browse'});
-          discardRevision({record_name, model_name});
+          //this.setState({mode: 'browse'});
+          //discardRevision({record_name, model_name});
         }
         return;
       case 'edit':
@@ -198,7 +203,7 @@ export class Browser extends React.Component{
      */
     tab = interleaveAttributes(tab, template);
 
-    var browser_tab_props = {
+    let browser_tab_props = {
       template,
       doc,
       revision,
@@ -241,6 +246,7 @@ const mapStateToProps = (state = {}, own_props)=>{
   let template = selectModelTemplate(state, project, model);
   let doc = selectModelDocuments(state, project, model, [record]);
   let revision = selectModelRevision(state, project, model, record);
+  let all_revisions = selectAllRevisions(state, project);
   let view = (state.app.views ? state.app.views[model] : null);
 
   let can_edit = false;
@@ -257,13 +263,14 @@ const mapStateToProps = (state = {}, own_props)=>{
   return {
     template,
     revision,
+    all_revisions,
     view,
     can_edit,
     project_name: project,
     model_name: model,
     record_name: record,
     doc: doc[record],
-    has_revisions: (Object.keys(revision).length > 0),
+    has_revisions: (Object.keys(all_revisions).length > 0),
     store: state
   };
 };
