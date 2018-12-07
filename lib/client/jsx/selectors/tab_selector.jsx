@@ -1,16 +1,31 @@
-export const getAttributes = (tab)=>{
+export const getAttributes = (tab, tables = false)=>{
 
   // Loop down on the tab object and extract the attributes.
   let attributes = Object.keys(tab.panes).map((pane_name)=>{
     return Object.keys(tab.panes[pane_name].attributes).map((attr_name)=>{
-      return tab.panes[pane_name].attributes[attr_name].name;
+      let attr = tab.panes[pane_name].attributes[attr_name];
+
+      let table_attr = ['Magma::TableAttribute', 'ClinicalAttribute'];
+
+      if(tables){
+        if(table_attr.indexOf(attr.attribute_class) > -1){
+          return attr.name;
+        }
+      }
+      else{
+        if(table_attr.indexOf(attr.attribute_class) == -1){
+          return attr.name;
+        }
+      }
+
+      return null;
     });
   });
 
-  // Flatten.
   attributes = [].concat.apply([], attributes);
+  attributes = attributes.filter((attr)=>(attr != null));
 
-  return (attributes.length <= 0) ? 'all' : attributes;
+  return (attributes.length <= 0) ? ['all'] : attributes;
 };
 
 export const getPlotIds = (tab)=>{
@@ -60,11 +75,11 @@ export const getTabByIndexOrder = (tabs, view_index)=>{
 /*
  * There is a correlation between the app view model attributes and the Magma
  * model attributes. When we want to render the attributes we interleave the two
- * models and then can display the totality of the information they represent. 
+ * models and then can display the totality of the information they represent.
  * App view models keep the layout and order, Magma data models keep the data
  * type and editability.
  *
- * See `/app/models/view_tab.rb` over in the server code for an idea about the 
+ * See `/app/models/view_tab.rb` over in the server code for an idea about the
  * tab structure.
  */
 export const interleaveAttributes = (tab, template)=>{
