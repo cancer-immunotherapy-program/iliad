@@ -3,13 +3,8 @@ import * as React from 'react';
 import * as ReactRedux from 'react-redux';
 
 export class TabBar extends React.Component{
-  constructor(props){
-    super(props);
-    this.props.initialized(this.constructor.name);
-  }
-
   formatName(name){
-    return name.replace(/_/, ' ').replace(/\w\S*/g, function(txt) {
+    return name.replace(/_/, ' ').replace(/\w\S*/g, function(txt){
       return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
     });
   }
@@ -64,28 +59,10 @@ export class TabBar extends React.Component{
 }
 
 const mapStateToProps = (state = {}, own_props)=>{
-  let revised = {};
-  let {view, mode, revision} = own_props;
-
-  if(mode == 'edit' && revision){
-    //do nothing yet.
-  }
-
-  return {...own_props, revised};
-};
-
-const mapDispatchToProps = (dispatch, own_props)=>{
-  return {
-    initialized: (component)=>{
-      dispatch({
-        type: 'INITIALIZED',
-        component
-      });
-    }
-  };
+  return {...own_props};
 };
 
 export const TabBarContainer = ReactRedux.connect(
   mapStateToProps,
-  mapDispatchToProps
+  null
 )(TabBar);
