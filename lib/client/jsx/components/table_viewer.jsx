@@ -257,6 +257,7 @@ const mapStateToProps = (state = {}, own_props)=>{
   }
 
   return {
+    model_name: own_props.model_name,
     template,
     documents,
     record_names,
